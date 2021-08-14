@@ -22,22 +22,33 @@ import java.util.ArrayList;
 
 /**
  * main activity of the app
+ *
  * @author xiaotian
  */
 public class MainActivity extends AppCompatActivity {
 
-    /** view binding to replace butter knife, see android documents */
+    /**
+     * view binding to replace butter knife, see android documents
+     */
     private ActivityMainBinding binding;
 
-    /** holds all fragments: home, categories, messages and me */
+    /**
+     * holds all fragments: home, categories, messages and me
+     */
     private ArrayList<BaseFragment> fragments;
 
-    /** used for picking fragments */
+    /**
+     * used for picking fragments
+     */
     private int position;
 
-    /** the Fragment that is shown before */
+    /**
+     * the Fragment that is shown before
+     */
     private Fragment prevFragment;
-    /** the button that is selected before, default is home button */
+    /**
+     * the button that is selected before, default is home button
+     */
     private int prevButtonId = R.id.button_main_home;
 
     @Override
@@ -55,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // set up bottom buttons' event listeners
         setClickListener();
     }
-
-
 
     /**
      * put fragments in activity
@@ -117,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // change Fragment
                 changeFragment(prevFragment, newFragment);
-
-
-
             }
         });
 
@@ -127,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
         binding.radioGroupMain.check(R.id.button_main_home);
     }
 
-    /** pick fragment of a specific position from fragments arraylist */
+    /**
+     * pick fragment of a specific position from fragments arraylist
+     */
     private BaseFragment pickFragment(int position) {
         if (fragments != null && fragments.size() > 0) {
             return fragments.get(position);
@@ -138,8 +146,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * switch fragment
+     *
      * @param fromFragment original fragment
-     * @param newFragment new picked fragment
+     * @param newFragment  new picked fragment
      */
     private void changeFragment(Fragment fromFragment, BaseFragment newFragment) {
 
@@ -152,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
                 /*
-                * check whether the new fragment is currently added to its activity or not.
-                */
-                if(!newFragment.isAdded()) {
+                 * check whether the new fragment is currently added to its activity or not.
+                 */
+                if (!newFragment.isAdded()) {
                     if (fromFragment != null) {
                         transaction.hide(fromFragment);
                     }
