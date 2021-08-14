@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".app.entrance.MainActivity">
+    tools:context=".app.MainActivity">
 
     <FrameLayout
         android:id="@+id/frameLayout_main"
@@ -22,32 +22,32 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_home"
+            android:id="@+id/button_main_home"
             style="@style/MainButtonStyle"
             android:drawableTop="@drawable/button_home_selector"
             android:text="Home" />
 
         <RadioButton
-            android:id="@+id/rb_type"
+            android:id="@+id/button_main_categories"
             style="@style/MainButtonStyle"
             android:drawableTop="@drawable/button_categories_selector"
             android:text="Categories" />
 
         <RadioButton
-            android:id="@+id/rb_community"
+            android:id="@+id/button_main_publish"
             style="@style/MainButtonStyle"
             android:drawableTop="@drawable/add_fill"
 
             />
 
         <RadioButton
-            android:id="@+id/rb_cart"
+            android:id="@+id/button_main_messages"
             style="@style/MainButtonStyle"
             android:drawableTop="@drawable/button_messages_selector"
             android:text="Messages" />
 
         <RadioButton
-            android:id="@+id/rb_user"
+            android:id="@+id/button_main_me"
             style="@style/MainButtonStyle"
             android:drawableTop="@drawable/button_me_selector"
             android:text="Me" />

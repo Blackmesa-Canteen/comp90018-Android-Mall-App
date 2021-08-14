@@ -14,7 +14,8 @@ public class MyApplication extends Application {
         super.onCreate();
         mContext = this;
     }
-    // Getter，get global context
+
+    /** Getter to get global context */
     public static Context getContext() {
         return mContext;
     }

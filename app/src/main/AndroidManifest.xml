@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.entrance.MainActivity"
+        <activity android:name=".app.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
@@ -31,7 +31,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".app.messages.service.ImService"
+            android:name=".app.users.chat.service.ImService"
             android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
