@@ -5,6 +5,24 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <!-- our standard colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="blue_light">#007AFF</color>
+    <color name="blue_dark">#0A84FF</color>
+    <color name="teal_light">#5AC8FA</color>
+    <color name="teal_dark">#64D2FF</color>
+    <color name="red_light">#FF3B30</color>
+    <color name="red_dark">#FF453A</color>
+    <color name="green_light">#34c759</color>
+    <color name="green_dark">#32d74b</color>
+    <color name="yellow_light">#ffcc00</color>
+    <color name="yellow_dark">#ffd60a</color>
+    <color name="orange_light">#ff9500</color>
+    <color name="orange_dark">#ff9f0a</color>
+    <color name="disable_light">#999999</color>
+    <color name="disable_dark">#757575</color>
+
+
 </resources>
