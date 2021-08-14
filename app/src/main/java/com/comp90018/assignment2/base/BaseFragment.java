@@ -57,6 +57,11 @@ public abstract class BaseFragment extends Fragment {
         loadData();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     /**
      * inflate layout files and bind views.
      * e.g

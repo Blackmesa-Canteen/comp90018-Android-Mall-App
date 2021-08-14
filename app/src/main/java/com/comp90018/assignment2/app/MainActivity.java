@@ -1,6 +1,5 @@
 package com.comp90018.assignment2.app;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,9 +17,6 @@ import com.comp90018.assignment2.app.messages.fragment.MessagesFragment;
 import com.comp90018.assignment2.app.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -41,17 +37,17 @@ public class MainActivity extends AppCompatActivity {
 
     /** the Fragment that is shown before */
     private Fragment prevFragment;
+    /** the button that is selected before, default is home button */
+    private int prevButtonId = R.id.button_main_home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // init view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-
         // attach to layout file
-        setContentView(R.layout.activity_main);
+        setContentView(view);
 
         // load fragments
         loadFragments();
@@ -80,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setClickListener() {
 
-        // check home first
-        binding.radioGroupMain.check(R.id.button_main_home);
-
         // behavior when select different buttons
         binding.radioGroupMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -106,20 +99,32 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.button_main_publish:
-                        // start publish activity
+                        // publish button
+
+                        /* start publish activity */
+
+                        // check the original one
+                        binding.radioGroupMain.check(prevButtonId);
                         return;
                     default:
                         position = 0;
                         break;
                 }
 
+                prevButtonId = checkedId;
                 // got position, then change fragments
                 BaseFragment newFragment = pickFragment(position);
 
                 // change Fragment
                 changeFragment(prevFragment, newFragment);
+
+
+
             }
         });
+
+        // after binding event, check home first
+        binding.radioGroupMain.check(R.id.button_main_home);
     }
 
     /** pick fragment of a specific position from fragments arraylist */

@@ -2,8 +2,10 @@ package com.comp90018.assignment2.app.messages.fragment;
 
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 
 /**
@@ -16,7 +18,7 @@ public class MessagesFragment extends BaseFragment {
     /**
      * 缺省占位
      */
-    private TextView zhanwei;
+    private ImageView imageView;
 
     @Override
     public View inflateView() {
@@ -26,15 +28,14 @@ public class MessagesFragment extends BaseFragment {
          * 然后return view.
          * */
 
-        zhanwei = new TextView(activityContext);
-        zhanwei.setGravity(Gravity.CENTER);
-        zhanwei.setTextSize(20);
-        return zhanwei;
+        imageView = new ImageView(activityContext);
+
+        return imageView;
     }
 
     @Override
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
-        zhanwei.setText("Me Fragment");
+        imageView.setImageResource(R.drawable.message);
     }
 }
