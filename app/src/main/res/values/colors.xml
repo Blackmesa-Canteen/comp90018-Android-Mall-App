@@ -15,14 +15,23 @@
     <color name="teal_dark">#64D2FF</color>
     <color name="red_light">#FF3B30</color>
     <color name="red_dark">#FF453A</color>
+    <color name="pink_light">#ff2d55</color>
+    <color name="pink_dark">#ff375f</color>
     <color name="green_light">#34c759</color>
     <color name="green_dark">#32d74b</color>
     <color name="yellow_light">#ffcc00</color>
     <color name="yellow_dark">#ffd60a</color>
     <color name="orange_light">#ff9500</color>
     <color name="orange_dark">#ff9f0a</color>
+    <color name="purple_light">#af52de</color>
+    <color name="purple_dark">#bf5af2</color>
     <color name="disable_light">#999999</color>
     <color name="disable_dark">#757575</color>
-
+    <color name="grey6">#f2f2f7</color>
+    <color name="grey5">#e5e5ea</color>
+    <color name="grey4">#d1d1d6</color>
+    <color name="grey3">#c7c7cc</color>
+    <color name="grey2">#aeaeb2</color>
+    <color name="grey1">#8e8e93</color>
 
 </resources>
