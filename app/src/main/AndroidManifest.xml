@@ -11,13 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
-        <activity android:name=".app.entrance.WelcomeActivity"></activity>
-        <activity android:name=".app.entrance.MainActivity">
+        <activity
+            android:name=".app.entrance.WelcomeActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".app.entrance.MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
         </activity>
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
