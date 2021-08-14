@@ -4,13 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.home.activity.MainActivity">
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".app.entrance.MainActivity">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/frameLayout_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="testtest"
-        android:textColor="@color/blue_light"
-        />
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_radio_main"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            style="@style/MainButtonStyle"
+            android:drawableTop="@drawable/button_home_selector"
+            android:text="Home" />
+
+        <RadioButton
+            android:id="@+id/rb_type"
+            style="@style/MainButtonStyle"
+            android:drawableTop="@drawable/button_categories_selector"
+            android:text="Categories" />
+
+        <RadioButton
+            android:id="@+id/rb_community"
+            style="@style/MainButtonStyle"
+            android:drawableTop="@drawable/add_fill"
+
+            />
+
+        <RadioButton
+            android:id="@+id/rb_cart"
+            style="@style/MainButtonStyle"
+            android:drawableTop="@drawable/button_messages_selector"
+            android:text="Messages" />
+
+        <RadioButton
+            android:id="@+id/rb_user"
+            style="@style/MainButtonStyle"
+            android:drawableTop="@drawable/button_me_selector"
+            android:text="Me" />
+    </RadioGroup>
 
 </LinearLayout>
