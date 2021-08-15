@@ -1,4 +1,4 @@
-package com.comp90018.assignment2.app;
+package com.comp90018.assignment2.app.facade;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
