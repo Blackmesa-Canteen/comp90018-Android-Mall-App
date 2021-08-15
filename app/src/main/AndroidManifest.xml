@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".app.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
-            android:name=".app.entrance.WelcomeActivity"
+            android:name=".modules.entrance.WelcomeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".app.facade.MainActivity"
+        <activity android:name=".modules.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
         </activity>
@@ -32,7 +32,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".app.users.chat.service.ImService"
+            android:name=".modules.users.chat.service.ImService"
             android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />

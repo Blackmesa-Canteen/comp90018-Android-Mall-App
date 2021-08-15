@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@color/white"
-    tools:context=".app.entrance.WelcomeActivity">
+    tools:context=".modules.entrance.WelcomeActivity">
 
     <ImageView
         android:layout_width="wrap_content"
