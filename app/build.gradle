@@ -44,9 +44,28 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    sourceSets{
+        main{
+            jniLibs.srcDir 'libs'
+            jni.srcDirs = []    //disable automatic ndk-build
+        }
+    }
+
 }
 
+
 dependencies {
+
+    // Geo Service
+    // geo hash support for firebase database
+    implementation 'com.firebase:geofire-android-common:3.1.0'
+    // locating api of baidu map
+    implementation fileTree(dir:  'libs' , include: ['*.jar'])
+
+    // lombok for pojos
+    //noinspection AnnotationProcessorOnCompilePath
+    compileOnly "org.projectlombok:lombok:1.18.20"
 
     // solve compile bug
     implementation "androidx.multidex:multidex:2.0.1"

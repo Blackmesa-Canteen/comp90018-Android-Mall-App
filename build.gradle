@@ -4,6 +4,8 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/google/' }
         maven { url 'https://maven.aliyun.com/repository/public/' }
         maven { url "https://s01.oss.sonatype.org/content/groups/public" }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+
         google()
         mavenCentral()
     }
@@ -21,6 +23,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/google/' }
         maven { url 'https://maven.aliyun.com/repository/public/' }
         maven { url "https://s01.oss.sonatype.org/content/groups/public" }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
         google()
         mavenCentral()
     }
