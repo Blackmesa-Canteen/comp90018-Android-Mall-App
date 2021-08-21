@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.button_main_publish:
                         // publish button
 
-                        /* start publish activity */
+                        /* TODO： start publish activity */
 
                         // check the original one
                         binding.radioGroupMain.check(prevButtonId);
