@@ -11,7 +11,6 @@ import java.util.List;
 public class UserRepository {
 
     /*单例的一堆代码*/
-
     private static UserRepository instance;
 
     private UserRepository() {

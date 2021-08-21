@@ -35,4 +35,6 @@ public class UserDTO {
     private String nickname;
     private String password;
     private String payment_info;
+
+
 }
