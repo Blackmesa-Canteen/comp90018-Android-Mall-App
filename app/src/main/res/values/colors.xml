@@ -34,4 +34,9 @@
     <color name="grey2">#aeaeb2</color>
     <color name="grey1">#8e8e93</color>
 
+    <!-- IM-->
+    <color name="toolbar_btn_select">#D9D9D9</color>
+    <color name="toolbar_btn_nomal">@color/white</color>
+    <color name="toolbar_spilt_line">#CDCDCD</color>
+
 </resources>
