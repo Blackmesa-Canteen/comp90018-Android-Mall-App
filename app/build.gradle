@@ -57,6 +57,9 @@ android {
 
 dependencies {
 
+    // FirebaseUI Storage only
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
     // Geo Service
     // geo hash support for firebase database
     implementation 'com.firebase:geofire-android-common:3.1.0'
