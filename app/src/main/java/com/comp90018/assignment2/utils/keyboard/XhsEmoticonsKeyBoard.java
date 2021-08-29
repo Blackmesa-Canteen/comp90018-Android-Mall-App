@@ -68,7 +68,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     }
 
     protected void initView() {
-        mBtnVoiceOrText = ((ImageView) findViewById(R.id.btn_voice_or_text));
         mEtChat = ((EmoticonsEditText) findViewById(R.id.et_chat));
         mBtnFace = ((ImageView) findViewById(R.id.btn_face));
         mRlInput = ((RelativeLayout) findViewById(R.id.rl_input));
