@@ -1,2 +1,3 @@
 rootProject.name = "appName"
 include ':app'
+include ':emoji'

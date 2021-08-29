@@ -2,20 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.comp90018.assignment2">
-
-    <!-- 这个权限用于手机app上网-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- 用于访问wifi网络信息，wifi信息可用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 这个权限用于获取wifi的获取权限-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 写入扩展存储，向扩展卡写入数据-->
+    <!-- 这个权限用于手机app上网 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息可用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -26,6 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
+
+        <activity
+            android:name=".modules.users.authentication.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <meta-data
             android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
             android:value="AK" />
@@ -41,9 +39,7 @@
         </activity>
         <activity
             android:name=".modules.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>
@@ -56,9 +52,7 @@
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service>
-
-        <!--suppress AndroidDomInspection -->
+        </service> <!-- suppress AndroidDomInspection -->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"

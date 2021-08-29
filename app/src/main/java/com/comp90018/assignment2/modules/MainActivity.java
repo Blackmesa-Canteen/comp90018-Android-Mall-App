@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -12,6 +13,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.categories.fragment.CategoriesFragment;
 import com.comp90018.assignment2.modules.home.fragment.HomeFragment;
 import com.comp90018.assignment2.modules.messages.fragment.MessagesFragment;
+import com.comp90018.assignment2.modules.users.authentication.LoginActivity;
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
@@ -109,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
                         // publish button
 
                         /* TODO： start publish activity */
+                        // debug
+                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(loginIntent);
 
                         // check the original one
                         binding.radioGroupMain.check(prevButtonId);

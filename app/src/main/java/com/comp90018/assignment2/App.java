@@ -25,7 +25,7 @@ public class App extends MultiDexApplication {
          * After message roaming is enabled, when the user logs in between devices,
          * the SDK will automatically synchronize the history messages of the current
          * user to the local PC. After the synchronization is complete, the SDK will
-         * send a ConversationRefreshEvent event to notify the upper layer to refresh. 
+         * send a ConversationRefreshEvent event to notify the upper layer to refresh.
          */
         JMessageClient.init(this, true);
     }
