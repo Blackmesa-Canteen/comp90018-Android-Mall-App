@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,12 +19,13 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ProductCommentDTO {
     private String content;
     private Timestamp created_time;
     private Integer likes;
-    private List<DocumentReference> parent_comment_id;
-    private List<DocumentReference> user_ref;
+    private DocumentReference parent_comment_id;
+    private DocumentReference user_ref;
 
 }

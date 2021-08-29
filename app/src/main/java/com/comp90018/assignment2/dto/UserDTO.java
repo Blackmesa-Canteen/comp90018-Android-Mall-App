@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,6 +20,7 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class UserDTO {
 
@@ -36,6 +38,8 @@ public class UserDTO {
     private String nickname;
     private String password;
     private String payment_info;
+    private Integer sold_number;
+    private Double star_number;
 
 
 }

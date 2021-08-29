@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,22 +21,24 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class ProductDTO {
     private String brand;
-    private List<DocumentReference> category_ref;
+    private DocumentReference category_ref;
     private Integer currency;
     private String description;
     private Integer favorite_number;
     private String image_address;
     private GeoLocation location_coordinate;
     private String location_text;
-    private List<DocumentReference> owner_ref;
-    private Integer price;
+    private DocumentReference owner_ref;
+    private Double price;
     private Timestamp publish_time;
     private Integer quality;
     private Integer status;
-    private List<DocumentReference> sub_category_ref;
+    private Double star_number;
+    private DocumentReference sub_category_ref;
     private String view_number;
 
 }

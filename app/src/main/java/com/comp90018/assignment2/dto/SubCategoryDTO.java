@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,9 +19,10 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class SubCategoryDTO {
-    private List<DocumentReference> category_ref;
+    private DocumentReference category_ref;
     private String image_address;
     private String name;
 }

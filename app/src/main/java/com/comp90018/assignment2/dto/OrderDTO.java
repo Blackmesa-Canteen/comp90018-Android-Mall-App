@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -18,13 +19,14 @@ import lombok.ToString;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class OrderDTO {
     private String address;
-    private List<DocumentReference> buyer_ref;
+    private DocumentReference buyer_ref;
     private Timestamp created_time;
-    private List<DocumentReference> product_ref;
-    private List<DocumentReference> seller_ref;
+    private DocumentReference product_ref;
+    private DocumentReference seller_ref;
     private Integer status;
     private String tracking_id;
     private String tracking_info;
