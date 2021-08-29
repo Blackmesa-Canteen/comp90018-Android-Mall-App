@@ -21,7 +21,7 @@
         android:theme="@style/Theme.AppName">
 
         <activity
-            android:name=".modules.users.authentication.LoginActivity"
+            android:name=".modules.users.authentication.activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data

@@ -13,7 +13,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.categories.fragment.CategoriesFragment;
 import com.comp90018.assignment2.modules.home.fragment.HomeFragment;
 import com.comp90018.assignment2.modules.messages.fragment.MessagesFragment;
-import com.comp90018.assignment2.modules.users.authentication.LoginActivity;
+import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
