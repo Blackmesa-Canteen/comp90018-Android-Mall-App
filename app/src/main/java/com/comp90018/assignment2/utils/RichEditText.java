@@ -24,10 +24,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.comp90018.assignment2.modules.users.chat.adapter.TextWatcherAdapter;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.comp90018.assignment2.adapter.TextWatcherAdapter;
 
 /**
  * 一个简单的富文本编辑器
@@ -77,6 +78,7 @@ public class RichEditText extends AppCompatEditText {
 
     @Override
     protected void onSelectionChanged(int selStart, int selEnd) {
+        super.onSelectionChanged(selStart, selEnd);
         log("onSelectionChanged:" + selStart + " " + selEnd);
         Editable message = getText();
 

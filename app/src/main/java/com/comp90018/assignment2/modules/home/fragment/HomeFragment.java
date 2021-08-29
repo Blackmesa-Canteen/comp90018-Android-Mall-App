@@ -5,6 +5,12 @@ import android.widget.ImageView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
+import com.comp90018.assignment2.db.repository.ProductRepository;
+import com.comp90018.assignment2.dto.ProductDTO;
+import com.comp90018.assignment2.dto.UserDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -34,5 +40,7 @@ public class HomeFragment extends BaseFragment {
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
         imageView.setImageResource(R.drawable.shop);
+
+
     }
 }

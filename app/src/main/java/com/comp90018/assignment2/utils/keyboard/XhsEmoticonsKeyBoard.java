@@ -22,7 +22,6 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.utils.keyboard.adpater.PageSetAdapter;
 import com.comp90018.assignment2.utils.keyboard.data.PageSetEntity;
 import com.comp90018.assignment2.utils.keyboard.utils.EmoticonsKeyboardUtils;
-import com.comp90018.assignment2.utils.keyboard.view.RecordVoiceButton;
 import com.comp90018.assignment2.utils.keyboard.widget.AutoHeightLayout;
 import com.comp90018.assignment2.utils.keyboard.widget.EmoticonsEditText;
 import com.comp90018.assignment2.utils.keyboard.widget.EmoticonsFuncView;
@@ -39,7 +38,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     protected LayoutInflater mInflater;
 
     protected ImageView mBtnVoiceOrText;
-    protected RecordVoiceButton mBtnVoice;
     protected EmoticonsEditText mEtChat;
     protected ImageView mBtnFace;
     protected RelativeLayout mRlInput;
@@ -71,7 +69,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     protected void initView() {
         mBtnVoiceOrText = ((ImageView) findViewById(R.id.btn_voice_or_text));
-        mBtnVoice = ((RecordVoiceButton) findViewById(R.id.btn_voice));
         mEtChat = ((EmoticonsEditText) findViewById(R.id.et_chat));
         mBtnFace = ((ImageView) findViewById(R.id.btn_face));
         mRlInput = ((RelativeLayout) findViewById(R.id.rl_input));
@@ -158,23 +155,8 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         mBtnFace.setImageResource(R.drawable.icon_face_nomal);
     }
 
-    protected void showVoice() {
-        mRlInput.setVisibility(GONE);
-        mBtnVoice.setVisibility(VISIBLE);
-        reset();
-    }
-
-    protected void checkVoice() {
-        if (mBtnVoice.isShown()) {
-            mBtnVoiceOrText.setImageResource(R.drawable.btn_voice_or_text_keyboard);
-        } else {
-            mBtnVoiceOrText.setImageResource(R.drawable.btn_voice_or_text);
-        }
-    }
-
     protected void showText() {
         mRlInput.setVisibility(VISIBLE);
-        mBtnVoice.setVisibility(GONE);
     }
 
     protected void toggleFuncView(int key) {
@@ -189,7 +171,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
         } else {
             mBtnFace.setImageResource(R.drawable.icon_face_nomal);
         }
-        checkVoice();
     }
 
     protected void setFuncViewHeight(int height) {
@@ -261,7 +242,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
     public  void setVideoText() {
         if (mRlInput.isShown()) {
             mBtnVoiceOrText.setImageResource(R.drawable.btn_voice_or_text_keyboard);
-            showVoice();
         } else {
             showText();
             mBtnVoiceOrText.setImageResource(R.drawable.btn_voice_or_text);
@@ -348,10 +328,6 @@ public class XhsEmoticonsKeyBoard extends AutoHeightLayout implements View.OnCli
 
     public EmoticonsEditText getEtChat() {
         return mEtChat;
-    }
-
-    public RecordVoiceButton getBtnVoice() {
-        return mBtnVoice;
     }
 
     public Button getBtnSend() {
