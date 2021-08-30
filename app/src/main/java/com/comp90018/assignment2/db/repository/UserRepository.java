@@ -18,7 +18,9 @@ import com.google.firebase.firestore.Query;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Basic atomic operations on database objects。
@@ -29,28 +31,20 @@ public class UserRepository {
     private static UserRepository instance;
     private final FirebaseFirestore db;
 
-    // default time out is 3 seconds
-    private long timeoutPeriodMs = 3000;
+    // default time out is 360 seconds
+    private long timeoutPeriodMs = 360000;
 
-    private static int SUCCESSFUL = 0;
-    private static int RUNNING = 1;
-    private static int FAILED = -1;
-    private static String TAG = "DB_User_Repository";
-    private static String COLLECTION_NAME = "users";
+    private static final int SUCCESSFUL = 0;
+    private static final int RUNNING = 1;
+    private static final int FAILED = -1;
+    private static final String TAG = "DB_User_Repository";
+    private static final String COLLECTION_NAME = "users";
 
     private UserRepository() {
-        // protect the constructor
 
         // [START get_firestore_instance]
         db = FirebaseFirestore.getInstance();
         // [END get_firestore_instance]
-
-        // [START set_firestore_settings]
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(true)
-                .build();
-        db.setFirestoreSettings(settings);
-        // [END set_firestore_settings]
     }
 
     public static synchronized UserRepository getInstance() {
@@ -69,14 +63,103 @@ public class UserRepository {
         this.timeoutPeriodMs = timeoutPeriodMs;
     }
 
+
     /**
      * find userDTO from db with it's id
      * @param userId user's auto generated id
-     * @return
+     * @return userDTO
      */
     public UserDTO findUserById(String userId) {
         DocumentReference userReference = db.collection(COLLECTION_NAME).document(userId);
 
+        final UserDTO[] userDTO = {null};
+        final int[] status = {RUNNING};
+
+        Log.d(TAG, "kai克克:"+userId);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("capital", true);
+
+        db.collection("users").document("BbJ")
+                .set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                System.out.println("ojbk");
+                Log.e(TAG, "DocumentSnapshot successfully written!");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error writing document", e);
+                    }
+                });
+
+        Log.d(TAG, "ku克克:"+db.toString());
+
+        userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                System.out.println("成功读了");
+                Log.d(TAG, "success克克");
+                UserDTO userDTO1 = documentSnapshot.toObject(UserDTO.class);
+                Log.d(TAG, userDTO1.toString());
+            }
+        });
+
+        // callback of query
+        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                Log.d(TAG, "BANG DING克克");
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        userDTO[0] = document.toObject(UserDTO.class);
+                        Log.d(TAG, "欧克克");
+                        status[0] = SUCCESSFUL;
+                    } else {
+                        Log.d(TAG, "No such user");
+                        status[0] = FAILED;
+                        Log.d(TAG, "没克克");
+                    }
+                } else {
+                    Log.d(TAG, "findUserById failed with ", task.getException());
+                    status[0] = FAILED;
+                    Log.d(TAG, "失败异常克克");
+                }
+            }
+        });
+
+        // start time counting down
+        long startTime =  System.currentTimeMillis();
+        long nowTime = startTime;
+
+        // busy waiting
+//        while (status[0] == RUNNING) {
+//            // check time out
+//            nowTime = System.currentTimeMillis();
+//            if(nowTime - startTime >= timeoutPeriodMs) {
+//                status[0] = FAILED;
+//                Log.e(TAG, "findUserById time out.");
+//            }
+//        }
+//
+//        // return successful result
+//        if (status[0] == SUCCESSFUL) {
+//            return userDTO[0];
+//        }
+
+        // failed, return null.
+        return null;
+    }
+
+    /**
+     * Find the user based on reference (some database objects stores user reference)
+     * @param userReference reference
+     * @return userDTO
+     */
+    public UserDTO findUserByReference(DocumentReference userReference) {
         final UserDTO[] userDTO = {null};
         final int[] status = {RUNNING};
 
@@ -92,7 +175,7 @@ public class UserRepository {
                     status[0] = FAILED;
                 }
             } else {
-                Log.d(TAG, "get failed with ", task.getException());
+                Log.d(TAG, "findUserByReference failed with ", task.getException());
                 status[0] = FAILED;
             }
         });
@@ -107,7 +190,7 @@ public class UserRepository {
             nowTime = System.currentTimeMillis();
             if(nowTime - startTime >= timeoutPeriodMs) {
                 status[0] = FAILED;
-                Log.e(TAG, "find userById time out.");
+                Log.e(TAG, "findUserByReference time out.");
             }
         }
 
@@ -117,6 +200,15 @@ public class UserRepository {
         }
 
         // failed, return null.
+        return null;
+    }
+
+    /**
+     * find the user by email address
+     * @param email
+     * @return
+     */
+    public UserDTO findUserByEmail(String email) {
         return null;
     }
 
