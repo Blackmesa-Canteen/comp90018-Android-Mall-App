@@ -57,6 +57,10 @@ android {
 
 dependencies {
 
+
+    // circleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     // Geo Service
     // geo hash support for firebase database
     implementation 'com.firebase:geofire-android-common:3.1.0'
