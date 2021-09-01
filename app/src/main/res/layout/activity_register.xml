@@ -5,38 +5,6 @@
     android:layout_height="match_parent"
     android:background="#fff">
 
-    <RelativeLayout
-        android:id="@+id/register_titlebar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/blue_light"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:clickable="true"
-            android:text="Good OG"
-            android:textColor="#fff"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/new_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="12.33dp"
-            android:clickable="true"
-            android:text="Sign Up"
-            android:textColor="#fff"
-            android:textSize="14sp" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/ll_name_psw"
         android:layout_width="match_parent"
@@ -88,21 +56,20 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/register_userNickNameLogo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="16dp"
-                    android:src="@drawable/user_grey" />
+                    android:src="@drawable/mail_outline_24dp" />
 
                 <com.comp90018.assignment2.utils.ClearWriteEditText
-                    android:id="@+id/register_userNickName"
+                    android:id="@+id/register_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="46dp"
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="Username"
+                    android:hint="Login email"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#2C2C2C"
@@ -113,7 +80,7 @@
                     android:id="@+id/username_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.67dp"
-                    android:layout_below="@id/register_userNickName"
+                    android:layout_below="@id/register_email"
                     android:layout_marginTop="10dp"
                     android:background="@color/blue_light" />
 
@@ -202,21 +169,20 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/register_userLogo"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="16dp"
-                    android:src="@drawable/mail_outline_24dp" />
+                    android:src="@drawable/user_grey" />
 
                 <com.comp90018.assignment2.utils.ClearWriteEditText
-                    android:id="@+id/register_userName"
+                    android:id="@+id/register_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="46dp"
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="Email"
+                    android:hint="Nickname"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#2C2C2C"
@@ -227,7 +193,7 @@
                     android:id="@+id/user_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.67dp"
-                    android:layout_below="@id/register_userName"
+                    android:layout_below="@id/register_nickname"
                     android:layout_marginTop="10dp"
                     android:background="@color/blue_light" />
 
