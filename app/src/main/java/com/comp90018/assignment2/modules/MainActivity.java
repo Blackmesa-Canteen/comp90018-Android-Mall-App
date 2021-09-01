@@ -17,6 +17,7 @@ import com.comp90018.assignment2.modules.users.authentication.activity.LoginActi
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -51,12 +52,20 @@ public class MainActivity extends AppCompatActivity {
      */
     private int prevButtonId = R.id.button_main_home;
 
+    /**
+     * firebase authenticator
+     */
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
         // attach to layout file
         setContentView(view);
 
@@ -112,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
 
                         /* TODO： start publish activity */
                         // debug
+                        if (firebaseAuth.getCurrentUser() != null) {
+                            firebaseAuth.signOut();
+                        }
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
 
