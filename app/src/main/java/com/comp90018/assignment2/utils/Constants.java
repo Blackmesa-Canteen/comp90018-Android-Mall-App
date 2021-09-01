@@ -3,7 +3,7 @@ package com.comp90018.assignment2.utils;
 public class Constants {
 
     /** gender */
-    public static final int UNKNOWN = 0;
+    public static final int GENDER_UNKNOWN = 0;
     public static final int FEMALE = 1;
     public static final int MALE = 2;
 
@@ -25,4 +25,8 @@ public class Constants {
     public static final int AVERAGE_CONDITION = 2;
     public static final int SLIGHTLY_USED = 3;
     public static final int EXCELLENT = 4;
+
+    /** default image path */
+    public static final String DEFAULT_IMAGE_PATH = "gs://comp90018-mobile-caa7c.appspot.com/public/default.png";
+    public static final String DEFAULT_AVATAR_PATH = "gs://comp90018-mobile-caa7c.appspot.com/users/default_avatar.jpg";
 }

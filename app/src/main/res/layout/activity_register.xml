@@ -18,6 +18,13 @@
             android:layout_marginTop="30dp"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/left_gray"
+                />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,6 +76,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:maxLength="80"
                     android:hint="Login email"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -100,6 +108,7 @@
                     android:orientation="vertical">
 
                     <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/gender_radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
@@ -107,7 +116,6 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/register_userGenderLogo"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="center_vertical"
@@ -115,7 +123,6 @@
                             android:src="@drawable/user_grey" />
 
                         <TextView
-                            android:id="@+id/register_gender_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -129,6 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:onClick="onRadioButtonClicked"
+                            android:checked="true"
                             android:text="Female" />
 
                         <RadioButton
@@ -151,7 +159,7 @@
                         android:id="@+id/user_gender_line"
                         android:layout_width="match_parent"
                         android:layout_height="0.67dp"
-                        android:layout_below="@id/register_gender_txt"
+                        android:layout_below="@id/gender_radio_group"
                         android:layout_marginTop="10dp"
                         android:background="@color/blue_light" />
                 </LinearLayout>
@@ -182,6 +190,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:maxLength="20"
                     android:hint="Nickname"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -224,6 +233,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:maxLength="80"
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -266,6 +276,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="Repeat Password"
+                    android:maxLength="80"
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:textColor="#2C2C2C"

@@ -28,7 +28,7 @@ import cn.jpush.im.android.api.JMessageClient;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "EmailPassword";
+    private static final String TAG = "LoginActivity DEBUG";
     private ActivityLoginBinding binding;
 
     private FirebaseAuth firebaseAuth;
@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         // attach to layout file
         setContentView(view);
 
-        // init database
+        // init firebase service
         firebaseAuth = FirebaseAuth.getInstance();
 
         // setup login activity

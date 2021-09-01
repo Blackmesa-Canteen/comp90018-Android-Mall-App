@@ -22,7 +22,13 @@
 
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:launchMode="singleInstance"/>
+
+        <activity
+            android:name=".modules.users.authentication.activity.RegisterActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:launchMode="singleInstance"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
