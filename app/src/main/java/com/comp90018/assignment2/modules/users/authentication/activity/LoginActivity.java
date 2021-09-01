@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Objects;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,6 +48,15 @@ public class LoginActivity extends AppCompatActivity {
 
         // init firebase service
         firebaseAuth = FirebaseAuth.getInstance();
+
+        // setup register
+        binding.loginRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(registerIntent);
+            }
+        });
 
         // setup login activity
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -92,6 +103,19 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // check if logged in, if so, go to me fragment
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            // 已经登陆了，退出activity.
+            Log.d(TAG, "signInWithEmail:Already login");
+            finish();
+        }
+    }
+
     /**
      * login existing user， both login in
      * @param email login email
@@ -113,7 +137,17 @@ public class LoginActivity extends AppCompatActivity {
                             if (user != null) {
                                 String userId = user.getUid();
                                 Toast.makeText(LoginActivity.this, "userid:"+userId, Toast.LENGTH_LONG).show();
-                                JMessageClient.login(userId, password, null);
+                                JMessageClient.login(userId, password, new BasicCallback() {
+                                    @Override
+                                    public void gotResult(int i, String s) {
+                                        // 0 表示正常。大于 0 表示异常，responseMessage 会有进一步的异常信息。
+                                        if (i == 0) {
+                                            Log.d(TAG, "Jmessage login:success");
+                                        } else {
+                                            Log.w(TAG, "Jmessage login:failure:" + s);
+                                        }
+                                    }
+                                });
                             }
                         } else {
                             // If sign in fails, display a message to the user.

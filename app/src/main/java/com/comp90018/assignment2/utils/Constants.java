@@ -29,4 +29,12 @@ public class Constants {
     /** default image path */
     public static final String DEFAULT_IMAGE_PATH = "gs://comp90018-mobile-caa7c.appspot.com/public/default.png";
     public static final String DEFAULT_AVATAR_PATH = "gs://comp90018-mobile-caa7c.appspot.com/users/default_avatar.jpg";
+
+    /** firestore db collection names */
+    public static final String CATEGORIES_COLLECTION = "categories";
+    public static final String ORDERS_COLLECTION = "orders";
+    public static final String PRODUCT_COMMENTS_COLLECTION = "product_comments";
+    public static final String PRODUCT_COLLECTION = "products";
+    public static final String SUB_CATEGORIES_COLLECTION = "sub_categories";
+    public static final String USERS_COLLECTION = "users";
 }

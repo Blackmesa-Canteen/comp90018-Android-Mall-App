@@ -1,10 +1,13 @@
 package com.comp90018.assignment2.modules.users.authentication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +18,21 @@ import com.comp90018.assignment2.databinding.ActivityRegisterBinding;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.ClearWriteEditText;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
+import cn.jpush.im.api.BasicCallback;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
 
     private FirebaseAuth firebaseAuth;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +56,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         // init firebase service
         firebaseAuth = FirebaseAuth.getInstance();
+        // init db
+        db = FirebaseFirestore.getInstance();
 
         // setup register listeners
         // back
@@ -66,6 +86,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         genderGroup.check(binding.radioGenderFemale.getId());
+
+        // go to login
+        binding.textSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toLoginActivity = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(toLoginActivity);
+            }
+        });
 
         // submit
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -127,11 +156,106 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 // register user on Firebase
+                firebaseAuth.createUserWithEmailAndPassword(usernameStr, loginPassword)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d(TAG, "createUserWithEmail:success");
+                                    FirebaseUser user = firebaseAuth.getCurrentUser();
 
+                                    String userId = user.getUid();
 
+                                    // JMeassage 注册
+                                    RegisterOptionalUserInfo jmessageOptionalInfo = new RegisterOptionalUserInfo();
+                                    // Jmessage extra info
+                                    jmessageOptionalInfo.setAvatar(Constants.DEFAULT_AVATAR_PATH);
+                                    jmessageOptionalInfo.setNickname(nickName);
+                                    JMessageClient.register(userId, loginPassword, jmessageOptionalInfo, new BasicCallback() {
+                                        @Override
+                                        public void gotResult(int i, String s) {
+                                            // 0 表示正常。大于 0 表示异常，responseMessage 会有进一步的异常信息。
+                                            if (i == 0) {
+                                                Log.d(TAG, "Jmessage register:success");
+                                            } else {
+                                                Log.w(TAG, "Jmessage register:failure:" + s);
+                                            }
+                                        }
+                                    });
 
+                                    // store userDTO in the database
+                                    UserDTO newUserDto = new UserDTO();
+                                    newUserDto.setEmail(usernameStr);
+                                    newUserDto.setAvatar_address(Constants.DEFAULT_AVATAR_PATH);
+                                    newUserDto.setCreated_time(Timestamp.now());
+                                    newUserDto.setDescription("");
+                                    newUserDto.setGender(genderType);
+                                    newUserDto.setPayment_info("");
+                                    newUserDto.setSold_number(0);
+                                    newUserDto.setStar_number(4.0);
+                                    newUserDto.setLocation_text("");
+                                    newUserDto.setFavorite_refs(new ArrayList<>());
+                                    newUserDto.setFollower_refs(new ArrayList<>());
+                                    newUserDto.setFollowing_refs(new ArrayList<>());
+                                    // database don't need not store password info
+                                    newUserDto.setPassword("Deprecated!");
 
+                                    // write db
+                                    db.collection(Constants.USERS_COLLECTION)
+                                            .document(userId).set(newUserDto)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Log.d(TAG, "createUserRecordInDB:success");
+                                                        Toast.makeText(RegisterActivity.this, "Hello! "+ nickName, Toast.LENGTH_SHORT).show();
+
+                                                        // finish the register activity
+                                                        finish();
+                                                    } else {
+                                                        Log.w(TAG, "createUserWithEmail:failed", task.getException());
+                                                        Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.", Toast.LENGTH_SHORT).show();
+                                                        // TODO: Rollback current modifications
+                                                    }
+                                                }
+                                            });
+
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // check if logged in, if so, go to me fragment
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            // 已经登陆了，退出activity.
+            Log.d(TAG, "signUpWithEmail:Already login");
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // check if logged in, if so, go to me fragment
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            // 已经登陆了，退出activity.
+            Log.d(TAG, "signUpWithEmail:Already login");
+            finish();
+        }
     }
 }
