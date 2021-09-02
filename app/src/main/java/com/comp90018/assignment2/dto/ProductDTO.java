@@ -29,7 +29,7 @@ public class ProductDTO {
     private Integer currency;
     private String description;
     private Integer favorite_number;
-    private String image_address;
+    private List<String> image_address;
     private GeoLocation location_coordinate;
     private String location_text;
     private DocumentReference owner_ref;
