@@ -45,7 +45,8 @@
         </activity>
         <activity
             android:name=".modules.MainActivity"
-            android:theme="@style/Theme.AppName.NoActionBar" />
+            android:theme="@style/Theme.AppName.NoActionBar"
+            android:launchMode="singleInstance"/>
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>

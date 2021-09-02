@@ -181,7 +181,6 @@ public class RegisterActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 // register user on Firebase
-                // TODO: 单选框显示不出来
                 firebaseAuth.createUserWithEmailAndPassword(usernameStr, loginPassword)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -230,21 +229,32 @@ public class RegisterActivity extends AppCompatActivity {
                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
                                                                     Log.d(TAG, "createUserRecordInDB:success");
-                                                                    Toast.makeText(RegisterActivity.this, "Hello! "+ nickName, Toast.LENGTH_SHORT).show();
+
+                                                                    // logout google account, then try to sign-in again
+                                                                    firebaseAuth.signOut();
 
                                                                     // finish the register activity
                                                                     progressDialog.dismiss();
                                                                     finish();
                                                                 } else {
                                                                     Log.w(TAG, "createUserWithEmail:failed", task.getException());
-                                                                    Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.", Toast.LENGTH_SHORT).show();
-
                                                                     progressDialog.dismiss();
                                                                     new AlertDialog.Builder(RegisterActivity.this)
                                                                             .setTitle("Sorry")
                                                                             .setMessage("Database network issue, please try again later")
                                                                             .setPositiveButton("Ok", null).show();
-                                                                    // TODO: Rollback current modifications
+
+                                                                    // rollback
+                                                                    // delete current registered user info， to prevent login
+                                                                    user.delete()
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if (task.isSuccessful()) {
+                                                                                        Log.d(TAG, "Rollback: User account deleted success");
+                                                                                    }
+                                                                                }
+                                                                            });
                                                                 }
                                                             }
                                                         });
@@ -273,31 +283,5 @@ public class RegisterActivity extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // check if logged in, if so, go to me fragment
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            // 已经登陆了，退出activity.
-            Log.d(TAG, "signUpWithEmail:Already login");
-            finish();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // check if logged in, if so, go to me fragment
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            // 已经登陆了，退出activity.
-            Log.d(TAG, "signUpWithEmail:Already login");
-            finish();
-        }
     }
 }

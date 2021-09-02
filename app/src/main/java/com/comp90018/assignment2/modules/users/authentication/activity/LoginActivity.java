@@ -17,6 +17,7 @@ import com.comp90018.assignment2.databinding.ActivityLoginBinding;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
 import com.comp90018.assignment2.db.repository.UserRepository;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.utils.ClearWriteEditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -97,10 +98,22 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if logged in, if so, go to me fragment
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (currentUser != null && JMessageClient.getMyInfo() != null) {
             // 已经登陆了，退出activity.
             Log.d(TAG, "signInWithEmail:Already login");
+            Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(toMainActivity);
+
             finish();
+        }
+
+        // clean login info
+        if (currentUser != null) {
+            firebaseAuth.signOut();
+        }
+
+        if (JMessageClient.getMyInfo() != null) {
+            JMessageClient.logout();
         }
     }
 
@@ -110,10 +123,21 @@ public class LoginActivity extends AppCompatActivity {
 
         // check if logged in, if so, go to me fragment
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
+        if (currentUser != null && JMessageClient.getMyInfo() != null) {
             // 已经登陆了，退出activity.
             Log.d(TAG, "signInWithEmail:Already login");
+            Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(toMainActivity);
             finish();
+        }
+
+        // clean login info
+        if (currentUser != null) {
+            firebaseAuth.signOut();
+        }
+
+        if (JMessageClient.getMyInfo() != null) {
+            JMessageClient.logout();
         }
     }
 
@@ -156,12 +180,13 @@ public class LoginActivity extends AppCompatActivity {
                                             Log.d(TAG, "Jmessage login:success");
                                             progressDialog.dismiss();
                                             // go back
+                                            Intent toMainActivity = new Intent(LoginActivity.this, MainActivity.class);
+                                            startActivity(toMainActivity);
                                             finish();
                                         } else {
                                             progressDialog.dismiss();
                                             new AlertDialog.Builder(LoginActivity.this).setMessage("IM service failed").setPositiveButton("ok", null).show();
                                             Log.w(TAG, "Jmessage login:failure:" + s);
-                                            finish();
                                         }
                                     }
                                 });
