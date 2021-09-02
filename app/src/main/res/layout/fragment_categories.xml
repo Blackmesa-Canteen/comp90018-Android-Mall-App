@@ -30,6 +30,6 @@
         android:id="@+id/ct_right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="@+id/right_guideline" />
+        app:layout_constraintRight_toRightOf="@+id/left_guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
