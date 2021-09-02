@@ -22,12 +22,12 @@
 
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppName.NoActionBar"
             android:launchMode="singleInstance"/>
 
         <activity
             android:name=".modules.users.authentication.activity.RegisterActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppName.NoActionBar"
             android:launchMode="singleInstance"/>
 
         <meta-data
@@ -36,7 +36,7 @@
 
         <activity
             android:name=".modules.entrance.WelcomeActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppName.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,7 +45,7 @@
         </activity>
         <activity
             android:name=".modules.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppName.NoActionBar" />
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>

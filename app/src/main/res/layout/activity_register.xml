@@ -103,34 +103,34 @@
                 android:layout_marginBottom="23dp">
 
                 <LinearLayout
+                    android:id="@+id/gender_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/gender_grey" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#808080"
+                        android:text="Gender"
+                        android:layout_gravity="center"
+                        android:textSize="16sp" />
+
+                    <RadioGroup
                         android:id="@+id/gender_radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="16dp"
-                        android:outlineSpotShadowColor="@color/blue"
-                        android:outlineAmbientShadowColor="@color/blue"
                         android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
-
-                            android:src="@drawable/user_grey" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:textColor="@color/grey1"
-                            android:text="Gender"
-                            android:textSize="16sp" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_female"
@@ -138,34 +138,32 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:checked="true"
-                            android:textColor="@color/grey1"
+                            android:textColor="#808080"
                             android:text="Female" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_male"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/grey1"
-                            android:outlineSpotShadowColor="@color/blue"
+                            android:textColor="#808080"
                             android:text="Male" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_other"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/grey1"
+                            android:textColor="#808080"
                             android:text="Other" />
 
                     </RadioGroup>
-
-                    <View
-                        android:id="@+id/user_gender_line"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.67dp"
-                        android:layout_below="@id/gender_radio_group"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/blue_light" />
                 </LinearLayout>
+                <View
+                    android:id="@+id/user_gender_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.67dp"
+                    android:layout_below="@id/gender_linear_layout"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/blue_light" />
             </RelativeLayout>
 
             <RelativeLayout

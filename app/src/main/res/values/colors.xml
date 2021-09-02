@@ -7,6 +7,9 @@
     <color name="teal_700">#FF018786</color>
 
     <!-- our standard colors -->
+    <color name="colorAccent">#007AFF</color>
+    <color name="colorPrimary">#007AFF</color>
+    <color name="colorPrimaryDark">#0A84FF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue_light">#007AFF</color>
@@ -42,9 +45,6 @@
     <color name="jmui_jpush_blue">#2DD0CF</color>
     <color name="jmui_chat_detail_split_line_color">#d3d3d3</color>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="titlebar_text_color">#fff</color>
     <color name="item_click_bg_color">#E9EDED</color>
     <color name="menu_item_back_pres_color">#2DD0CF</color>
