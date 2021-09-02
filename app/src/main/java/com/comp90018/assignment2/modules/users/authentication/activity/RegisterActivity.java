@@ -1,24 +1,19 @@
 package com.comp90018.assignment2.modules.users.authentication.activity;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.databinding.ActivityLoginBinding;
 import com.comp90018.assignment2.databinding.ActivityRegisterBinding;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.utils.ClearWriteEditText;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

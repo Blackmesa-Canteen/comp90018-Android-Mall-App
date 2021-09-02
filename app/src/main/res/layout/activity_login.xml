@@ -91,7 +91,7 @@
                     android:layout_marginLeft="15.67dp"
                     android:src="@drawable/user_grey" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/login_userName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                     android:layout_marginLeft="15.67dp"
                     android:src="@drawable/password_grey" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/login_passWord"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
