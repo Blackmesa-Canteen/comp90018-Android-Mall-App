@@ -159,7 +159,9 @@ public class LoginActivity extends AppCompatActivity {
                                             finish();
                                         } else {
                                             progressDialog.dismiss();
+                                            new AlertDialog.Builder(LoginActivity.this).setMessage("IM service failed").setPositiveButton("ok", null).show();
                                             Log.w(TAG, "Jmessage login:failure:" + s);
+                                            finish();
                                         }
                                     }
                                 });
