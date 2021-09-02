@@ -113,6 +113,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginLeft="16dp"
+                        android:outlineSpotShadowColor="@color/blue"
+                        android:outlineAmbientShadowColor="@color/blue"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -126,7 +128,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-
+                            android:textColor="@color/grey1"
                             android:text="Gender"
                             android:textSize="16sp" />
 
@@ -136,18 +138,22 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:checked="true"
+                            android:textColor="@color/grey1"
                             android:text="Female" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_male"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/grey1"
+                            android:outlineSpotShadowColor="@color/blue"
                             android:text="Male" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_other"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textColor="@color/grey1"
                             android:text="Other" />
 
                     </RadioGroup>

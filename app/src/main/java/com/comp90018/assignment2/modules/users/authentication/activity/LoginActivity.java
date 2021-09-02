@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -122,6 +123,16 @@ public class LoginActivity extends AppCompatActivity {
      * @param password password
      */
     private void signIn(String email, String password) {
+        ProgressDialog progressDialog=new ProgressDialog(LoginActivity.this);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
+        progressDialog.setCancelable(true);
+        progressDialog.setOnCancelListener(dialog -> {
+            // recreate this activity
+            recreate();
+        });
+        progressDialog.show();
+
         FirebaseUser user = null;
         // [START sign_in_with_email]
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -143,7 +154,11 @@ public class LoginActivity extends AppCompatActivity {
                                         // 0 表示正常。大于 0 表示异常，responseMessage 会有进一步的异常信息。
                                         if (i == 0) {
                                             Log.d(TAG, "Jmessage login:success");
+                                            progressDialog.dismiss();
+                                            // go back
+                                            finish();
                                         } else {
+                                            progressDialog.dismiss();
                                             Log.w(TAG, "Jmessage login:failure:" + s);
                                         }
                                     }
@@ -151,6 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } else {
                             // If sign in fails, display a message to the user.
+                            progressDialog.dismiss();
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             new AlertDialog.Builder(LoginActivity.this).setMessage("username or password is not correct").setPositiveButton("ok", null).show();
                             binding.loginPassWord.setText("");

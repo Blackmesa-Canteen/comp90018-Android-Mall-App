@@ -1,5 +1,7 @@
 package com.comp90018.assignment2.modules.users.authentication.activity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         RadioGroup genderGroup = binding.genderRadioGroup;
-        final Integer[] gender = {Constants.GENDER_UNKNOWN};
+        final Integer[] gender = {Constants.FEMALE};
 
         // get gender info
         genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -131,10 +133,10 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 //check nickname
-                String nicknameRegex = "^[a-z0-9_-]{0,20}$";
+                String nicknameRegex = "^[a-zA-Z0-9_-]{0,20}$";
                 // No password regex, because it is login
                 if (!nickName.matches(nicknameRegex)) {
-                    new AlertDialog.Builder(RegisterActivity.this).setMessage("Nickname should be letters, underscores and dashes.").setPositiveButton("ok", null).show();
+                    new AlertDialog.Builder(RegisterActivity.this).setMessage("Nickname should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
                     return;
                 }
 
@@ -155,7 +157,31 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                ProgressDialog progressDialog=new ProgressDialog(RegisterActivity.this);
+                progressDialog.setTitle("Loading");
+                progressDialog.setMessage("Please wait");
+                progressDialog.setCancelable(true);
+                // 在这里回滚更改
+                progressDialog.setOnCancelListener(dialog -> {
+                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+                    // delete current registered user
+                    if (currentUser != null) {
+                        currentUser.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Rollback: User account deleted success");
+                                        }
+                                    }
+                                });
+                    }
+                });
+                progressDialog.show();
+
                 // register user on Firebase
+                // TODO: 单选框显示不出来
                 firebaseAuth.createUserWithEmailAndPassword(usernameStr, loginPassword)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -170,7 +196,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     // JMeassage 注册
                                     RegisterOptionalUserInfo jmessageOptionalInfo = new RegisterOptionalUserInfo();
                                     // Jmessage extra info
-                                    jmessageOptionalInfo.setAvatar(Constants.DEFAULT_AVATAR_PATH);
                                     jmessageOptionalInfo.setNickname(nickName);
                                     JMessageClient.register(userId, loginPassword, jmessageOptionalInfo, new BasicCallback() {
                                         @Override
@@ -178,54 +203,71 @@ public class RegisterActivity extends AppCompatActivity {
                                             // 0 表示正常。大于 0 表示异常，responseMessage 会有进一步的异常信息。
                                             if (i == 0) {
                                                 Log.d(TAG, "Jmessage register:success");
+
+                                                // store userDTO in the database
+                                                UserDTO newUserDto = new UserDTO();
+                                                newUserDto.setEmail(usernameStr);
+                                                newUserDto.setNickname(nickName);
+                                                newUserDto.setAvatar_address(Constants.DEFAULT_AVATAR_PATH);
+                                                newUserDto.setCreated_time(Timestamp.now());
+                                                newUserDto.setDescription("Hello, I'm new here!");
+                                                newUserDto.setGender(genderType);
+                                                newUserDto.setPayment_info("");
+                                                newUserDto.setSold_number(0);
+                                                newUserDto.setStar_number(4.0);
+                                                newUserDto.setLocation_text("");
+                                                newUserDto.setFavorite_refs(new ArrayList<>());
+                                                newUserDto.setFollower_refs(new ArrayList<>());
+                                                newUserDto.setFollowing_refs(new ArrayList<>());
+                                                // database don't need not store password info
+                                                newUserDto.setPassword("Deprecated!");
+
+                                                // write db
+                                                db.collection(Constants.USERS_COLLECTION)
+                                                        .document(userId).set(newUserDto)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Log.d(TAG, "createUserRecordInDB:success");
+                                                                    Toast.makeText(RegisterActivity.this, "Hello! "+ nickName, Toast.LENGTH_SHORT).show();
+
+                                                                    // finish the register activity
+                                                                    progressDialog.dismiss();
+                                                                    finish();
+                                                                } else {
+                                                                    Log.w(TAG, "createUserWithEmail:failed", task.getException());
+                                                                    Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.", Toast.LENGTH_SHORT).show();
+
+                                                                    progressDialog.dismiss();
+                                                                    new AlertDialog.Builder(RegisterActivity.this)
+                                                                            .setTitle("Sorry")
+                                                                            .setMessage("Database network issue, please try again later")
+                                                                            .setPositiveButton("Ok", null).show();
+                                                                    // TODO: Rollback current modifications
+                                                                }
+                                                            }
+                                                        });
+
                                             } else {
+                                                progressDialog.cancel();
+                                                new AlertDialog.Builder(RegisterActivity.this)
+                                                        .setTitle("Sorry")
+                                                        .setMessage("IM register issue, please try again later")
+                                                        .setPositiveButton("Ok", null).show();
                                                 Log.w(TAG, "Jmessage register:failure:" + s);
                                             }
                                         }
                                     });
 
-                                    // store userDTO in the database
-                                    UserDTO newUserDto = new UserDTO();
-                                    newUserDto.setEmail(usernameStr);
-                                    newUserDto.setAvatar_address(Constants.DEFAULT_AVATAR_PATH);
-                                    newUserDto.setCreated_time(Timestamp.now());
-                                    newUserDto.setDescription("");
-                                    newUserDto.setGender(genderType);
-                                    newUserDto.setPayment_info("");
-                                    newUserDto.setSold_number(0);
-                                    newUserDto.setStar_number(4.0);
-                                    newUserDto.setLocation_text("");
-                                    newUserDto.setFavorite_refs(new ArrayList<>());
-                                    newUserDto.setFollower_refs(new ArrayList<>());
-                                    newUserDto.setFollowing_refs(new ArrayList<>());
-                                    // database don't need not store password info
-                                    newUserDto.setPassword("Deprecated!");
-
-                                    // write db
-                                    db.collection(Constants.USERS_COLLECTION)
-                                            .document(userId).set(newUserDto)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d(TAG, "createUserRecordInDB:success");
-                                                        Toast.makeText(RegisterActivity.this, "Hello! "+ nickName, Toast.LENGTH_SHORT).show();
-
-                                                        // finish the register activity
-                                                        finish();
-                                                    } else {
-                                                        Log.w(TAG, "createUserWithEmail:failed", task.getException());
-                                                        Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.", Toast.LENGTH_SHORT).show();
-                                                        // TODO: Rollback current modifications
-                                                    }
-                                                }
-                                            });
-
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.",
-                                            Toast.LENGTH_SHORT).show();
+                                    progressDialog.dismiss();
+                                    new AlertDialog.Builder(RegisterActivity.this)
+                                            .setTitle("Sorry")
+                                            .setMessage("Account already exists, pleas use another one.")
+                                            .setPositiveButton("Ok", null).show();
                                 }
                             }
                         });
