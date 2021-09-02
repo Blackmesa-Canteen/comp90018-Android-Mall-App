@@ -1,21 +1,18 @@
 package com.comp90018.assignment2.modules.categories.fragment;
 
+import android.annotation.SuppressLint;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ListView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 
-/**
- *
- * @author you
- */
 public class CategoriesFragment extends BaseFragment {
 
-    /**
-     * 缺省占位
-     */
-    private ImageView imageView;
+    RecyclerView categoryContent;
+    ListView categoryList;
 
     @Override
     public View inflateView() {
@@ -24,15 +21,17 @@ public class CategoriesFragment extends BaseFragment {
          * 然后该各fragment的各种view可以通过view.findViewById()来绑定
          * 然后return view.
          * */
-
-        imageView = new ImageView(activityContext);
-
-        return imageView;
+        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.fragment_categories, null);
+        categoryList = view.findViewById(R.id.ct_left);
+        categoryContent = view.findViewById(R.id.ct_right);
+//        imageView = new ImageView(activityContext);
+//        return imageView;
+        return view;
     }
 
     @Override
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
-        imageView.setImageResource(R.drawable.categories);
+
     }
 }
