@@ -6,19 +6,24 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.categories.fragment.CategoriesFragment;
 import com.comp90018.assignment2.modules.home.fragment.HomeFragment;
 import com.comp90018.assignment2.modules.messages.fragment.MessagesFragment;
-import com.comp90018.assignment2.modules.users.authentication.LoginActivity;
+import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+
+import cn.jpush.im.android.api.JMessageClient;
 
 /**
  * main facade activity of the app
@@ -51,12 +56,25 @@ public class MainActivity extends AppCompatActivity {
      */
     private int prevButtonId = R.id.button_main_home;
 
+    /**
+     * firebase authenticator
+     */
+    private FirebaseAuth firebaseAuth;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // init view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
+            Toast.makeText(this, "Welcome back, " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+        }
+
         // attach to layout file
         setContentView(view);
 
@@ -102,9 +120,33 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.button_main_messages:
                         position = 2;
+
+                        // if not logged in, prevent user go into this fragment
+                        if(firebaseAuth.getCurrentUser() == null || JMessageClient.getMyInfo() == null) {
+                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
+
+                            // prevent go into this fragment
+                            checkedId = prevButtonId;
+                            binding.radioGroupMain.check(prevButtonId);
+                            return;
+                        }
+
+
                         break;
                     case R.id.button_main_me:
                         position = 3;
+
+                        // if not logged in, prevent user go into this fragment
+                        if(firebaseAuth.getCurrentUser() == null || JMessageClient.getMyInfo() == null) {
+                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
+
+                            // prevent go into this fragment
+                            checkedId = prevButtonId;
+                            binding.radioGroupMain.check(prevButtonId);
+                            return;
+                        }
                         break;
 
                     case R.id.button_main_publish:
@@ -112,6 +154,15 @@ public class MainActivity extends AppCompatActivity {
 
                         /* TODO： start publish activity */
                         // debug
+                        if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
+
+                            Log.d("Authentication_status", "firebaseAccount:"+firebaseAuth.getCurrentUser().getUid());
+                            Log.d("Authentication_status", "JMessageAccount:"+JMessageClient.getMyInfo().getUserName());
+
+                            firebaseAuth.signOut();
+                            JMessageClient.logout();
+                        }
+
                         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(loginIntent);
 

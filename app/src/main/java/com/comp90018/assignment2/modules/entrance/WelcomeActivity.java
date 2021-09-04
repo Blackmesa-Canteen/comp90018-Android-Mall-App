@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.MainActivity;

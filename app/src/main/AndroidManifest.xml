@@ -21,8 +21,14 @@
         android:theme="@style/Theme.AppName">
 
         <activity
-            android:name=".modules.users.authentication.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:name=".modules.users.authentication.activity.LoginActivity"
+            android:theme="@style/Theme.AppName.NoActionBar"
+            android:launchMode="singleInstance"/>
+
+        <activity
+            android:name=".modules.users.authentication.activity.RegisterActivity"
+            android:theme="@style/Theme.AppName.NoActionBar"
+            android:launchMode="singleInstance"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
@@ -30,7 +36,7 @@
 
         <activity
             android:name=".modules.entrance.WelcomeActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppName.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +45,8 @@
         </activity>
         <activity
             android:name=".modules.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppName.NoActionBar"
+            android:launchMode="singleInstance"/>
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>
