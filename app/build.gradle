@@ -57,6 +57,9 @@ android {
 
 dependencies {
 
+    // labelsView
+    implementation 'com.github.donkingliang:LabelsView:1.6.5'
+
     // fuzzy search
     implementation 'me.xdrop:fuzzywuzzy:1.3.1'
 
