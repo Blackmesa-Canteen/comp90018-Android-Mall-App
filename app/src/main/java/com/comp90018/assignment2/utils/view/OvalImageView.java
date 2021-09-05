@@ -7,6 +7,10 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+/**
+ * @author xiaotian
+ * this is a imageview with oval edge
+ */
 public class OvalImageView extends androidx.appcompat.widget.AppCompatImageView {
     /* The radius of the rounded corner is the top left xy radius, top right, bottom right, bottom left */
     private float[] rids = {30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f,};

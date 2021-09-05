@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/search_block"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp"
+        >
+        <ImageView
+            android:id="@+id/search_back"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"
+            android:src="@drawable/back_mini" />
+
+        <com.comp90018.assignment2.utils.view.ClearWriteEditText
+            android:id="@+id/edit_search"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="264"
+            android:background="@null"
+            android:drawableLeft="@drawable/search_mini"
+            android:drawablePadding="8dp"
+            android:gravity="start|center_vertical"
+            android:imeOptions="actionSearch"
+            android:singleLine="true"
+            android:maxLength="50"
+            />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.comp90018.assignment2.modules.search.view.SearchListView
+                android:id="@+id/listView_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.comp90018.assignment2.modules.search.view.SearchListView>
+
+            <TextView
+                android:id="@+id/btn_clear_history"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/grey6"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:textColor="@color/blue_light"
+                android:text="Clear Search History" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
