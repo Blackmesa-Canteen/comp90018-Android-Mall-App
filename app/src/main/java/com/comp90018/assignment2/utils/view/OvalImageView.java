@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class OvalImageView extends androidx.appcompat.widget.AppCompatImageView {
     /* The radius of the rounded corner is the top left xy radius, top right, bottom right, bottom left */
-    private float[] rids = {20.0f, 20.0f, 20.0f, 20.0f, 20.0f, 20.0f, 20.0f, 20.0f,};
+    private float[] rids = {30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f, 30.0f,};
 
 
     public OvalImageView(Context context) {
