@@ -36,6 +36,10 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Adapter for items of recycler view in search result activity
+ * @author Xiaotian Li
+ */
 public class SearchResultRvAdapter extends RecyclerView.Adapter {
 
     private Context context;
