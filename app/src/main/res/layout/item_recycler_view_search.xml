@@ -22,6 +22,7 @@
         android:text="Loading, stand by..."/>
 
     <LinearLayout
+        android:id="@+id/ll_labels"
         android:layout_width="150dp"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
@@ -45,6 +46,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_pricing_info"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -68,6 +70,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_user_profile"
         android:layout_width="150dp"
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
@@ -107,12 +110,4 @@
             />
 
     </LinearLayout>
-
-
-
-
-
-
-
-
 </LinearLayout>

@@ -5,6 +5,7 @@ import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProductDTO {
+public class ProductDTO implements Serializable {
     private String brand;
     private DocumentReference category_ref;
     private Integer currency;

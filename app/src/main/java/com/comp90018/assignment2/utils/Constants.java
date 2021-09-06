@@ -37,4 +37,7 @@ public class Constants {
     public static final String PRODUCT_COLLECTION = "products";
     public static final String SUB_CATEGORIES_COLLECTION = "sub_categories";
     public static final String USERS_COLLECTION = "users";
+
+    /** currency type */
+    public static final Integer AUS_DOLLAR = 0;
 }

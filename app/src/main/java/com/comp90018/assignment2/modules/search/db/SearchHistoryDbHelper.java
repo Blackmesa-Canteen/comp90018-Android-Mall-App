@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class SearchHistoryDbHelper extends SQLiteOpenHelper {
 
-    private static String name = "search_history.db";
+    private static String name = "com.comp90018.ass2.search_history.db";
     private static Integer version = 1;
 
     public SearchHistoryDbHelper(Context context) {

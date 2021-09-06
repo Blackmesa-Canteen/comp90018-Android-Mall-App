@@ -23,7 +23,6 @@ public class SearchListView extends ListView {
         super(context, attrs, defStyle);
     }
 
-    // achieve the effect of ScrollView adaptation
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,

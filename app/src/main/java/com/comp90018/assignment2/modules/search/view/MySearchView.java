@@ -161,7 +161,7 @@ public class MySearchView extends LinearLayout {
                         return false;
                     }
 
-                    // TODO: inplement search logic
+                    // TODO: remove search debug Toast
                     Toast.makeText(context, "需要搜索的是" + editSearch.getText(), Toast.LENGTH_SHORT).show();
 
                     // check history existence
@@ -228,7 +228,7 @@ public class MySearchView extends LinearLayout {
                     goBackCallBack.BackAciton();
                 }
 
-                // TODO: search page return logic
+                // TODO: remove search debug Toast
                 Toast.makeText(context, "返回到上一页", Toast.LENGTH_SHORT).show();
             }
         });

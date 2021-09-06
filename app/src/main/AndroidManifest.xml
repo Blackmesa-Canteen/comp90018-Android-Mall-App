@@ -21,7 +21,9 @@
         android:theme="@style/Theme.AppName">
         <activity android:name=".modules.search.activity.SearchProductActivity">
         </activity>
-        <activity android:name=".modules.search.activity.SearchResultActivity">
+        <activity
+            android:name=".modules.search.activity.SearchResultActivity"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"

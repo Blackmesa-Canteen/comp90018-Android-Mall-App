@@ -3,6 +3,7 @@ package com.comp90018.assignment2.dto;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class OrderDTO {
+public class OrderDTO implements Serializable {
     private String address;
     private DocumentReference buyer_ref;
     private Timestamp created_time;
