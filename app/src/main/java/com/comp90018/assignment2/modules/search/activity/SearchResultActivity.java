@@ -38,6 +38,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private ActivitySearchResultBinding binding;
 
+    /** This list will be given by bundle extra from the other activity */
     List<ProductDTO> productDTOList;
 
     private RecyclerView recyclerView;
@@ -86,7 +87,7 @@ public class SearchResultActivity extends AppCompatActivity {
 //        Intent intent = getIntent();
 //        productDTOList = (List<ProductDTO>) intent.getSerializableExtra("productDTOList");
 
-        // TODO: debug, 直接从数据库获取全部商品信息
+        // TODO: debug, 今天就先直接从数据库获取全部商品信息吧
         db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
@@ -111,8 +112,14 @@ public class SearchResultActivity extends AppCompatActivity {
 //        }
     }
 
+    /**
+     * setup adapter, attach data to views
+     *
+     * // TODO: 加载会白屏一段时间，闲的没事了可加上个加载过渡的效果
+     *
+     * @param productDTOList
+     */
     private void processData(List<ProductDTO> productDTOList) {
-
         adapter = new SearchResultRvAdapter(this, productDTOList);
         recyclerView.setAdapter(adapter);
 

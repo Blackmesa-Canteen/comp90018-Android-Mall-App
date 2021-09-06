@@ -78,8 +78,8 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     *
      * update UserDtoMap. will be called in callback.
+     * synchronized to prevent callback conflicts
      *
      * @param reference
      * @param userDTO
@@ -88,6 +88,10 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
         userDTOMap.put(reference, userDTO);
     }
 
+
+    /**
+     * ViewHolder for items
+     */
     private class ItemProductInfoViewHolder extends RecyclerView.ViewHolder {
 
         private Context context;
@@ -122,8 +126,14 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
             rating = (RatingBar)inflate.findViewById( R.id.rating );
         }
 
+        /**
+         * attach data to views
+         *
+         * @param productDTOList dto list
+         * @param userDTOMap user hashmap
+         * @param position item number
+         */
         public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
-
             ProductDTO productDTO = productDTOList.get(position);
 
                 // set product img
