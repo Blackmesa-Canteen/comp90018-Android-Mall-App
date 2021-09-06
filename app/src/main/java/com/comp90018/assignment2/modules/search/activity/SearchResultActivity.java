@@ -83,7 +83,7 @@ public class SearchResultActivity extends AppCompatActivity {
         recyclerView = binding.rvSearchResults;
 
         // retrive bundle data from intent
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
 //        productDTOList = (List<ProductDTO>) intent.getSerializableExtra("productDTOList");
 
         // TODO: debug, 直接从数据库获取全部商品信息
@@ -116,8 +116,8 @@ public class SearchResultActivity extends AppCompatActivity {
         adapter = new SearchResultRvAdapter(this, productDTOList);
         recyclerView.setAdapter(adapter);
 
-        // 3 columns grid
-        GridLayoutManager gvManager = new GridLayoutManager(this, 3);
+        // 2 columns grid
+        GridLayoutManager gvManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gvManager);
 
         // get user info from these DTOs, to show user info in the items,

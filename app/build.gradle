@@ -57,6 +57,10 @@ android {
 
 dependencies {
 
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0' //For Kotlin You should use kapt instead of annotationProcessor though.
+
     // labelsView
     implementation 'com.github.donkingliang:LabelsView:1.6.5'
 

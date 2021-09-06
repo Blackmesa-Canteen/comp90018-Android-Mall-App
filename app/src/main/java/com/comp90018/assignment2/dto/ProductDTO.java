@@ -4,6 +4,7 @@ package com.comp90018.assignment2.dto;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ProductDTO implements Serializable {
     private String description;
     private Integer favorite_number;
     private List<String> image_address;
-    private GeoLocation location_coordinate;
+    private GeoPoint location_coordinate;
     private String location_text;
     private DocumentReference owner_ref;
     private Double price;

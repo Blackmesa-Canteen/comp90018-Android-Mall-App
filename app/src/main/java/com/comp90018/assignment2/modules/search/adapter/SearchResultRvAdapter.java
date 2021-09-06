@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +49,7 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
     public SearchResultRvAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
         this.productDTOList = productDTOList;
+        this.userDTOMap = new HashMap<>();
         storage = FirebaseStorage.getInstance();
         layoutInflater = LayoutInflater.from(context);
     }
