@@ -8,25 +8,28 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.comp90018.assignment2.R;
+import com.comp90018.assignment2.dto.CategoryDTO;
+
+import java.util.ArrayList;
 
 public class CategoryLeftAdapter extends BaseAdapter {
     private int mSelect = 0;
     private Context mContext;
-    private String[] categories;
+    private ArrayList<CategoryDTO> categories;
 
-    public CategoryLeftAdapter(Context mContext, String[] categories) {
+    public CategoryLeftAdapter(Context mContext,  ArrayList<CategoryDTO> categories) {
         this.mContext = mContext;
         this.categories = categories;
     }
 
     @Override
     public int getCount() {
-        return categories.length;
+        return categories.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return categories[i];
+        return categories.get(i);
     }
 
     @Override
@@ -45,7 +48,7 @@ public class CategoryLeftAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.ct_title.setText(categories[i]);
+        holder.ct_title.setText(categories.get(i).getName());
         if (mSelect == i) {
 //            convertView.setBackgroundResource(R.drawable.item_category_item_);  //选中项背景
             holder.ct_title.setTextColor(Color.parseColor("#fd3f3f"));

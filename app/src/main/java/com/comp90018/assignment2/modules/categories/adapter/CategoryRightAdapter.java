@@ -13,16 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
+import com.comp90018.assignment2.dto.CategoryDTO;
+import com.comp90018.assignment2.dto.SubCategoryDTO;
+
+import java.util.ArrayList;
 
 public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
-    private String[] subcategories;
+    private ArrayList<SubCategoryDTO> subcategories;
     private final LayoutInflater mLayoutInflater;
 
-    public CategoryRightAdapter(Context mContext, String[] subcategories) {
+    public CategoryRightAdapter(Context mContext, ArrayList<SubCategoryDTO> subcategories) {
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
-        if (subcategories.length > 0) {
+        if (subcategories.size() > 0) {
             this.subcategories = subcategories;
         }
     }
@@ -36,7 +40,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         SubcategoryViewHolder subcategoryViewHolder = (SubcategoryViewHolder) holder;
-        subcategoryViewHolder.setData(subcategories);
+        subcategoryViewHolder.setData(subcategories.get(position - 1), position - 1);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public int getItemCount() {
-        return subcategories.length;
+        return subcategories.size();
     }
 
     class SubcategoryViewHolder extends RecyclerView.ViewHolder  {
@@ -62,11 +66,11 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
 
-        public void setData(String[] subcategories) {
+        public void setData(SubCategoryDTO subcategory, final int position) {
 //            Glide.with(mContext)
 //                    .load()
 //                    .into(sct_image);
-            sct_title.setText(subcategories[1]);
+            sct_title.setText(subcategory.getName());
         }
     }
 }

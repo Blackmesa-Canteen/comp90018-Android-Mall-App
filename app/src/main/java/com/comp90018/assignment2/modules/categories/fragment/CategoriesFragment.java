@@ -1,23 +1,38 @@
 package com.comp90018.assignment2.modules.categories.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
+import com.comp90018.assignment2.dto.CategoryDTO;
+import com.comp90018.assignment2.dto.ProductDTO;
+import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryLeftAdapter;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter;
+import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriesFragment extends BaseFragment {
-
+    FirebaseFirestore db;
     private ListView ct_left;
     private RecyclerView ct_right;
     private CategoryLeftAdapter leftAdapter;
     boolean isFirst = true;
-    private final String[] categories = new String[]{"小裙子", "上衣", "下装", "外套", "配件", "包包", "装扮", "居家宅品"};
-    private final String[] subcategories = new String[]{"sub小裙子", "sub上衣", "sub下装", "sub外套", "sub配件", "sub包包", "sub装扮", "sub居家宅品"};
-
+    private final static String TAG = "CategoriesFragment";
     @Override
     public View inflateView() {
         /*
@@ -35,13 +50,43 @@ public class CategoriesFragment extends BaseFragment {
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
         // TODO: set data
-        leftAdapter = new CategoryLeftAdapter(activityContext, categories);
-        ct_left.setAdapter(leftAdapter);
-        initListener(leftAdapter);
+        db = FirebaseFirestore.getInstance();
+        db.collection(Constants.CATEGORIES_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<CategoryDTO> categories = new ArrayList<>();
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        categories.add(document.toObject(CategoryDTO.class));
+                    }
+                    leftAdapter = new CategoryLeftAdapter(activityContext, categories);
+                    ct_left.setAdapter(leftAdapter);
+                    initListener(leftAdapter);
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+//        db.collection(Constants.SUB_CATEGORIES_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
+//                    for (QueryDocumentSnapshot document: task.getResult()) {
+//                        subcategories.add(document.toObject(SubCategoryDTO.class));
+//                    }
+//                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
+//                    ct_right.setAdapter(rightAdapter);
+//                } else {
+//                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                }
+//            }
+//        });
+        ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
         CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
         ct_right.setAdapter(rightAdapter);
     }
-
     private void initListener(final CategoryLeftAdapter adapter) {
         ct_left.setOnItemClickListener((parent, view, position, id) -> {
             adapter.changeSelected(position);//刷新
