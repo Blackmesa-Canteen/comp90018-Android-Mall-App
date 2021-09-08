@@ -1,24 +1,19 @@
 package com.comp90018.assignment2.modules.users.authentication.activity;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.databinding.ActivityLoginBinding;
 import com.comp90018.assignment2.databinding.ActivityRegisterBinding;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.utils.ClearWriteEditText;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +31,9 @@ import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
 import cn.jpush.im.api.BasicCallback;
 
+/**
+ * @author xiaotian
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity DEBUG";
@@ -181,7 +179,6 @@ public class RegisterActivity extends AppCompatActivity {
                 progressDialog.show();
 
                 // register user on Firebase
-                // TODO: 单选框显示不出来
                 firebaseAuth.createUserWithEmailAndPassword(usernameStr, loginPassword)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -230,21 +227,32 @@ public class RegisterActivity extends AppCompatActivity {
                                                             public void onComplete(@NonNull @NotNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
                                                                     Log.d(TAG, "createUserRecordInDB:success");
-                                                                    Toast.makeText(RegisterActivity.this, "Hello! "+ nickName, Toast.LENGTH_SHORT).show();
+
+                                                                    // logout google account, then try to sign-in again
+                                                                    firebaseAuth.signOut();
 
                                                                     // finish the register activity
                                                                     progressDialog.dismiss();
                                                                     finish();
                                                                 } else {
                                                                     Log.w(TAG, "createUserWithEmail:failed", task.getException());
-                                                                    Toast.makeText(RegisterActivity.this, "Authentication failed. Try again please.", Toast.LENGTH_SHORT).show();
-
                                                                     progressDialog.dismiss();
                                                                     new AlertDialog.Builder(RegisterActivity.this)
                                                                             .setTitle("Sorry")
                                                                             .setMessage("Database network issue, please try again later")
                                                                             .setPositiveButton("Ok", null).show();
-                                                                    // TODO: Rollback current modifications
+
+                                                                    // rollback
+                                                                    // delete current registered user info， to prevent login
+                                                                    user.delete()
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if (task.isSuccessful()) {
+                                                                                        Log.d(TAG, "Rollback: User account deleted success");
+                                                                                    }
+                                                                                }
+                                                                            });
                                                                 }
                                                             }
                                                         });
@@ -273,31 +281,5 @@ public class RegisterActivity extends AppCompatActivity {
                         });
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        // check if logged in, if so, go to me fragment
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            // 已经登陆了，退出activity.
-            Log.d(TAG, "signUpWithEmail:Already login");
-            finish();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // check if logged in, if so, go to me fragment
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            // 已经登陆了，退出activity.
-            Log.d(TAG, "signUpWithEmail:Already login");
-            finish();
-        }
     }
 }

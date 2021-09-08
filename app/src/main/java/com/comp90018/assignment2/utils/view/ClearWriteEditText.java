@@ -1,4 +1,4 @@
-package com.comp90018.assignment2.utils;
+package com.comp90018.assignment2.utils.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.CycleInterpolator;
 import android.view.animation.TranslateAnimation;
-import android.widget.EditText;
 
 import com.comp90018.assignment2.R;
 
-
+/**
+ * a edit text view that can have clear text function.
+ * based on JMessage DEMO
+ */
 public class ClearWriteEditText extends androidx.appcompat.widget.AppCompatEditText implements View.OnFocusChangeListener , TextWatcher {
 
     /**
@@ -38,7 +40,7 @@ public class ClearWriteEditText extends androidx.appcompat.widget.AppCompatEditT
     }
 
     private void init() {
-        mClearDrawable = getResources().getDrawable(R.drawable.clear);
+        mClearDrawable = getResources().getDrawable(R.drawable.clear_mini);
         mClearDrawable.setBounds(0, 0, mClearDrawable.getIntrinsicWidth(), mClearDrawable.getIntrinsicHeight());
         setClearIconVisible(false);
         this.setOnFocusChangeListener(this);

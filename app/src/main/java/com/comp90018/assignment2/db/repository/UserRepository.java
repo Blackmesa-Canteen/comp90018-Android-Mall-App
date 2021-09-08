@@ -26,6 +26,7 @@ import java.util.Map;
  * Basic atomic operations on database objects。
  * 主要是被service层调用
  */
+@Deprecated
 public class UserRepository {
 
     private static UserRepository instance;
@@ -47,6 +48,7 @@ public class UserRepository {
         // [END get_firestore_instance]
     }
 
+    @Deprecated
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();
@@ -69,6 +71,7 @@ public class UserRepository {
      * @param userId user's auto generated id
      * @return userDTO
      */
+    @Deprecated
     public UserDTO findUserById(String userId) {
         DocumentReference userReference = db.collection(COLLECTION_NAME).document(userId);
 
@@ -159,6 +162,7 @@ public class UserRepository {
      * @param userReference reference
      * @return userDTO
      */
+    @Deprecated
     public UserDTO findUserByReference(DocumentReference userReference) {
         final UserDTO[] userDTO = {null};
         final int[] status = {RUNNING};
@@ -208,6 +212,7 @@ public class UserRepository {
      * @param email
      * @return
      */
+    @Deprecated
     public UserDTO findUserByEmail(String email) {
         return null;
     }
@@ -216,6 +221,7 @@ public class UserRepository {
      *
      * @return
      */
+    @Deprecated
     public List<UserDTO> findAllUsers() {
         return null;
     }
@@ -224,6 +230,7 @@ public class UserRepository {
      *
      * @param userDTO
      */
+    @Deprecated
     public void addNewUser(UserDTO userDTO) {
 
     }
@@ -233,6 +240,7 @@ public class UserRepository {
      * @param userId
      * @param newPassword
      */
+    @Deprecated
     public void updateUserPassword(String userId, String newPassword) {
 
     }

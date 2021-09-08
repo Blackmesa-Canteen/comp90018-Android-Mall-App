@@ -68,7 +68,7 @@
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/mail_outline_24dp" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/register_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,7 +183,7 @@
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/user_grey" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/register_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/password_grey" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/register_passWord"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -268,7 +268,7 @@
                     android:layout_marginLeft="16dp"
                     android:src="@drawable/password_grey" />
 
-                <com.comp90018.assignment2.utils.ClearWriteEditText
+                <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/register_repeatPassword"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
