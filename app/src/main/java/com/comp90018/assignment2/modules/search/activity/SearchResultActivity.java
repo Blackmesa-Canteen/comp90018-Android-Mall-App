@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivitySearchResultBinding;
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -43,6 +47,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private SearchResultRvAdapter adapter;
+    private TextView textNoResult;
 
     FirebaseFirestore db;
     private final static String TAG = "SearchResultActivity";
@@ -50,7 +55,6 @@ public class SearchResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_result);
 
         // init db
         db = FirebaseFirestore.getInstance();
@@ -62,6 +66,15 @@ public class SearchResultActivity extends AppCompatActivity {
 
         // attach to layout file
         setContentView(view);
+
+        // setup loading dialog
+        // show process dialog
+        ProgressDialog progressDialog = new ProgressDialog(SearchResultActivity.this);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
+
+        // show loading dialog
+        progressDialog.show();
 
         // back logic
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
@@ -83,43 +96,67 @@ public class SearchResultActivity extends AppCompatActivity {
         // attach recycler view
         recyclerView = binding.rvSearchResults;
 
+        // attach no result alert view
+        textNoResult = binding.textNoResult;
+
         // retrive bundle data from intent
-//        Intent intent = getIntent();
-//        productDTOList = (List<ProductDTO>) intent.getSerializableExtra("productDTOList");
+        Intent intent = getIntent();
+        productDTOList = intent.getParcelableArrayListExtra("productDTOList");
 
-        // TODO: debug, 今天就先直接从数据库获取全部商品信息吧
-        db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<ProductDTO> productDTOList = new ArrayList<>();
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        productDTOList.add(document.toObject(ProductDTO.class));
+        if (productDTOList != null && productDTOList.size() > 0) {
+            textNoResult.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            processData(productDTOList);
+
+            // dismiss loding dialog
+            progressDialog.dismiss();
+
+        } else if (productDTOList != null && productDTOList.size() == 0) {
+            // show empty result alert
+            recyclerView.setVisibility(View.GONE);
+            textNoResult.setVisibility(View.VISIBLE);
+
+            // dismiss loding dialog
+            progressDialog.dismiss();
+
+        } else {
+            // if the incoming list is null, for debug use
+            textNoResult.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        List<ProductDTO> productDTOList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document: task.getResult()) {
+                            productDTOList.add(document.toObject(ProductDTO.class));
+                        }
+
+                        processData(productDTOList);
+                        // dismiss loding dialog
+                        progressDialog.dismiss();
+
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
+
                     }
-
-                    processData(productDTOList);
-
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-
                 }
-            }
-        });
+            });
+        }
 
 
-//        if (productDTOList != null) {
-//            processData(productDTOList);
-//        }
     }
 
     /**
-     * setup adapter, attach data to views
-     *
-     * // TODO: 加载会白屏一段时间，闲的没事了可加上个加载过渡的效果
+     * setup adapter, attach data to view.
      *
      * @param productDTOList
      */
     private void processData(List<ProductDTO> productDTOList) {
+
+
         adapter = new SearchResultRvAdapter(this, productDTOList);
         recyclerView.setAdapter(adapter);
 

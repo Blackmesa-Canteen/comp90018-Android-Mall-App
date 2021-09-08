@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey5"
+        android:background="@color/grey6"
         android:orientation="horizontal">
 
         <ImageView
@@ -58,5 +58,15 @@
         android:layout_marginRight="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/text_no_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oops, no Result..."
+        android:layout_gravity="center"
+        android:textColor="@color/grey1"
+        android:layout_marginTop="150dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

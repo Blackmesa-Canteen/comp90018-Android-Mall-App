@@ -8,6 +8,6 @@ package com.comp90018.assignment2.modules.search.db;
  */
 
 public interface InputCallBack {
-    void SearchAciton(String string);
+    void SearchAciton(String searchWord);
 
 }
