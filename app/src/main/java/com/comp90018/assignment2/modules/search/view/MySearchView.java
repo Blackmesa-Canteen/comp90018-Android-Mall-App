@@ -152,17 +152,17 @@ public class MySearchView extends LinearLayout {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
 
-                    if (inputCallBack != null){
-                        inputCallBack.SearchAciton(editSearch.getText().toString());
-                    }
-
                     if (editSearch.getText().length() == 0 || editSearch.getText().length() > 50) {
                         Toast.makeText(context, "please input correct query.", Toast.LENGTH_SHORT).show();
                         return false;
                     }
 
-                    // TODO: remove search debug Toast
-                    Toast.makeText(context, "需要搜索的是" + editSearch.getText(), Toast.LENGTH_SHORT).show();
+                    if (inputCallBack != null){
+                        inputCallBack.SearchAciton(editSearch.getText().toString());
+                    }
+
+                    // search debug Toast
+//                    Toast.makeText(context, "需要搜索的是" + editSearch.getText(), Toast.LENGTH_SHORT).show();
 
                     // check history existence
                     boolean hasData = hasData(editSearch.getText().toString().trim());
@@ -214,6 +214,11 @@ public class MySearchView extends LinearLayout {
                 TextView textView = (TextView) view.findViewById(android.R.id.text1);
                 String name = textView.getText().toString();
                 editSearch.setText(name);
+
+                // search it right now
+                if (inputCallBack != null){
+                    inputCallBack.SearchAciton(editSearch.getText().toString());
+                }
             }
         });
 
@@ -228,8 +233,8 @@ public class MySearchView extends LinearLayout {
                     goBackCallBack.BackAciton();
                 }
 
-                // TODO: remove search debug Toast
-                Toast.makeText(context, "返回到上一页", Toast.LENGTH_SHORT).show();
+                // search debug Toast
+//                Toast.makeText(context, "返回到上一页", Toast.LENGTH_SHORT).show();
             }
         });
 

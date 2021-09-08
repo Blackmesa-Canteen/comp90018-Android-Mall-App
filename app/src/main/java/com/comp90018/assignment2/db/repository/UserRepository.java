@@ -26,6 +26,7 @@ import java.util.Map;
  * Basic atomic operations on database objects。
  * 主要是被service层调用
  */
+@Deprecated
 public class UserRepository {
 
     private static UserRepository instance;
@@ -47,6 +48,7 @@ public class UserRepository {
         // [END get_firestore_instance]
     }
 
+    @Deprecated
     public static synchronized UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();

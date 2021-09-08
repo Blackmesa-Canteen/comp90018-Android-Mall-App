@@ -230,6 +230,7 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
                     int numThousands = new BigDecimal((int) (likes / 1000)).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
                     formattedLikesText = String.valueOf(numThousands) + "k";
                 }
+                formattedLikesText = formattedLikesText + " likes";
                 textLikes.setText(formattedLikesText);
 
                 // set user card
