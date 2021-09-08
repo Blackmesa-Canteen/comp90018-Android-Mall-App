@@ -10,13 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivitySearchProductBinding;
-import com.comp90018.assignment2.databinding.ActivitySearchResultBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
-import com.comp90018.assignment2.modules.search.db.GoBackCallBack;
-import com.comp90018.assignment2.modules.search.db.InputCallBack;
-import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
+import com.comp90018.assignment2.modules.search.view.callback.GoBackCallBack;
+import com.comp90018.assignment2.modules.search.view.callback.InputCallBack;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,9 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *

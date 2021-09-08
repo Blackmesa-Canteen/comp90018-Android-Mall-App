@@ -23,8 +23,8 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.modules.search.db.GoBackCallBack;
-import com.comp90018.assignment2.modules.search.db.InputCallBack;
+import com.comp90018.assignment2.modules.search.view.callback.GoBackCallBack;
+import com.comp90018.assignment2.modules.search.view.callback.InputCallBack;
 import com.comp90018.assignment2.modules.search.db.SearchHistoryDbHelper;
 
 /**
