@@ -23,5 +23,11 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="RatingBar"
+        parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/yellow_dark</item>
+    </style>
+
 
 </resources>

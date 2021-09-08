@@ -31,6 +31,9 @@ import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
 import cn.jpush.im.api.BasicCallback;
 
+/**
+ * @author xiaotian
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "RegisterActivity DEBUG";

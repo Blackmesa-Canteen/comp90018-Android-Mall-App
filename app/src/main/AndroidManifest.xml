@@ -19,16 +19,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
-
+        <activity android:name=".modules.search.activity.SearchProductActivity">
+        </activity>
+        <activity
+            android:name=".modules.search.activity.SearchResultActivity"
+            android:launchMode="singleInstance">
+        </activity>
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
-            android:theme="@style/Theme.AppName.NoActionBar"
-            android:launchMode="singleInstance"/>
-
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
             android:name=".modules.users.authentication.activity.RegisterActivity"
-            android:theme="@style/Theme.AppName.NoActionBar"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
 
         <meta-data
             android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
@@ -37,6 +41,8 @@
         <activity
             android:name=".modules.entrance.WelcomeActivity"
             android:theme="@style/Theme.AppName.NoActionBar">
+
+            <!-- entrance is here!! -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,8 +51,8 @@
         </activity>
         <activity
             android:name=".modules.MainActivity"
-            android:theme="@style/Theme.AppName.NoActionBar"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>

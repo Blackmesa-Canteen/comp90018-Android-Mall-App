@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
 
+/**
+ * @author xiaotian
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity DEBUG";

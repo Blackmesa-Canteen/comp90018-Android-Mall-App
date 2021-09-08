@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/comp90018-assignment2.appName.iml" filepath="$PROJECT_DIR$/.idea/modules/comp90018-assignment2.appName.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/comp90018-assignment2.appName.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/comp90018-assignment2.appName.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emoji/comp90018-assignment2.appName.emoji.iml" filepath="$PROJECT_DIR$/.idea/modules/emoji/comp90018-assignment2.appName.emoji.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/comp90018-assignment2.iml" filepath="$PROJECT_DIR$/.idea/comp90018-assignment2.iml" />
     </modules>
   </component>
 </project>

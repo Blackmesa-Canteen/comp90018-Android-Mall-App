@@ -10,6 +10,7 @@ import java.util.List;
  * 直接被应用层调用
  * @author Xiaotian
  */
+@Deprecated
 public class UserService {
     private static UserService instance;
 
@@ -19,6 +20,7 @@ public class UserService {
         userRepository = UserRepository.getInstance();
     }
 
+    @Deprecated
     public static synchronized UserService getInstance() {
         if (instance == null) {
             instance = new UserService();
