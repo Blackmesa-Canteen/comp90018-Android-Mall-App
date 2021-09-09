@@ -47,7 +47,7 @@ public class ProductDTO implements Parcelable {
     private Integer status;
     private Double star_number;
     private DocumentReference sub_category_ref;
-    private String view_number;
+    private Integer view_number;
 
     protected ProductDTO(Parcel in) {
 
@@ -91,7 +91,12 @@ public class ProductDTO implements Parcelable {
         } else {
             star_number = in.readDouble();
         }
-        view_number = in.readString();
+
+        if (in.readByte() == 0) {
+            view_number = null;
+        } else {
+            view_number = in.readInt();
+        }
     }
 
     public static final Creator<ProductDTO> CREATOR = new Creator<ProductDTO>() {
@@ -169,6 +174,12 @@ public class ProductDTO implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeDouble(star_number);
         }
-        dest.writeString(view_number);
+
+        if (view_number == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(view_number);
+        }
     }
 }
