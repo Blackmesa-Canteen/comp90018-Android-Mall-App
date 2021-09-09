@@ -63,7 +63,8 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         // only one type of view
-        return new ItemProductInfoViewHolder(context, layoutInflater.inflate(R.layout.item_recycler_view_search, null));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_view_search, parent, false);
+        return new ItemProductInfoViewHolder(context, view);
     }
 
     @Override
