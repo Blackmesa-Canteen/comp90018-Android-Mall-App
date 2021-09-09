@@ -7,6 +7,7 @@
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_group/app/src/main/res/layout/home_item.xml" value="0.14665996986438976" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.2824074074074074" />
         <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.2824074074074074" />
+        <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.378125" />
         <entry key="app/src/main/res/layout/item_list_view_messages.xml" value="0.4524415478639943" />
         <entry key="app/src/main/res/layout/item_recycler_view_search.xml" value="0.2712962962962963" />
       </map>
