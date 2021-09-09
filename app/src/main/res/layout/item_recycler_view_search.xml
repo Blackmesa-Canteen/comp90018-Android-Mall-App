@@ -10,6 +10,7 @@
         android:id="@+id/img_product_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:scaleType="fitXY"
         android:src="@drawable/default_image"/>
 
     <TextView
