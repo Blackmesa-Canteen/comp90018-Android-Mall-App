@@ -50,10 +50,9 @@ public class CategoryLeftAdapter extends BaseAdapter {
         }
         holder.ct_title.setText(categories.get(i).getName());
         if (mSelect == i) {
-//            convertView.setBackgroundResource(R.drawable.item_category_item_);  //选中项背景
             holder.ct_title.setTextColor(Color.parseColor("#fd3f3f"));
+            System.out.println(categories.get(i));
         } else {
-//            convertView.setBackgroundResource(R.drawable.bg2);  //其他项背景
             holder.ct_title.setTextColor(Color.parseColor("#323437"));
         }
         return convertView;

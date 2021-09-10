@@ -51,42 +51,36 @@ public class CategoriesFragment extends BaseFragment {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
         // TODO: set data
         db = FirebaseFirestore.getInstance();
-        db.collection(Constants.CATEGORIES_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    ArrayList<CategoryDTO> categories = new ArrayList<>();
-                    for (QueryDocumentSnapshot document: task.getResult()) {
-                        categories.add(document.toObject(CategoryDTO.class));
-                    }
-                    leftAdapter = new CategoryLeftAdapter(activityContext, categories);
-                    ct_left.setAdapter(leftAdapter);
-                    initListener(leftAdapter);
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+        db.collection(Constants.CATEGORIES_COLLECTION).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<CategoryDTO> categories = new ArrayList<>();
+                for (QueryDocumentSnapshot document: task.getResult()) {
+                    categories.add(document.toObject(CategoryDTO.class));
                 }
+                leftAdapter = new CategoryLeftAdapter(activityContext, categories);
+                ct_left.setAdapter(leftAdapter);
+                initListener(leftAdapter);
+            } else {
+                Log.d(TAG, "Error getting documents: ", task.getException());
             }
         });
 
-//        db.collection(Constants.SUB_CATEGORIES_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
-//                    for (QueryDocumentSnapshot document: task.getResult()) {
-//                        subcategories.add(document.toObject(SubCategoryDTO.class));
-//                    }
-//                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
-//                    ct_right.setAdapter(rightAdapter);
-//                } else {
-//                    Log.d(TAG, "Error getting documents: ", task.getException());
-//                }
-//            }
-//        });
-        ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
-        CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
-        ct_right.setAdapter(rightAdapter);
+        db.collection(Constants.SUB_CATEGORIES_COLLECTION).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
+                for (QueryDocumentSnapshot document: task.getResult()) {
+                    subcategories.add(document.toObject(SubCategoryDTO.class));
+                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
+                    ct_right.setAdapter(rightAdapter);
+                }
+                CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
+                ct_right.setAdapter(rightAdapter);
+            } else {
+                Log.d(TAG, "Error getting documents: ", task.getException());
+            }
+        });
     }
+
     private void initListener(final CategoryLeftAdapter adapter) {
         ct_left.setOnItemClickListener((parent, view, position, id) -> {
             adapter.changeSelected(position);//刷新

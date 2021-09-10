@@ -14,12 +14,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ct_right"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_weight="22" />
+        app:layout_constraintHorizontal_weight="28" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ct_right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        app:layout_constraintHorizontal_weight="78"
+        app:layout_constraintHorizontal_weight="72"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ct_left"
         app:layout_constraintEnd_toEndOf="parent"

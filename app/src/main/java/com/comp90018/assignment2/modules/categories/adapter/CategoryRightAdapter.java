@@ -56,7 +56,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
     class SubcategoryViewHolder extends RecyclerView.ViewHolder  {
         private Context mContext;
         private TextView sct_title;
-//        private ImageView sct_image;
+        private ImageView sct_image;
 
         public SubcategoryViewHolder(@NonNull View itemView,  final Context mContext) {
             super(itemView);
@@ -64,7 +64,6 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
 //            sct_image = (ImageView) itemView.findViewById(R.id.sct_image)
             sct_title = (TextView) itemView.findViewById(R.id.sct_title);
         }
-
 
         public void setData(SubCategoryDTO subcategory, final int position) {
 //            Glide.with(mContext)
