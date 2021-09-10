@@ -37,6 +37,7 @@ public class OrderDTO implements Parcelable {
     private Integer status;
     private String tracking_id;
     private String tracking_info;
+    private Integer star_number;
 
     protected OrderDTO(Parcel in) {
 
@@ -53,6 +54,12 @@ public class OrderDTO implements Parcelable {
         }
         tracking_id = in.readString();
         tracking_info = in.readString();
+
+        if (in.readByte() == 0) {
+            star_number = null;
+        } else {
+            star_number = in.readInt();
+        }
     }
 
     public static final Creator<OrderDTO> CREATOR = new Creator<OrderDTO>() {
@@ -94,5 +101,12 @@ public class OrderDTO implements Parcelable {
         }
         dest.writeString(tracking_id);
         dest.writeString(tracking_info);
+
+        if (star_number == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(star_number);
+        }
     }
 }
