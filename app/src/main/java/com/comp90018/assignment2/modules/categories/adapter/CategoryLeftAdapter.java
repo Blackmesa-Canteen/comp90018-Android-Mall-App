@@ -28,7 +28,7 @@ public class CategoryLeftAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public CategoryDTO getItem(int i) {
         return categories.get(i);
     }
 
@@ -51,7 +51,6 @@ public class CategoryLeftAdapter extends BaseAdapter {
         holder.ct_title.setText(categories.get(i).getName());
         if (mSelect == i) {
             holder.ct_title.setTextColor(Color.parseColor("#fd3f3f"));
-            System.out.println(categories.get(i));
         } else {
             holder.ct_title.setTextColor(Color.parseColor("#323437"));
         }

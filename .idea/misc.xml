@@ -10,7 +10,7 @@
         <entry key="app/src/main/res/drawable/btn_send_bg_disable.xml" value="0.4162037037037037" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.37726449275362317" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.31521739130434784" />
-        <entry key="app/src/main/res/layout/fragment_categories.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_categories.xml" value="0.13398959359916693" />
         <entry key="app/src/main/res/layout/item_categories_item.xml" value="0.34692028985507245" />
         <entry key="app/src/main/res/layout/item_category_item.xml" value="0.34692028985507245" />
         <entry key="app/src/main/res/layout/item_category_list.xml" value="0.25" />

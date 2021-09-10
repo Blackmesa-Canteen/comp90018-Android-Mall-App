@@ -4,27 +4,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.CategoryDTO;
-import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryLeftAdapter;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter;
 import com.comp90018.assignment2.utils.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class CategoriesFragment extends BaseFragment {
     FirebaseFirestore db;
@@ -33,6 +24,7 @@ public class CategoriesFragment extends BaseFragment {
     private CategoryLeftAdapter leftAdapter;
     boolean isFirst = true;
     private final static String TAG = "CategoriesFragment";
+
     @Override
     public View inflateView() {
         /*
@@ -49,13 +41,14 @@ public class CategoriesFragment extends BaseFragment {
     @Override
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
-        // TODO: set data
         db = FirebaseFirestore.getInstance();
         db.collection(Constants.CATEGORIES_COLLECTION).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<CategoryDTO> categories = new ArrayList<>();
                 for (QueryDocumentSnapshot document: task.getResult()) {
-                    categories.add(document.toObject(CategoryDTO.class));
+                    CategoryDTO category = document.toObject(CategoryDTO.class);
+                    category.setCategory_id(document.getId());
+                    categories.add(category);
                 }
                 leftAdapter = new CategoryLeftAdapter(activityContext, categories);
                 ct_left.setAdapter(leftAdapter);
@@ -64,30 +57,47 @@ public class CategoriesFragment extends BaseFragment {
                 Log.d(TAG, "Error getting documents: ", task.getException());
             }
         });
-
-        db.collection(Constants.SUB_CATEGORIES_COLLECTION).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
-                for (QueryDocumentSnapshot document: task.getResult()) {
-                    subcategories.add(document.toObject(SubCategoryDTO.class));
-                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
-                    ct_right.setAdapter(rightAdapter);
-                }
-                CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
-                ct_right.setAdapter(rightAdapter);
-            } else {
-                Log.d(TAG, "Error getting documents: ", task.getException());
-            }
-        });
     }
 
     private void initListener(final CategoryLeftAdapter adapter) {
         ct_left.setOnItemClickListener((parent, view, position, id) -> {
-            adapter.changeSelected(position);//刷新
+            adapter.changeSelected(position);
             if (position != 0) {
                 isFirst = false;
             }
-            leftAdapter.notifyDataSetChanged();
+            String selectedCategoryId = adapter.getItem(position).getCategory_id();
+            db.collection(Constants.SUB_CATEGORIES_COLLECTION).
+                get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
+                ArrayList<SubCategoryDTO> selectedCategories = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    subcategories.add(document.toObject(SubCategoryDTO.class));
+                }
+                    for (SubCategoryDTO subcategory : subcategories) {
+                        if (subcategory.getCategory_ref().getPath().contains(selectedCategoryId)) {
+                            selectedCategories.add(subcategory);
+                        }
+                    }
+                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, selectedCategories);
+                    ct_right.setAdapter(rightAdapter);
+                    GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+                    manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                        @Override
+                        public int getSpanSize(int position) {
+                            if (position == 0) {
+                                return 3;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    });
+                    ct_right.setLayoutManager(manager);
+                    leftAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            });
         });
 
         ct_left.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -95,7 +105,6 @@ public class CategoriesFragment extends BaseFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 adapter.changeSelected(position);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
