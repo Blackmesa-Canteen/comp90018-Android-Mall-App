@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.categories.fragment.CategoriesFragment;
 import com.comp90018.assignment2.modules.home.fragment.HomeFragment;
@@ -233,5 +234,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // if main activity is destroyed, unregister event listener
+        JMessageClient.unRegisterEventReceiver(App.getContext());
     }
 }
