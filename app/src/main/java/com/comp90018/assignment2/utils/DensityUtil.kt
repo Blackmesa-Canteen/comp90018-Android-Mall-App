@@ -7,12 +7,14 @@ import android.view.WindowManager
 import kotlin.math.roundToInt
 
 /**
- * @name
+ *
+ * Transformer:
+ * From dp units to PX (pixels) depending on the resolution of the phone
+ *
  * @author      FreddyChen
  * @date        2020/06/07 01:05
  * @email       chenshichao@outlook.com
  * @github      https://github.com/FreddyChen
- * @describe
  */
 object DensityUtil {
 
