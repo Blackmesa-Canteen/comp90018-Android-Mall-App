@@ -1,4 +1,4 @@
 rootProject.name = "appName"
 include ':app'
-include ':emoji'
 include ':badgelibrary'
+include ':supernova-emoji-library'
