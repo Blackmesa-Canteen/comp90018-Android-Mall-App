@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.LoginStateChangeEvent;
