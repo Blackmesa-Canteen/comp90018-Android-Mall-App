@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_time"
+        style="@style/TextTime" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_head"
+            android:layout_width="@dimen/chat_head"
+            android:layout_height="@dimen/chat_head"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="13dp"
+            android:src="@drawable/default_avatar" />
+
+
+        <RelativeLayout
+            android:id="@+id/rl"
+            android:layout_width="218dp"
+            android:layout_height="126dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="13dp"
+            android:layout_marginRight="78dp"
+            android:background="@drawable/address_bg">
+
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="7dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="#ff020202"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="29dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="#ffc2c0c0"
+                android:textSize="12dp" />
+
+            <ImageView
+
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/address_map_bg" />
+
+
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/pb"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/rl" />
+
+    </RelativeLayout>
+</LinearLayout>
