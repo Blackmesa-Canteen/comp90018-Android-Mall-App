@@ -45,7 +45,10 @@ public class ProductDTO implements Parcelable {
     private Timestamp publish_time;
     private Integer quality;
     private Integer status;
+
+    @Deprecated
     private Double star_number;
+    
     private DocumentReference sub_category_ref;
     private Integer view_number;
 
