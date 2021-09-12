@@ -10,6 +10,7 @@ import java.util.List;
  * 直接被应用层调用
  * @author Xiaotian
  */
+@Deprecated
 public class UserService {
     private static UserService instance;
 
@@ -19,6 +20,7 @@ public class UserService {
         userRepository = UserRepository.getInstance();
     }
 
+    @Deprecated
     public static synchronized UserService getInstance() {
         if (instance == null) {
             instance = new UserService();
@@ -32,6 +34,7 @@ public class UserService {
      * @param followerId
      * @param toFollowId
      */
+    @Deprecated
     public void userFollowAnotherUserById(String followerId, String toFollowId) {
         // 给自己的添加following
         // 给对方的添加follower
@@ -42,6 +45,7 @@ public class UserService {
      * @param loginId
      * @param plainPassword
      */
+    @Deprecated
     public void userLogin(String loginId, String plainPassword) {
         ;
     }
@@ -51,6 +55,7 @@ public class UserService {
      * @param userId
      * @return
      */
+    @Deprecated
     public List<UserDTO> getFollowersFromUserId(String userId) {
         // 可能只会直接复用repository里的一个方法
         return null;
