@@ -40,4 +40,10 @@ public class Constants {
 
     /** currency type */
     public static final Integer AUS_DOLLAR = 0;
+
+    /** IM Message custom type */
+    public final static String TYPE = "TYPE";
+    public final static String ADDRESS = "ADDRESS";
+    public final static String NEW_MESSAGE = "NEW_MESSAGE";
+
 }

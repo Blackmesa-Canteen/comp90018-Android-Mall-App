@@ -56,8 +56,11 @@ android {
 
 
 dependencies {
-    implementation project(path: ':supernova-emoji-library')
 
+    // quickRecyclerViewAdapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+    implementation project(path: ':supernova-emoji-library')
 
     // android-flat-button
     compile 'info.hoang8f:fbutton:1.0.5'

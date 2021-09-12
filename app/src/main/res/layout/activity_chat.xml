@@ -60,57 +60,57 @@
     </LinearLayout>
 
     <!-- product info card -->
-    <RelativeLayout
-        android:id="@+id/rl_product_info_card"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/action_bar">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/rl_product_info_card"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_below="@id/action_bar">-->
 
-        <com.comp90018.assignment2.utils.view.OvalImageView
-            android:id="@+id/img_product_image"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/default_image" />
+<!--        <com.comp90018.assignment2.utils.view.OvalImageView-->
+<!--            android:id="@+id/img_product_image"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/default_image" />-->
 
-        <TextView
-            android:id="@+id/text_product_price"
-            android:layout_width="120dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@id/img_product_image"
-            android:text="$233.3"
-            android:textSize="20dp"
-            android:textColor="@color/red"
-            android:maxLines="1"
-            android:maxLength="9"/>
+<!--        <TextView-->
+<!--            android:id="@+id/text_product_price"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="15dp"-->
+<!--            android:layout_toRightOf="@id/img_product_image"-->
+<!--            android:maxLength="9"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="$233.3"-->
+<!--            android:textColor="@color/red"-->
+<!--            android:textSize="20dp" />-->
 
-        <info.hoang8f.widget.FButton
-            android:id="@+id/btn_product_info_behavior"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:maxLines="1"
-            android:text="Want this"
-            android:textColor="@color/white"
-            android:textSize="9dp"
-            app:buttonColor="@color/green_light" />
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btn_product_info_behavior"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="Want this"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="9dp"-->
+<!--            app:buttonColor="@color/green_light" />-->
 
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
-    <!-- divide line -->
-    <View
-        android:id="@+id/divide_line"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:background="@color/grey5"
-        android:layout_below="@id/rl_product_info_card"/>
+<!--    &lt;!&ndash; divide line &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/divide_line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="3dp"-->
+<!--        android:background="@color/grey5"-->
+<!--        android:layout_below="@id/rl_product_info_card"/>-->
 
     <!-- chat list -->
     <androidx.recyclerview.widget.RecyclerView
@@ -118,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/rl_keyboard"
-        android:layout_below="@id/divide_line" />
+        android:layout_below="@id/action_bar" />
 
     <!-- keyboard -->
     <RelativeLayout

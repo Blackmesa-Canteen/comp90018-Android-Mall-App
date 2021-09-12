@@ -37,8 +37,8 @@
                 android:maxLength="20"
                 android:textColor="@color/black"/>
 
-            <TextView
-                android:id="@+id/text_newest_msg_cut"
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+                android:id="@+id/emoji_text_newest_msg_cut"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
                 android:textSize="12dp"
@@ -58,12 +58,12 @@
 
         </LinearLayout>
 
-        <com.comp90018.assignment2.utils.view.OvalImageView
-            android:layout_width="45dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
-            android:scaleType="fitXY"
-            android:src="@drawable/default_image"/>
+<!--        <com.comp90018.assignment2.utils.view.OvalImageView-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_weight="0.2"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/default_image"/>-->
 
     </LinearLayout>
 
