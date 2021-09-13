@@ -6,17 +6,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.ProductDTO;
+import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,7 +117,6 @@ public class HomeFragment extends BaseFragment {
 
     private void processData(List<ProductDTO> productDTOList) {
 
-
         // 2 columns grid
         GridLayoutManager gvManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gvManager);
@@ -117,11 +124,7 @@ public class HomeFragment extends BaseFragment {
         adapter = new HomePageAdapter(activityContext, productDTOList);
         recyclerView.setAdapter(adapter);
 
-        //recyclerView.setVisibility(View.VISIBLE);
 
-        // get user info from these DTOs, to show user info in the items,
-        // every time finished query, refresh adapter
-        /*
         for (int i=0; i<productDTOList.size(); i++){
             ProductDTO productDTO = productDTOList.get(i);
             int finalIndex = i;
@@ -143,6 +146,5 @@ public class HomeFragment extends BaseFragment {
             });
         }
 
-         */
     }
 }
