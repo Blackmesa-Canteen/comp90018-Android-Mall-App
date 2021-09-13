@@ -1,12 +1,16 @@
 package com.comp90018.assignment2.modules.home.adapter;
 
 import android.content.Context;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +46,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     private Map<DocumentReference, UserDTO> userDTOMap;
 
     private FirebaseStorage storage;
+    private final static String TAG = "HomePageAdapter";
 
     public HomePageAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
@@ -248,7 +253,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             } else {
                 rating.setRating(0);
             }
-
+            /*
             System.out.println("---------------------------------------------------------");
             System.out.println("descriptionCut: "+descriptionCut);
             System.out.println("brandNameCut: "+brandNameCut);
@@ -256,19 +261,40 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             System.out.println("formattedPriceText: "+formattedPriceText);
             System.out.println("formattedLikesText: "+formattedLikesText);
             System.out.println("context: "+context);
-            System.out.println("---------------------------------------------------------");
-            /*
-            Boolean clicked = Boolean.FALSE;
-            View.OnClickListener itemClicked = new View.OnClickListener() {
+            System.out.println("---------------------------------------------------------");*/
+
+            // toast listeners
+            UserDTO finalUserDTO = userDTO;
+            View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Looper.prepare();
-                    Toast.makeText(context, "Clicked item", Toast.LENGTH_SHORT).show();
-                    Looper.loop();
+                    Toast.makeText(context, "Clicked item: "+ descriptionCut, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Clicked d: "+ descriptionCut);
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println("Clicked");
+                    System.out.println("---------------------------------------------------------");
                 }
             };
-            imgProductImage.setOnClickListener(itemClicked);
-            */
+
+            View.OnClickListener goToUserPageActivityListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println("Clicked");
+                    System.out.println("---------------------------------------------------------");
+                }
+            };
+
+            // wait for userDTO loaded, then attach listener
+            if (finalUserDTO != null) {
+                imgProductImage.setOnClickListener(goToProductActivityListener);
+                textProductDescriptionCut.setOnClickListener(goToProductActivityListener);
+                llLabels.setOnClickListener(goToProductActivityListener);
+                llPricingInfo.setOnClickListener(goToProductActivityListener);
+                llUserProfile.setOnClickListener(goToUserPageActivityListener);
+            }
         }
     }
 }
