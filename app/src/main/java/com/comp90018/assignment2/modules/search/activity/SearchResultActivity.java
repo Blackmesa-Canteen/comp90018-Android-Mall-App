@@ -156,8 +156,17 @@ public class SearchResultActivity extends AppCompatActivity {
      */
     private void processData(List<ProductDTO> productDTOList) {
 
+        // product status filter
+        List<ProductDTO> publishedProductDTOList = new ArrayList<>();
 
-        adapter = new SearchResultRvAdapter(this, productDTOList);
+        // only store published products
+        for (ProductDTO productDTO : productDTOList) {
+            if (productDTO.getStatus() == Constants.PUBLISHED) {
+                publishedProductDTOList.add(productDTO);
+            }
+        }
+
+        adapter = new SearchResultRvAdapter(this, publishedProductDTOList);
         recyclerView.setAdapter(adapter);
 
         // 2 columns grid
@@ -166,9 +175,9 @@ public class SearchResultActivity extends AppCompatActivity {
 
         // get user info from these DTOs, to show user info in the items,
         // every time finished query, refresh adapter
-        for (int index = 0; index < productDTOList.size(); index++) {
+        for (int index = 0; index < publishedProductDTOList.size(); index++) {
 
-            ProductDTO productDTO =  productDTOList.get(index);
+            ProductDTO productDTO =  publishedProductDTOList.get(index);
             int finalIndex = index;
             productDTO.getOwner_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
