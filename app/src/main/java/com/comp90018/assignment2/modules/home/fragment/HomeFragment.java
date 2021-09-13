@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.home.fragment;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.utils.Constants;
+import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author you
  */
 public class HomeFragment extends BaseFragment {
@@ -30,16 +31,24 @@ public class HomeFragment extends BaseFragment {
     private HomePageAdapter adapter; // adapter
     private TextView textNoResult;
     private RecyclerView recyclerView; // bind rv id
+    private ImageView fakeSearchView;
+    private NavigationTabStrip viewLabel;
 
     FirebaseFirestore db;
-
-
 
 
     @Override
     public View inflateView() {
         View view = View.inflate(activityContext, R.layout.home_fragment, null);
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
+        fakeSearchView = (ImageView) view.findViewById(R.id.img_fake_search_view);
+        viewLabel = (NavigationTabStrip) view.findViewById(R.id.view_label);
+
+        // attach search jumping listener
+
+        /* https://github.com/Devlight/NavigationTabStrip */
+        viewLabel.setTitles("Recommends", "Intra-city");
+        viewLabel.setTabIndex(0, true);
 
         return view;
     }
@@ -49,7 +58,7 @@ public class HomeFragment extends BaseFragment {
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
 
-        db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task ->  {
+        db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
                 List<ProductDTO> productDTOList = new ArrayList<>();
@@ -57,7 +66,7 @@ public class HomeFragment extends BaseFragment {
                     productDTOList.add(document.toObject(ProductDTO.class));
                 }
                 processData(productDTOList);
-            } else{
+            } else {
                 Log.d(TAG, "Error getting documents", task.getException());
             }
         });
@@ -66,7 +75,6 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void processData(List<ProductDTO> productDTOList) {
-
 
 
         // 2 columns grid

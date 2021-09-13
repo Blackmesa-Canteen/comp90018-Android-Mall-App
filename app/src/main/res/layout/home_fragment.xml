@@ -3,50 +3,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
-        tools:ignore="MissingConstraints"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Good OG"
-        android:textColor="#0F0F0F"
-        android:textSize="48sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/grey6">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="251dp"
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/cardview_default_radius"
-            android:backgroundTint="#E91E63"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:editable="true"
-            android:text="Second-hand mobile phone"
-            android:textColor="#8F8F8F"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="12dp"
+            android:text="Good OG"
+            android:textColor="#0F0F0F"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
 
-        <Button
-            android:id="@+id/button2"
+        <ImageView
+            android:id="@+id/img_fake_search_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/cardview_default_radius"
-            android:layout_weight="1"
-            android:backgroundTint="#6ab7ff"
-            android:padding="10dp"
-            android:text="Button" />
+            android:layout_height="45dp"
+            android:layout_below="@id/text_title"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/fake_search"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+    
+    <com.gigamole.navigationtabstrip.NavigationTabStrip
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:id="@+id/view_label"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:nts_color="@color/blue_dark"
+        app:nts_active_color="@color/black"
+        app:nts_inactive_color="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_recycle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>
