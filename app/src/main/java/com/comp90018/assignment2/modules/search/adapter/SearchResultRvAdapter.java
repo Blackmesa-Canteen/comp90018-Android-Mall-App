@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.search.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
@@ -44,6 +46,8 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
+
+    private final static String TAG = "SearchResultRvAdapter";
 
     private List<ProductDTO> productDTOList;
     private Map<DocumentReference, UserDTO> userDTOMap;
@@ -285,6 +289,7 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
 //                        intent.putExtra("userDTO", finalUserDTO);
 //                        context.startActivity(intent);
                         Toast.makeText(context, "to detail activity: "+ descriptionCut, Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "to detail activity: "+ descriptionCut);
                     }
                 };
 
@@ -292,6 +297,7 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "to user page:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "to user page:" + finalUserDTO.getEmail());
                     }
                 };
 
