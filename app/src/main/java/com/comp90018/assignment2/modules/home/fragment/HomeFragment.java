@@ -67,9 +67,10 @@ public class HomeFragment extends BaseFragment {
         // setup refresh
         /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
         mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
+            @Override
+            public void onRefresh() {
                 // Do work to refresh the list here.
-                new Task().execute();
+                new RefreshTask().execute();
             }
         });
 
@@ -80,7 +81,7 @@ public class HomeFragment extends BaseFragment {
      * task for `pull to refresh`
      * https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout
      */
-    private class Task extends AsyncTask<Void, Void, String[]> {
+    private class RefreshTask extends AsyncTask<Void, Void, String[]> {
         @Override
         protected String[] doInBackground(Void... voids) {
             return new String[0];
@@ -125,12 +126,12 @@ public class HomeFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
 
-        for (int i=0; i<productDTOList.size(); i++){
+        for (int i = 0; i < productDTOList.size(); i++) {
             ProductDTO productDTO = productDTOList.get(i);
             int finalIndex = i;
             productDTO.getOwner_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                public void onComplete(@NonNull @NotNull com.google.android.gms.tasks.Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         UserDTO userDTO = document.toObject(UserDTO.class);
