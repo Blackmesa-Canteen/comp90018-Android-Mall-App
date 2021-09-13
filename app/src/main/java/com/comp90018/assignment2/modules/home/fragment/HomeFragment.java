@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.home.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
+import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,6 +60,14 @@ public class HomeFragment extends BaseFragment {
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) view.findViewById(R.id.main_swipe);
 
         // attach search jumping listener
+        fakeSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // jump to real search
+                Intent goToSearchActivityIntent = new Intent(activityContext, SearchProductActivity.class);
+                startActivity(goToSearchActivityIntent);
+            }
+        });
 
         /* https://github.com/Devlight/NavigationTabStrip */
         // setup label view
