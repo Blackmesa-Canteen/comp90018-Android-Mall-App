@@ -1,7 +1,6 @@
 package com.comp90018.assignment2.modules.search.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +17,10 @@ import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -118,17 +114,17 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
             this.context = context;
 
             // bind views
-            imgProductImage = (OvalImageView)inflate.findViewById( R.id.img_product_image );
-            textProductDescriptionCut = (TextView)inflate.findViewById( R.id.text_product_description_cut );
-            llLabels = (LinearLayout)inflate.findViewById( R.id.ll_labels );
-            labels = (LabelsView)inflate.findViewById( R.id.labels );
-            llPricingInfo = (LinearLayout)inflate.findViewById( R.id.ll_pricing_info );
-            textProductPrice = (TextView)inflate.findViewById( R.id.text_product_price );
-            textLikes = (TextView)inflate.findViewById( R.id.text_likes );
-            llUserProfile = (LinearLayout)inflate.findViewById( R.id.ll_user_profile );
-            imgAvatar = (CircleImageView)inflate.findViewById( R.id.img_avatar );
-            textNickname = (TextView)inflate.findViewById( R.id.text_nickname );
-            rating = (RatingBar)inflate.findViewById( R.id.rating );
+            imgProductImage = (OvalImageView)inflate.findViewById( R.id.item_image);
+            textProductDescriptionCut = (TextView)inflate.findViewById( R.id.item_description);
+            llLabels = (LinearLayout)inflate.findViewById( R.id.item_labels);
+            labels = (LabelsView)inflate.findViewById( R.id.item_label);
+            llPricingInfo = (LinearLayout)inflate.findViewById( R.id.item_price_label);
+            textProductPrice = (TextView)inflate.findViewById( R.id.item_price);
+            textLikes = (TextView)inflate.findViewById( R.id.item_likes);
+            llUserProfile = (LinearLayout)inflate.findViewById( R.id.item_user_profile);
+            imgAvatar = (CircleImageView)inflate.findViewById( R.id.item_img_avatar);
+            textNickname = (TextView)inflate.findViewById( R.id.seller_nickname);
+            rating = (RatingBar)inflate.findViewById( R.id.item_rating);
         }
 
         /**
