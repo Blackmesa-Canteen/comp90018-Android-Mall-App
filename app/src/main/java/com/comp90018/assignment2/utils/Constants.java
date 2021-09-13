@@ -13,11 +13,15 @@ public class Constants {
     public static final int SUCCESSFUL_NOT_COMMENT = 2;
     public static final int SUCCESSFUL_COMMENT = 3;
     public static final int CANCELED = 4;
+    public static final int ON_REFUND = 5;
+    public static final int ON_REFUND_DELIVERING = 6;
+    public static final int REFUNDED = 7;
 
     /** product status */
     public static final int PUBLISHED = 0;
     public static final int SOLD_OUT = 1;
     public static final int UNDERCARRIAGE = 2;
+    public static final int REMOVED = 3;
 
     /** product 品相 */
     public static final int HEAVILY_USED = 0;
