@@ -112,4 +112,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "io.grpc:grpc-okhttp:1.32.2"
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }

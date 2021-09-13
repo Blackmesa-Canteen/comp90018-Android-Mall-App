@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/home_fragment.xml" value="0.14665996986438976" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_home.xml" value="0.2296195652173913" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_recycler_view_search.xml" value="0.2296195652173913" />
       </map>
     </option>
   </component>

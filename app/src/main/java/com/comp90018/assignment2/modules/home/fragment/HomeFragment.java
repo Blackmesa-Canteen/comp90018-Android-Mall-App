@@ -66,14 +66,17 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void processData(List<ProductDTO> productDTOList) {
-        adapter = new HomePageAdapter(activityContext, productDTOList);
-        recyclerView.setAdapter(adapter);
+
+
 
         // 2 columns grid
         GridLayoutManager gvManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(gvManager);
+        recyclerView.setHasFixedSize(true);
+        adapter = new HomePageAdapter(activityContext, productDTOList);
+        recyclerView.setAdapter(adapter);
 
-        recyclerView.setVisibility(View.VISIBLE);
+        //recyclerView.setVisibility(View.VISIBLE);
 
         // get user info from these DTOs, to show user info in the items,
         // every time finished query, refresh adapter

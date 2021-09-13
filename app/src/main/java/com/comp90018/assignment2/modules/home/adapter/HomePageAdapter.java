@@ -16,6 +16,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
+import com.donkingliang.labels.LabelsView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -54,7 +55,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     @NonNull
     @NotNull
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler_view_search, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home, parent, false);
         return new ItemProductInfoViewHolder(context, view);
     }
 
@@ -81,7 +82,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         private OvalImageView imgProductImage;
         private TextView textProductDescriptionCut;
         private LinearLayout llLabels; // contains imgProductImage and textProductDescriptionCut
-       // private LabelsView labels;
+        private LabelsView labels;
         private LinearLayout llPricingInfo; // contains price and like
         private TextView textProductPrice;
         private TextView textLikes;
@@ -94,17 +95,17 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             super(inflate);
             this.context = context;
             // bind views
-            imgProductImage = (OvalImageView)inflate.findViewById( R.id.img_product_image );
-            textProductDescriptionCut = (TextView)inflate.findViewById( R.id.text_product_description_cut );
-            llLabels = (LinearLayout)inflate.findViewById( R.id.ll_labels );
-            //labels = (LabelsView)inflate.findViewById( R.id.labels );
-            llPricingInfo = (LinearLayout)inflate.findViewById( R.id.ll_pricing_info );
-            textProductPrice = (TextView)inflate.findViewById( R.id.text_product_price );
-            textLikes = (TextView)inflate.findViewById( R.id.text_likes );
-            llUserProfile = (LinearLayout)inflate.findViewById( R.id.ll_user_profile );
-            imgAvatar = (CircleImageView)inflate.findViewById( R.id.img_avatar );
-            textNickname = (TextView)inflate.findViewById( R.id.text_nickname );
-            rating = (RatingBar)inflate.findViewById( R.id.rating );
+            imgProductImage = (OvalImageView)inflate.findViewById( R.id.item_image);
+            textProductDescriptionCut = (TextView)inflate.findViewById( R.id.item_description);
+            llLabels = (LinearLayout)inflate.findViewById( R.id.item_labels);
+            labels = (LabelsView)inflate.findViewById( R.id.item_label );
+            llPricingInfo = (LinearLayout)inflate.findViewById( R.id.item_price_label);
+            textProductPrice = (TextView)inflate.findViewById( R.id.item_price);
+            textLikes = (TextView)inflate.findViewById( R.id.item_likes);
+            llUserProfile = (LinearLayout)inflate.findViewById( R.id.item_user_profile);
+            imgAvatar = (CircleImageView)inflate.findViewById( R.id.item_img_avatar);
+            textNickname = (TextView)inflate.findViewById( R.id.seller_nickname);
+            rating = (RatingBar)inflate.findViewById( R.id.item_rating);
         }
 
         public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
