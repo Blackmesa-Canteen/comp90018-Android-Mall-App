@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.home.fragment;
 
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
+
 /**
  * @author you
  */
@@ -33,6 +36,7 @@ public class HomeFragment extends BaseFragment {
     private RecyclerView recyclerView; // bind rv id
     private ImageView fakeSearchView;
     private NavigationTabStrip viewLabel;
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
 
     FirebaseFirestore db;
 
@@ -43,14 +47,43 @@ public class HomeFragment extends BaseFragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
         fakeSearchView = (ImageView) view.findViewById(R.id.img_fake_search_view);
         viewLabel = (NavigationTabStrip) view.findViewById(R.id.view_label);
+        mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) view.findViewById(R.id.main_swipe);
 
         // attach search jumping listener
 
         /* https://github.com/Devlight/NavigationTabStrip */
+        // setup label view
         viewLabel.setTitles("Recommends", "Intra-city");
         viewLabel.setTabIndex(0, true);
 
+        // setup refresh
+        /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
+        mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                // Do work to refresh the list here.
+                new Task().execute();
+            }
+        });
+
         return view;
+    }
+
+    /**
+     * task for `pull to refresh`
+     * https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout
+     */
+    private class Task extends AsyncTask<Void, Void, String[]> {
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            return new String[0];
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            // Call setRefreshing(false) when the list has been refreshed.
+            mWaveSwipeRefreshLayout.setRefreshing(false);
+            super.onPostExecute(result);
+        }
     }
 
     @Override

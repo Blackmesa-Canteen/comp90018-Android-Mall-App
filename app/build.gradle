@@ -57,6 +57,9 @@ android {
 
 dependencies {
 
+    // fresh ui
+    implementation 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
+
     // used for tab
     implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
 
