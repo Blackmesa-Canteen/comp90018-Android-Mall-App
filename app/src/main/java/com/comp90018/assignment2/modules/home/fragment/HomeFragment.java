@@ -1,13 +1,19 @@
 package com.comp90018.assignment2.modules.home.fragment;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
-import com.comp90018.assignment2.db.repository.ProductRepository;
 import com.comp90018.assignment2.dto.ProductDTO;
-import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
+import com.comp90018.assignment2.utils.Constants;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,29 +24,81 @@ import java.util.List;
  */
 public class HomeFragment extends BaseFragment {
 
-    /**
-     * 缺省占位
-     */
-    private ImageView imageView;
+    private String TAG = "HomeFragment";
+    //private ActivityHomePageBinding binding; // inflate layout
+    List<ProductDTO> productDTOList;
+    private HomePageAdapter adapter; // adapter
+    private TextView textNoResult;
+    private RecyclerView recyclerView; // bind rv id
+
+    FirebaseFirestore db;
+
+
+
 
     @Override
     public View inflateView() {
+        View view = View.inflate(activityContext, R.layout.home_fragment, null);
+        recyclerView = (RecyclerView) view.findViewById(R.id.home_recycle);
 
-        /*
-        * 当你实际写出这个fragment的layout文件后，用View view = View.inflate(mContext, R.layout.fragment_XXX, null); 绑定
-        * 然后该各fragment的各种view可以通过view.findViewById()来绑定
-        * 然后return view.
-        * */
-        imageView = new ImageView(activityContext);
-
-        return imageView;
+        return view;
     }
 
     @Override
     public void loadData() {
-        /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
-        imageView.setImageResource(R.drawable.shop);
+        db = FirebaseFirestore.getInstance();
+        // 从数据库获取全部商品信息
 
+        db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task ->  {
 
+            if (task.isSuccessful()) {
+                List<ProductDTO> productDTOList = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    productDTOList.add(document.toObject(ProductDTO.class));
+                }
+                processData(productDTOList);
+            } else{
+                Log.d(TAG, "Error getting documents", task.getException());
+            }
+        });
+        // get user info from these DTOs, to show user info in the items,
+        // every time finished query, refresh adapter
+    }
+
+    private void processData(List<ProductDTO> productDTOList) {
+        adapter = new HomePageAdapter(activityContext, productDTOList);
+        recyclerView.setAdapter(adapter);
+
+        // 2 columns grid
+        GridLayoutManager gvManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(gvManager);
+
+        recyclerView.setVisibility(View.VISIBLE);
+
+        // get user info from these DTOs, to show user info in the items,
+        // every time finished query, refresh adapter
+        /*
+        for (int i=0; i<productDTOList.size(); i++){
+            ProductDTO productDTO = productDTOList.get(i);
+            int finalIndex = i;
+            productDTO.getOwner_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        UserDTO userDTO = document.toObject(UserDTO.class);
+                        DocumentReference reference = document.getReference();
+                        Log.d(TAG, "get user info: " + userDTO.getEmail());
+                        // add to adapter and refresh it
+                        adapter.addNewUserDtoInMap(reference, userDTO);
+                        adapter.notifyItemChanged(finalIndex);
+                    } else {
+                        Log.w(TAG, "user info db connection failed");
+                    }
+                }
+            });
+        }
+
+         */
     }
 }
