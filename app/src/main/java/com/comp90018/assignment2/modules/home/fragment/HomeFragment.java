@@ -88,19 +88,6 @@ public class HomeFragment extends BaseFragment {
 
         // Initialize location client
         client = LocationServices.getFusedLocationProviderClient(getActivity());
-        System.out.println("TEST1");
-        /*
-        if(ContextCompat.checkSelfPermission(getActivity()
-                , Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity()
-                    , Manifest.permission.ACCESS_COARSE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED){
-            // When permission is granted
-            // call method
-            getCurrentLocation();
-        }
-        */
 
         // attach search jumping listener
         fakeSearchView.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +113,6 @@ public class HomeFragment extends BaseFragment {
                 new RefreshTask().execute();
             }
         });
-
         return view;
     }
 
@@ -151,14 +137,6 @@ public class HomeFragment extends BaseFragment {
             super.onPostExecute(result);
         }
     }
-
-    // Get User Location, from :https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
-    // And create a LocationManager instance
-
-
-    // And then implement LocationListener and get coordinates:
-
-
 
 
 
@@ -218,77 +196,19 @@ public class HomeFragment extends BaseFragment {
         }
 
     }
-    @SuppressLint("MissingPermission")
-    private void getCurrentLocation() {
-        //Initialize location manager
-        LocationManager locationManager = (LocationManager) getActivity()
-                .getSystemService(Context.LOCATION_SERVICE);
-        //Check condition
-        if(locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)
-        || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-            // When location service is enable
-            // Get location
-            client.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    //Initialize location
-                    Location location = task.getResult();
-                    //Check condition
-                    if(location != null){
-                        // When location result is not null
-                        //Set latitude
-                        latitude = String.valueOf(location.getLatitude());
-                        //Set longitude
-                        longitude = String.valueOf(location.getLongitude());
-                        System.out.println("-----------------------------------------");
-                        System.out.println("latitude: "+latitude);
-                        System.out.println("longitude: "+longitude);
-                        System.out.println("-----------------------------------------");
-                    }else{
-                        //When location result is null
-                        //Initialize location request
-                        LocationRequest locationRequest = new LocationRequest()
-                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                                .setInterval(10000)
-                                .setFastestInterval(1000)
-                                .setNumUpdates(1);
-                        //Initialize location call back
-                        LocationCallback locationCallback = new LocationCallback() {
-                            @Override
-                            public void onLocationResult(LocationResult locationResult) {
-                                //Initialize location
-                                Location location1 = locationResult.getLastLocation();
-                                //Set Latitude
-                                latitude = String.valueOf(location1.getLatitude());
-                                longitude = String.valueOf(location1.getLongitude());
-                                System.out.println("------------1----------------------");
-                                System.out.println("latitude: "+latitude);
-                                System.out.println("longitude: "+longitude);
-                                System.out.println("------------1-------------------------");
-                            }
-                        };
-                        client.requestLocationUpdates(locationRequest
-                                ,locationCallback, Looper.myLooper());
-                    }
-                }
-            });
-        }else{
-            // When Location service is not enable
-            // Open location setting
-            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
-    }
 
 
+    // Get User Location, from :https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
 
     private class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
             String longitude = "Longitude: " + loc.getLongitude();
-            Log.v(TAG, longitude);
             String latitude = "Latitude: " + loc.getLatitude();
+            System.out.println("----------Current Location----------");
+            Log.v(TAG, longitude);
             Log.v(TAG, latitude);
+            System.out.println("----------Current Location----------");
         }
 
         @Override
