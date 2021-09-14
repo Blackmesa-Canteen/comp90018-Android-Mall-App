@@ -23,29 +23,14 @@
         <activity
             android:name=".modules.messages.activity.ChatActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
 
         <activity android:name=".modules.search.activity.SearchProductActivity">
-
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
             android:launchMode="singleInstance">
 
-        </activity>
-        <activity android:name=".modules.search.activity.SearchProductActivity"></activity>
-        <activity
-            android:name=".modules.search.activity.SearchResultActivity"
-            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
@@ -69,6 +54,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!-- entrance is here!! -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".modules.MainActivity"

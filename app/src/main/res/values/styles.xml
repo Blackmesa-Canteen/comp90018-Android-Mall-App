@@ -9,6 +9,12 @@
         <item name="colorAccent">@color/blue_light</item>
     </style>
 
+    <style name="NoticeSpot">
+        <item name="android:background">@drawable/notice_spot</item>
+        <item name="android:layout_width">10dp</item>
+        <item name="android:layout_height">10dp</item>
+    </style>
+
     <style name="MainButtonStyle">
         <!-- Customize your theme here. -->
         <item name="android:layout_width">0dp</item>

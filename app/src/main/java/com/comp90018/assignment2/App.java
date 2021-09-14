@@ -45,7 +45,7 @@ public class App extends MultiDexApplication {
          * the life of the application, it is recommended to put it in the Application class,
          * not in components like Activity, fragmemt, or Service.
          */
-        JMessageClient.registerEventReceiver(this);
+//        JMessageClient.registerEventReceiver(this);
     }
 
 
@@ -58,7 +58,7 @@ public class App extends MultiDexApplication {
          * A message receiving class object that will not
          * receive any events after it is unbound.
          */
-        JMessageClient.unRegisterEventReceiver(this);
+//        JMessageClient.unRegisterEventReceiver(this);
     }
 
     /** Getter to get global context */

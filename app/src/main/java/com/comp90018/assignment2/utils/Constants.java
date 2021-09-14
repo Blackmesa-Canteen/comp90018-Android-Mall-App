@@ -47,6 +47,9 @@ public class Constants {
 
     /** IM Message custom type */
     public final static String TYPE = "TYPE";
+    public final static int SINGLE_CHAT = 0;
+    public final static int GROUP_CHAT= 1;
+
     public final static String ADDRESS = "ADDRESS";
     public final static String NEW_MESSAGE = "NEW_MESSAGE";
 

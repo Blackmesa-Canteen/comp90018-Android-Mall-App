@@ -18,6 +18,7 @@ import cn.jpush.im.android.api.event.LoginStateChangeEvent;
  * 
  * @author xiaotian li
  */
+@Deprecated
 public abstract class BaseLoginCheckedActivity extends AppCompatActivity {
 
 

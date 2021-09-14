@@ -3,6 +3,7 @@ package com.comp90018.assignment2.modules.messages.adapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -21,8 +22,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.ninetripods.mq.badgelibrary.BadgeViewPro;
 
 import java.util.List;
 
@@ -62,7 +61,8 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
             // need to query it
             String userId = userInfo.getUserName();
             db.collection(Constants.USERS_COLLECTION)
-                    .document(userId).get()
+                    .document(userId)
+                    .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -156,17 +156,10 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
                 helper.setText(R.id.text_newest_msg_time, dateStr);
 
                 // if new message has come, show a red spot
-                BadgeViewPro redSpot = new BadgeViewPro(context);
-                redSpot.setMargin(15, 0, 15, 0)
-                        .setStrBgColor(context.getResources().getColor(R.color.red))
-                        .setTargetView(helper.getView(R.id.img_avatar));
-
-                // default is gone
-                redSpot.setVisibility(View.GONE);
-
-                // if is new message.
                 if (item.getExtra().equals(Constants.NEW_MESSAGE)) {
-                    redSpot.setVisibility(View.VISIBLE);
+                    helper.getView(R.id.v_new).setVisibility(View.VISIBLE);
+                } else {
+                    helper.getView(R.id.v_new).setVisibility(View.INVISIBLE);
                 }
             }
 
