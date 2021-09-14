@@ -1,6 +1,7 @@
 package com.comp90018.assignment2.modules.search.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.product.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
@@ -280,10 +282,10 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
                 View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        Intent intent = new Intent(context, ProductDetailsActivity.class);
-//                        intent.putExtra("productDTO", productDTO);
-//                        intent.putExtra("userDTO", finalUserDTO);
-//                        context.startActivity(intent);
+                        Intent intent = new Intent(context, ProductDetailActivity.class);
+                        intent.putExtra("productDTO", productDTO);
+                        intent.putExtra("userDTO", finalUserDTO);
+                        context.startActivity(intent);
                         Toast.makeText(context, "to detail activity: "+ descriptionCut, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "to detail activity: "+ descriptionCut);
                     }

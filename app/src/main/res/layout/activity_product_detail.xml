@@ -1,5 +1,4 @@
-activity_product_detail.xml
-    <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -19,10 +18,11 @@ activity_product_detail.xml
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/"
+            android:background="@drawable/back_blue_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="Back" />
 
         <TextView
             android:id="@+id/pdt_back_btn"
@@ -66,7 +66,8 @@ activity_product_detail.xml
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintCircleRadius="50dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="Avatar" />
         </androidx.cardview.widget.CardView>
         <!--User profile content, align center, start-->
         <LinearLayout
@@ -77,7 +78,7 @@ activity_product_detail.xml
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/cv_pdt_detail_avatar"
-            app:layout_constraintRight_toLeftOf="@id/cv_pdt_detail_btn_profile"
+            app:layout_constraintRight_toLeftOf="@id/cv_container_of_pdt_detail_btn_profile"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
@@ -138,7 +139,7 @@ activity_product_detail.xml
         <!--User profile content, align center, end-->
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_pdt_detail_btn_profile"
+            android:id="@+id/cv_container_of_pdt_detail_btn_profile"
             android:layout_width="80dp"
             android:layout_height="34dp"
             android:layout_marginRight="20dp"
@@ -148,6 +149,7 @@ activity_product_detail.xml
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:id="@+id/pdt_detail_btn_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/pdt_blue_btn_normal"
@@ -189,7 +191,7 @@ activity_product_detail.xml
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    android:text="$ 000.9"
+                    android:text="$ price"
                     android:textColor="@color/pdt_red_price"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -233,7 +235,7 @@ activity_product_detail.xml
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Status: New"
+                    android:text="Status: pdt_detail_status"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -243,8 +245,7 @@ activity_product_detail.xml
             <!--Product images start-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
+                android:layout_height="match_parent">
 
                 <ListView
                     android:id="@+id/lv_pdt_detail_images"
@@ -332,7 +333,7 @@ activity_product_detail.xml
         <!--        want this button-->
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_pdt_detail_btn_want_this"
+            android:id="@+id/cv_container_of_pdt_detail_btn_want_this"
             android:layout_width="100dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
@@ -343,6 +344,7 @@ activity_product_detail.xml
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:id="@+id/pdt_detail_btn_want_this"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
