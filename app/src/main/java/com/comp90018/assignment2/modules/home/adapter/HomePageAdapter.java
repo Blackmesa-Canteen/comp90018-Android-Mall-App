@@ -35,7 +35,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.NonNull;
-
+/**
+ * @author Ka Hou Hong
+ */
 
 public class HomePageAdapter extends RecyclerView.Adapter {
 

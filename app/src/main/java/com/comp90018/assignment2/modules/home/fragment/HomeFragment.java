@@ -34,7 +34,7 @@ import java.util.List;
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 /**
- * @author you
+ * @author Ka Hou Hong
  */
 public class HomeFragment extends BaseFragment {
 
