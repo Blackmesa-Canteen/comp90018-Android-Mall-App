@@ -178,7 +178,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             labelStrings.add(brandNameCut);
             labelStrings.add(qualityText);
-            //labels.setLabels(labelStrings);
+            labels.setLabels(labelStrings);
 
             // set Price
             double price = productDTO.getPrice();
