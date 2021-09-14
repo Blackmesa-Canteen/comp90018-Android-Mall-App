@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -68,6 +69,8 @@ public class HomeFragment extends BaseFragment {
     FusedLocationProviderClient client;
     String latitude;
     String longitude;
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -77,14 +80,16 @@ public class HomeFragment extends BaseFragment {
         fakeSearchView = (ImageView) view.findViewById(R.id.img_fake_search_view);
         viewLabel = (NavigationTabStrip) view.findViewById(R.id.view_label);
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) view.findViewById(R.id.main_swipe);
-
-
-
-        LocationManager locationManager = (LocationManager) getActivity()
+        locationManager = (LocationManager) getActivity()
                 .getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new MyLocationListener();
+        locationListener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-
+/*
+        locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+*/
 
         // Initialize location client
         client = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -123,10 +128,12 @@ public class HomeFragment extends BaseFragment {
      * https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout
      */
     private class RefreshTask extends AsyncTask<Void, Void, String[]> {
+        @SuppressLint("MissingPermission")
         @Override
 
         protected String[] doInBackground(Void... voids) {
             loadData(); // shuffle
+
             return new String[0]; //can't convert the type to void, so have to return String[]
         }
 
@@ -141,6 +148,7 @@ public class HomeFragment extends BaseFragment {
 
 
     // Get User Location END
+    @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
         db = FirebaseFirestore.getInstance();
