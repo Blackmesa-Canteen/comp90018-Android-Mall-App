@@ -45,12 +45,11 @@ public class ProductDTO implements Parcelable {
     private Timestamp publish_time;
     private Integer quality;
     private Integer status;
-
     @Deprecated
     private Double star_number;
-    
     private DocumentReference sub_category_ref;
     private Integer view_number;
+    private String geo_hash;
 
     protected ProductDTO(Parcel in) {
 
@@ -100,6 +99,8 @@ public class ProductDTO implements Parcelable {
         } else {
             view_number = in.readInt();
         }
+
+        geo_hash = in.readString();
     }
 
     public static final Creator<ProductDTO> CREATOR = new Creator<ProductDTO>() {
@@ -184,5 +185,7 @@ public class ProductDTO implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(view_number);
         }
+
+        dest.writeString(geo_hash);
     }
 }
