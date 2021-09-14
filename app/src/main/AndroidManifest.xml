@@ -19,18 +19,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
+        <activity
+            android:name=".modules.product.ProductDetailActivity"
+            android:exported="true" />
         <activity android:name=".modules.search.activity.SearchProductActivity">
 
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
-            android:launchMode="singleInstance">
-        </activity>
+            android:launchMode="singleInstance"></activity>
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
             android:launchMode="singleInstance"
