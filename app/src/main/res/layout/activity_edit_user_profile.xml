@@ -199,7 +199,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/locationlayout"
+                android:id="@+id/addresslayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -214,14 +214,14 @@
                     app:srcCompat="@drawable/location" />
 
                 <com.comp90018.assignment2.utils.view.ClearWriteEditText
-                    android:id="@+id/profile_location"
+                    android:id="@+id/profile_address"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="46dp"
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="location"
+                    android:hint="address"
                     android:inputType="text"
                     android:maxLength="80"
                     android:maxLines="1"
@@ -230,10 +230,10 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:id="@+id/location_line"
+                    android:id="@+id/address_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.67dp"
-                    android:layout_below="@id/profile_location"
+                    android:layout_below="@id/profile_address"
                     android:layout_marginTop="10dp"
                     android:background="@color/blue_light" />
 
