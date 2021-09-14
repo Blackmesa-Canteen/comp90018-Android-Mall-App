@@ -272,9 +272,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     Toast.makeText(context, "Clicked item: "+ descriptionCut, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Clicked d: "+ descriptionCut);
-                    System.out.println("---------------------------------------------------------");
-                    System.out.println("Clicked");
-                    System.out.println("---------------------------------------------------------");
                 }
             };
 
@@ -283,9 +280,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
-                    System.out.println("---------------------------------------------------------");
-                    System.out.println("Clicked");
-                    System.out.println("---------------------------------------------------------");
                 }
             };
 

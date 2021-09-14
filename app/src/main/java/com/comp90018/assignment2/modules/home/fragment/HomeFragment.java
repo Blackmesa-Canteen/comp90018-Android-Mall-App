@@ -1,13 +1,24 @@
 package com.comp90018.assignment2.modules.home.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,7 +30,13 @@ import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,10 +64,12 @@ public class HomeFragment extends BaseFragment {
     private ImageView fakeSearchView;
     private NavigationTabStrip viewLabel;
     private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
-
     FirebaseFirestore db;
+    FusedLocationProviderClient client;
+    String latitude;
+    String longitude;
 
-
+    @SuppressLint("MissingPermission")
     @Override
     public View inflateView() {
         View view = View.inflate(activityContext, R.layout.home_fragment, null);
@@ -58,6 +77,30 @@ public class HomeFragment extends BaseFragment {
         fakeSearchView = (ImageView) view.findViewById(R.id.img_fake_search_view);
         viewLabel = (NavigationTabStrip) view.findViewById(R.id.view_label);
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) view.findViewById(R.id.main_swipe);
+
+
+
+        LocationManager locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new MyLocationListener();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+
+
+        // Initialize location client
+        client = LocationServices.getFusedLocationProviderClient(getActivity());
+        System.out.println("TEST1");
+        /*
+        if(ContextCompat.checkSelfPermission(getActivity()
+                , Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(getActivity()
+                    , Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED){
+            // When permission is granted
+            // call method
+            getCurrentLocation();
+        }
+        */
 
         // attach search jumping listener
         fakeSearchView.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +130,8 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
+
+
     /**
      * task for `pull to refresh`
      * https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout
@@ -107,6 +152,17 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    // Get User Location, from :https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
+    // And create a LocationManager instance
+
+
+    // And then implement LocationListener and get coordinates:
+
+
+
+
+
+    // Get User Location END
     @Override
     public void loadData() {
         db = FirebaseFirestore.getInstance();
@@ -162,4 +218,111 @@ public class HomeFragment extends BaseFragment {
         }
 
     }
+    @SuppressLint("MissingPermission")
+    private void getCurrentLocation() {
+        //Initialize location manager
+        LocationManager locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+        //Check condition
+        if(locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)
+        || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            // When location service is enable
+            // Get location
+            client.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    //Initialize location
+                    Location location = task.getResult();
+                    //Check condition
+                    if(location != null){
+                        // When location result is not null
+                        //Set latitude
+                        latitude = String.valueOf(location.getLatitude());
+                        //Set longitude
+                        longitude = String.valueOf(location.getLongitude());
+                        System.out.println("-----------------------------------------");
+                        System.out.println("latitude: "+latitude);
+                        System.out.println("longitude: "+longitude);
+                        System.out.println("-----------------------------------------");
+                    }else{
+                        //When location result is null
+                        //Initialize location request
+                        LocationRequest locationRequest = new LocationRequest()
+                                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                                .setInterval(10000)
+                                .setFastestInterval(1000)
+                                .setNumUpdates(1);
+                        //Initialize location call back
+                        LocationCallback locationCallback = new LocationCallback() {
+                            @Override
+                            public void onLocationResult(LocationResult locationResult) {
+                                //Initialize location
+                                Location location1 = locationResult.getLastLocation();
+                                //Set Latitude
+                                latitude = String.valueOf(location1.getLatitude());
+                                longitude = String.valueOf(location1.getLongitude());
+                                System.out.println("------------1----------------------");
+                                System.out.println("latitude: "+latitude);
+                                System.out.println("longitude: "+longitude);
+                                System.out.println("------------1-------------------------");
+                            }
+                        };
+                        client.requestLocationUpdates(locationRequest
+                                ,locationCallback, Looper.myLooper());
+                    }
+                }
+            });
+        }else{
+            // When Location service is not enable
+            // Open location setting
+            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
+    }
+
+
+
+    private class MyLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location loc) {
+            String longitude = "Longitude: " + loc.getLongitude();
+            Log.v(TAG, longitude);
+            String latitude = "Latitude: " + loc.getLatitude();
+            Log.v(TAG, latitude);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+    }
+        /*------- To get city name from coordinates -------- */
+            /*
+            String cityName = null;
+            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+            List<Address> addresses;
+            try {
+                addresses = gcd.getFromLocation(loc.getLatitude(),
+                        loc.getLongitude(), 1);
+                if (addresses.size() > 0) {
+                    System.out.println(addresses.get(0).getLocality());
+                    cityName = addresses.get(0).getLocality();
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
+                    + cityName;
+            editLocation.setText(s);
+        }
+    }*/
+
 }
