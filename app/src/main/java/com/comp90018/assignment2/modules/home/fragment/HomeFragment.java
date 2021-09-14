@@ -20,7 +20,6 @@ import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
@@ -93,8 +93,10 @@ public class HomeFragment extends BaseFragment {
      */
     private class RefreshTask extends AsyncTask<Void, Void, String[]> {
         @Override
+
         protected String[] doInBackground(Void... voids) {
-            return new String[0];
+            loadData(); // shuffle
+            return new String[0]; //can't convert the type to void, so have to return String[]
         }
 
         @Override
@@ -117,6 +119,8 @@ public class HomeFragment extends BaseFragment {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     productDTOList.add(document.toObject(ProductDTO.class));
                 }
+                // shuffle the list
+                Collections.shuffle(productDTOList);
                 processData(productDTOList);
             } else {
                 Log.d(TAG, "Error getting documents", task.getException());
