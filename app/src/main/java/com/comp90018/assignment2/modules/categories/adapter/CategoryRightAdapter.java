@@ -1,6 +1,7 @@
 package com.comp90018.assignment2.modules.categories.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
+import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
+/**
+ * @author Ziyuan Xu
+ */
 public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private ArrayList<SubCategoryDTO> subcategories;
@@ -38,9 +43,8 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //TODO: add Layout to organize subcategories
         SubcategoryViewHolder subcategoryViewHolder = (SubcategoryViewHolder) holder;
-        subcategoryViewHolder.setData(subcategories.get(0));
+        subcategoryViewHolder.setData(subcategories, position);
     }
 
     @Override
@@ -58,9 +62,18 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.mContext = mContext;
             sct_image = (ImageView) itemView.findViewById(R.id.sct_image);
             sct_title = (TextView)itemView.findViewById(R.id.sct_title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: 跳转到对应的searchResultActivity - 输入对应的由subcategory名字查询 -> 对应List<ProductDTO>
+                    Intent goToSearchActivityIntent = new Intent(mContext, SearchProductActivity.class);
+                    mContext.startActivity(goToSearchActivityIntent);
+                }
+            });
         }
 
-        public void setData(SubCategoryDTO subcategory) {
+        public void setData(ArrayList<SubCategoryDTO> subcategories, final int position) {
+            SubCategoryDTO subcategory = subcategories.get(position);
             StorageReference subcategoryReference = storage.getReferenceFromUrl(subcategory.getImage_address());
             Glide.with(mContext)
                     .load(subcategoryReference)

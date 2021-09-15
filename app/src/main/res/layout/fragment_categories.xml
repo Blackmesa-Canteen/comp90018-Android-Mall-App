@@ -8,7 +8,7 @@
         android:id="@+id/ct_left"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="#11000000"
+        android:background="@color/grey6"
         android:scrollbars="none"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,9 +19,12 @@
         android:id="@+id/ct_right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintHorizontal_weight="72"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ct_left"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,17 +6,18 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <ImageView
+    <com.comp90018.assignment2.utils.view.OvalImageView
         android:id="@+id/sct_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@drawable/btn_multi_bg" />
+        android:src="@drawable/default_image" />
 
     <TextView
         android:id="@+id/sct_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:gravity="center"
         android:text="loading"
         android:textColor="#000000" />
 </LinearLayout>

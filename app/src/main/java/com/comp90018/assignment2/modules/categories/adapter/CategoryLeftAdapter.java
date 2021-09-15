@@ -12,6 +12,9 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 
 import java.util.ArrayList;
 
+/**
+ * @author Ziyuan Xu
+ */
 public class CategoryLeftAdapter extends BaseAdapter {
     private int mSelect = 0;
     private Context mContext;
@@ -50,7 +53,7 @@ public class CategoryLeftAdapter extends BaseAdapter {
         }
         holder.ct_title.setText(categories.get(i).getName());
         if (mSelect == i) {
-            holder.ct_title.setTextColor(Color.parseColor("#fd3f3f"));
+            holder.ct_title.setTextColor(Color.parseColor("#007AFF"));
         } else {
             holder.ct_title.setTextColor(Color.parseColor("#323437"));
         }
