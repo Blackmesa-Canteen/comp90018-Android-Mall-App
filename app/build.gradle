@@ -57,6 +57,12 @@ android {
 
 dependencies {
 
+    // fresh ui
+    implementation 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
+
+    // used for tab
+    implementation 'com.github.devlight.navigationtabstrip:navigationtabstrip:1.0.4'
+
     // glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0' //For Kotlin You should use kapt instead of annotationProcessor though.
@@ -114,4 +120,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "io.grpc:grpc-okhttp:1.32.2"
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }

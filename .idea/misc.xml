@@ -3,27 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../layout/custom_preview.xml" value="0.36041666666666666" />
-        <entry key="app/src/main/res/drawable/btn_multi_bg.xml" value="0.30833333333333335" />
-        <entry key="app/src/main/res/drawable/btn_primary_selector.xml" value="0.4162037037037037" />
-        <entry key="app/src/main/res/drawable/btn_send_bg.xml" value="0.4162037037037037" />
-        <entry key="app/src/main/res/drawable/btn_send_bg_disable.xml" value="0.4162037037037037" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.37726449275362317" />
-        <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.31521739130434784" />
-        <entry key="app/src/main/res/layout/fragment_categories.xml" value="0.13398959359916693" />
-        <entry key="app/src/main/res/layout/item_categories_item.xml" value="0.34692028985507245" />
-        <entry key="app/src/main/res/layout/item_category_item.xml" value="0.34692028985507245" />
-        <entry key="app/src/main/res/layout/item_category_list.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/item_emoticon.xml" value="0.24861111111111112" />
-        <entry key="app/src/main/res/layout/item_ordinary_right.xml" value="0.34692028985507245" />
-        <entry key="app/src/main/res/layout/item_subcategories_item.xml" value="0.2861111111111111" />
-        <entry key="app/src/main/res/layout/layout_search.xml" value="0.31521739130434784" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/home_fragment.xml" value="0.14665996986438976" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_home.xml" value="0.33" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_recycler_view_search.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3581089147551664" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_14_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
