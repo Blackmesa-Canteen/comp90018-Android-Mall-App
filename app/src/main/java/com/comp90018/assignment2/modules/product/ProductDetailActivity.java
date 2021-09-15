@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityProductDetailBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
+import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
@@ -22,10 +23,6 @@ import java.util.List;
 public class ProductDetailActivity extends AppCompatActivity {
 
     private ActivityProductDetailBinding binding;
-    /**
-     * This list will be given by bundle extra from the other activity li xiaotian
-     */
-    List<ProductDTO> productDTOList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +33,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         // retrieve bundle data from intent li xiaotian
         Intent intent = getIntent();
-        productDTOList = intent.getParcelableArrayListExtra("productDTOList");
 
-//        ProductDTO productDTO = (ProductDTO);
-        intent.getParcelableExtra("productDTO");
+        ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
+        UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
 
-//        binding.pdtDetailBrand.setText(productDTO.getBrand());
 
         /** go previous page */
         binding.pdtBackBtn.setOnClickListener(new View.OnClickListener() {
