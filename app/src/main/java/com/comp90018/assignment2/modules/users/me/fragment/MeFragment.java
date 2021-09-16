@@ -12,6 +12,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.db.service.UserService;
 import com.comp90018.assignment2.modules.users.authentication.activity.EditProfileActivity;
+import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
@@ -82,7 +83,7 @@ public class MeFragment extends BaseFragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent ToEditProfileActivity = new Intent(getActivity(), EditProfileActivity.class);
+                Intent ToEditProfileActivity = new Intent(activityContext, EditProfileActivity.class);
                 startActivity(ToEditProfileActivity);
             }
         });
