@@ -45,6 +45,11 @@ public class Constants {
     /** currency type */
     public static final Integer AUS_DOLLAR = 0;
 
+    /** activity jumping state code */
+    // open the activity with refresh
+    public final static int REQUEST_CODE_A = 10101;
+    public final static int REQUEST_CODE_B = 10102;
+
     /** IM Message custom type */
     public final static String TYPE = "TYPE";
     public final static int SINGLE_CHAT = 0;
@@ -52,5 +57,9 @@ public class Constants {
 
     public final static String ADDRESS = "ADDRESS";
     public final static String NEW_MESSAGE = "NEW_MESSAGE";
+
+    /** message type */
+    public final static String IMG_TYPE = "IMG";
+    public final static String VIDEO_TYPE = "VIDEO";
 
 }

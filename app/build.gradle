@@ -57,6 +57,12 @@ android {
 
 dependencies {
 
+    // picture selector
+    implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc08'
+
+    // better dialog
+    implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
+
     // quickRecyclerViewAdapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 

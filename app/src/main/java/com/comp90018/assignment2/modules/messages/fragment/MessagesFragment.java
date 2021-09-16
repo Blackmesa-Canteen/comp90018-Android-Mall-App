@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.messages.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,8 +34,6 @@ import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.enums.ConversationType;
-import cn.jpush.im.android.api.event.ContactNotifyEvent;
-import cn.jpush.im.android.api.event.LoginStateChangeEvent;
 import cn.jpush.im.android.api.event.MessageEvent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
@@ -141,6 +139,7 @@ public class MessagesFragment extends BaseFragment {
     @Override
     public void loadData() {
         // message fragment is special from the other fragments
+        // no need to query db here
         ;
     }
 
@@ -156,6 +155,24 @@ public class MessagesFragment extends BaseFragment {
 
         refreshConversationList();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode){
+            case Constants.REQUEST_CODE_A:
+                refreshConversationList();
+                break;
+
+            default:
+                return;
+        }
+    }
+
 
     /**
      * Refresh conversation list from IM server

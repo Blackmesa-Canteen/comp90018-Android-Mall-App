@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
+import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityChatBinding;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
 import com.comp90018.assignment2.utils.Constants;
@@ -25,6 +27,8 @@ public class ChatActivity extends AppCompatActivity {
     private ActivityChatBinding binding;
     private final static String TAG = "ChatActivity";
 
+    private FrameLayout flKeyboardMore;
+
     /** default chat type */
     private int type = Constants.SINGLE_CHAT;
 
@@ -34,8 +38,6 @@ public class ChatActivity extends AppCompatActivity {
     private Conversation conversation;
 
     private List<ChatMessageBean> chatMessageBeanList;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +49,15 @@ public class ChatActivity extends AppCompatActivity {
         // attach to layout file
         setContentView(view);
 
+        flKeyboardMore = binding.flKeyboardMore;
+
         // set emoj
         EmojIconActions emojIcon = new EmojIconActions(this, (View) binding.rlRoot, binding.etMessageInput, binding.ivEmoji);
         emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
             @Override
             public void onKeyboardOpen() {
                 Log.e(TAG, "emoji open");
+
             }
 
             @Override
@@ -60,5 +65,9 @@ public class ChatActivity extends AppCompatActivity {
                 Log.e(TAG, "emoji close");
             }
         });
+    }
+
+    public Conversation getConversation() {
+        return conversation;
     }
 }

@@ -125,7 +125,7 @@
         android:id="@+id/rl_keyboard"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/fl_keyboard_more"
         android:background="@color/grey6">
 
         <ImageView
@@ -149,9 +149,9 @@
             android:id="@+id/iv_more"
             android:layout_width="22dp"
             android:layout_height="24dp"
-            android:layout_toRightOf="@id/iv_emoji"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/iv_emoji"
             android:src="@drawable/add" />
 
         <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
@@ -160,14 +160,14 @@
             android:layout_height="35dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
+            android:layout_toStartOf="@id/iv_send"
             android:layout_toLeftOf="@id/iv_send"
+            android:layout_toEndOf="@id/iv_more"
             android:layout_toRightOf="@id/iv_more"
             android:padding="5dp"
             android:paddingLeft="10dp"
-            emojicon:emojiconSize="20sp"
             android:textCursorDrawable="@drawable/et_cursor"
-            android:layout_toStartOf="@id/iv_send"
-            android:layout_toEndOf="@id/iv_more" />
+            emojicon:emojiconSize="20sp" />
 
         <ImageView
             android:id="@+id/iv_send"
@@ -178,7 +178,14 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/send" />
-
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_keyboard_more"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        />
 
 </RelativeLayout>
