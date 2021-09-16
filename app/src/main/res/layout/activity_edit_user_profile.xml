@@ -93,7 +93,7 @@
                 android:layout_marginRight="30dp">
 
                 <LinearLayout
-                    android:id="@+id/genderlayout"
+                    android:id="@+id/genderGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -151,7 +151,7 @@
                     android:id="@+id/user_gender_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.67dp"
-                    android:layout_below="@id/genderlayout"
+                    android:layout_below="@id/genderGroup"
                     android:layout_marginTop="10dp"
                     android:background="@color/blue_light" />
             </RelativeLayout>
@@ -240,7 +240,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/btn_profile_edit"
+                android:id="@+id/btnProfile"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dp"
