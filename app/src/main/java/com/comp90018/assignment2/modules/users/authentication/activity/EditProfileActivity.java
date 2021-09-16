@@ -69,7 +69,67 @@ public class EditProfileActivity extends AppCompatActivity {
             }
         });
 
+        RadioGroup genderGroup = binding.genderRadioGroup;
+        final Integer[] gender = {Constants.FEMALE};
 
+        // get gender info
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == binding.profileFemale.getId()) {
+                    gender[0] = Constants.FEMALE;
+                } else if (checkedId == binding.profileMale.getId()) {
+                    gender[0] = Constants.MALE;
+                } else {
+                    gender[0] = Constants.GENDER_UNKNOWN;
+                }
+            }
+        });
+
+        genderGroup.check(binding.profileFemale.getId());
+
+        binding.btnProfile.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                String nickname = binding.profileName.getText().toString();
+                String description = binding.profileDesc.getText().toString();
+                String address = binding.profileAddress.getText().toString();
+                // get genderType
+                Integer genderType = gender[0];
+
+
+
+                if (nickname == null || description == null || address == null || nickname.length() >= 20 || description.length() >= 60 || address.length() >= 100) {
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("Please input all information correctly.").setPositiveButton("ok", null).show();
+                    return;
+                }
+
+                String nicknameRegex = "^[a-zA-Z0-9_-]{0,20}$";
+                // No password regex, because it is login
+                if (!nickname.matches(nicknameRegex)) {
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("Nickname should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
+                    return;
+                }
+
+                String addressRegex = "^[a-zA-Z0-9_-]{0,100}$";
+                // No password regex, because it is login
+                if (!address.matches(addressRegex)) {
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("address should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
+                    return;
+                }
+
+
+                String descRegex = "^[a-zA-Z0-9_-]{0,60}$";
+                // No password regex, because it is login
+                if (!description.matches(descRegex)) {
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("Description should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
+                    return;
+                }
+
+
+            }
+        });
 
 
 
