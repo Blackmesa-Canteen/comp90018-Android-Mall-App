@@ -10,7 +10,7 @@ import java.util.Map;
  * <p>
  * Can also used for notification.
  *
- * @author xiaotian 4
+ * @author xiaotian
  */
 public class SharedPreferencesHelper {
     private final SharedPreferences sharedPreferences;

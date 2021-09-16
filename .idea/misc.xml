@@ -11,13 +11,18 @@
         <entry key="app/src/main/res/drawable/et_cursor.xml" value="0.33835616438356164" />
         <entry key="app/src/main/res/drawable/mail_outline_24dp.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/drawable/notice_spot.xml" value="0.33835616438356164" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.1638888888888889" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/fragment_me_layout.xml" value="0.3242009132420091" />
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3581089147551664" />
         <entry key="app/src/main/res/layout/item_chat_address_receive.xml" value="0.3315068493150685" />
+        <entry key="app/src/main/res/layout/item_chat_img_receive.xml" value="0.3226851851851852" />
+        <entry key="app/src/main/res/layout/item_chat_retract.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_chat_text_receive.xml" value="0.3315068493150685" />
         <entry key="app/src/main/res/layout/item_chat_text_send.xml" value="0.3315068493150685" />
+        <entry key="app/src/main/res/layout/item_chat_voice_receive.xml" value="0.3226851851851852" />
+        <entry key="app/src/main/res/layout/item_chat_voice_send.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_emoticon.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/item_list_view_messages.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/item_recycler_view_search.xml" value="0.3315068493150685" />

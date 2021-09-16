@@ -43,8 +43,8 @@ import cn.jpush.im.android.api.model.UserInfo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- *
- * @author you
+ * message fragment
+ * @author xiaotian li
  */
 public class MessagesFragment extends BaseFragment {
 

@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityChatBinding;
-import com.comp90018.assignment2.databinding.ActivityMainBinding;
+import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
+import com.comp90018.assignment2.utils.Constants;
 
+import java.util.List;
+
+import cn.jpush.im.android.api.model.Conversation;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 
 /**
@@ -19,8 +22,20 @@ import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
  */
 public class ChatActivity extends AppCompatActivity {
 
-    ActivityChatBinding binding;
+    private ActivityChatBinding binding;
     private final static String TAG = "ChatActivity";
+
+    /** default chat type */
+    private int type = Constants.SINGLE_CHAT;
+
+    private String userName = "";
+    private String nickName = "";
+
+    private Conversation conversation;
+
+    private List<ChatMessageBean> chatMessageBeanList;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

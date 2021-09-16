@@ -33,6 +33,11 @@ import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * adapter for message fragment
+ *
+ * @author xiaotian
+ */
 public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseViewHolder> {
 
     private final FirebaseFirestore db;
@@ -110,6 +115,9 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
                         break;
                     case voice:
                         showStr = "[Voice]";
+                        break;
+                    case video:
+                        showStr = "[Video]";
                         break;
                     case location:
                         showStr = "[Location]";
