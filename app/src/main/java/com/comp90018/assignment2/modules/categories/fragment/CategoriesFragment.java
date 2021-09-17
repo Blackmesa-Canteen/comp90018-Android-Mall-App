@@ -75,7 +75,9 @@ public class CategoriesFragment extends BaseFragment {
                 ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
                 ArrayList<SubCategoryDTO> selectedCategories = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    subcategories.add(document.toObject(SubCategoryDTO.class));
+                    SubCategoryDTO subcategory = document.toObject(SubCategoryDTO.class);
+                    subcategory.setSubcategory_id(document.getId());
+                    subcategories.add(subcategory);
                 }
                     for (SubCategoryDTO subcategory : subcategories) {
                         if (subcategory.getCategory_ref().getPath().contains(selectedCategoryId)) {
