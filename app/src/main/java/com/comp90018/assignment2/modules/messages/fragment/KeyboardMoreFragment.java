@@ -1,7 +1,10 @@
 package com.comp90018.assignment2.modules.messages.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.util.Log;
 import android.view.View;
 
@@ -25,10 +28,13 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.content.ImageContent;
 import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.api.BasicCallback;
 
 /**
  *
@@ -114,7 +120,7 @@ public class KeyboardMoreFragment extends BaseFragment {
                                 new ImageContent.CreateImageContentCallback() {
                                     @Override
                                     public void gotResult(int i, String s, ImageContent imageContent) {
-                                        if (resultCode == 0) {
+                                        if (i == 0) {
                                             imageContent.setStringExtra(Constants.TYPE, finalJMessageType);
                                             Message messageToSend = ((ChatActivity) activityContext).getConversation()
                                                     .createSendMessage(imageContent);
@@ -126,6 +132,41 @@ public class KeyboardMoreFragment extends BaseFragment {
                                     }
                                 }
                         );
+
+                    } else if (PictureMimeType.isHasVideo(selectList.get(0).getMimeType())) {
+                        jMessageType = Constants.VIDEO_TYPE;
+
+                        int index = selectList.get(0).getPath().lastIndexOf('/');
+                        String fileName = "";
+                        if (index > 0) {
+                            fileName = selectList.get(0).getPath().substring(index + 1);
+                        }
+                        MediaMetadataRetriever media = new MediaMetadataRetriever();
+                        media.setDataSource(selectList.get(0).getPath());
+
+                        // thumbImage
+                        Bitmap bitmap = media.getFrameAtTime();
+
+                        Message message = null;
+
+                        if (chatType == Constants.SINGLE_CHAT) {
+                            try {
+                                message = JMessageClient.createSingleVideoMessage(userId,
+                                        Constants.JPUSH_APPKEY,
+                                        bitmap,
+                                        "jpeg",
+                                        new File(selectList.get(0).getPath()),
+                                        fileName,
+                                        1000);
+                            } catch (IOException e) {
+                                Log.e(TAG, "Video pack to the message error");
+                                e.printStackTrace();
+                            }
+                        }
+
+                        if (message != null) {
+                            sendMessage(message, ChatMessageBean.VIDEO_SEND);
+                        }
                     }
                 }
         }
@@ -138,8 +179,42 @@ public class KeyboardMoreFragment extends BaseFragment {
      */
     private void sendMessage(Message messageToSend, int chatMessageBeanType) {
         ChatMessageBean bean = new ChatMessageBean(messageToSend, chatMessageBeanType);
-        // not finish uploading
+        // not finish uploading， show progress bar
         bean.setUpload(false);
-        // TODO: wait finishing
+
+        ((ChatActivity) activityContext).addNewMessageBeanToAdapter(bean);
+
+        int nowListSize = ((ChatActivity) activityContext).getChatMessageBeanList().size();
+
+        // if send to the server, erase progress bar
+        messageToSend.setOnSendCompleteCallback(new BasicCallback() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void gotResult(int i, String s) {
+                if (i == 0) {
+                    ((ChatActivity) activityContext).getChatMessageBeanList().get(nowListSize - 1).setUpload(true);
+                    ((ChatActivity) activityContext).getAdapter().notifyDataSetChanged();
+                }
+            }
+        });
+
+        // send msg to Jmessage server
+        JMessageClient.sendMessage(messageToSend);
+    }
+
+    public int getChatType() {
+        return chatType;
+    }
+
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
