@@ -21,7 +21,12 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.core.GeoHash;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -50,12 +55,18 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     private FirebaseStorage storage;
     private final static String TAG = "HomePageAdapter";
 
+    private GeoPoint location_coordinate;
+    private double lat;
+    private double lon;
+    FirebaseFirestore db;
+
     public HomePageAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
         this.productDTOList = productDTOList;
         this.userDTOMap = new HashMap<>();
         storage = FirebaseStorage.getInstance();
         layoutInflater = LayoutInflater.from(context);
+        location_coordinate = null;
     }
 
     @Override
@@ -146,7 +157,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             }
 
             textProductDescriptionCut.setText(descriptionCut);
-            System.out.println("textProductDescriptionCut: "+textProductDescriptionCut);
+            //System.out.println("textProductDescriptionCut: "+textProductDescriptionCut);
             // set labels: brand and quality
             ArrayList<String> labelStrings = new ArrayList<>();
 
@@ -255,6 +266,22 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             } else {
                 rating.setRating(0);
             }
+
+            /* This field is used to get geohash of products
+            location_coordinate = productDTO.getLocation_coordinate();
+            lat = location_coordinate.getLatitude();
+            lon = location_coordinate.getLongitude();
+            //System.out.println("location_coordinate: "+location_coordinate+" # "+lat+ " # " +lon);
+            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lon));
+            // Add the hash and the lat/lng to the document. We will use the hash
+            // for queries and the lat/lng for distance comparisons.
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("geohash", hash);
+            updates.put("lat", lat);
+            updates.put("lng", lon);
+            System.out.println("geohash~ : "+updates+", "+productDTO.getDescription());
+            */
+
             /*
             System.out.println("---------------------------------------------------------");
             System.out.println("descriptionCut: "+descriptionCut);

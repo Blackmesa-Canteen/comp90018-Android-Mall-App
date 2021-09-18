@@ -51,12 +51,15 @@ public class ProductDTO implements Parcelable {
     private Integer view_number;
     private String geo_hash;
 
+    FirebaseFirestore db;
+
     protected ProductDTO(Parcel in) {
 
         category_ref = FirebaseFirestore.getInstance().document(in.readString());
         owner_ref = FirebaseFirestore.getInstance().document(in.readString());
         sub_category_ref = FirebaseFirestore.getInstance().document(in.readString());
         location_coordinate = new GeoPoint(in.readDouble(), in.readDouble());
+
 
         brand = in.readString();
         if (in.readByte() == 0) {
@@ -187,5 +190,6 @@ public class ProductDTO implements Parcelable {
         }
 
         dest.writeString(geo_hash);
+        System.out.println("location_coordinate:" +location_coordinate);
     }
 }

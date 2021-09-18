@@ -127,25 +127,6 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
-    // ADD GEO HASH
-    private class GeoHash extends java.lang.Object implements java.io.Serializable{
-        public void addGeoHash() {
-            // Compute the GeoHash for a lat/lng point
-            double lat = 51.5074;
-            double lng = 0.1278;
-            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
-
-            // Add the hash and the lat/lng to the document. We will use the hash
-            // for queries and the lat/lng for distance comparisons.
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("geohash", hash);
-            updates.put("lat", lat);
-            updates.put("lng", lng);
-
-            //DocumentReference ref = db.collection()
-        }
-    }
-
 
     /**
      * task for `pull to refresh`
@@ -178,6 +159,8 @@ public class HomeFragment extends BaseFragment {
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
 
+        GeoHash geoHash = new GeoHash();
+
         db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
@@ -194,6 +177,8 @@ public class HomeFragment extends BaseFragment {
         });
         // get user info from these DTOs, to show user info in the items,
         // every time finished query, refresh adapter
+
+
     }
 
     private void processData(List<ProductDTO> productDTOList) {
@@ -237,10 +222,11 @@ public class HomeFragment extends BaseFragment {
         public void onLocationChanged(Location loc) {
             String longitude = "Longitude: " + loc.getLongitude();
             String latitude = "Latitude: " + loc.getLatitude();
+            /*
             System.out.println("----------Current Location----------");
             Log.v(TAG, longitude);
             Log.v(TAG, latitude);
-            System.out.println("----------Current Location----------");
+            System.out.println("----------Current Location----------");*/
         }
 
         @Override
@@ -277,4 +263,23 @@ public class HomeFragment extends BaseFragment {
         }
     }*/
 
+    // ADD GEO HASH
+    private class GeoHash extends java.lang.Object implements java.io.Serializable{
+        public void getGeoHash() {
+            // Compute the GeoHash for a lat/lng point
+            double lat = 51.5074;
+            double lng = 0.1278;
+            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+
+            // Add the hash and the lat/lng to the document. We will use the hash
+            // for queries and the lat/lng for distance comparisons.
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("geohash", hash);
+            updates.put("lat", lat);
+            updates.put("lng", lng);
+            ProductDTO productDTO = new ProductDTO();
+            String geolocation = productDTO.getLocation_coordinate().toString();
+            System.out.println("geolocation: "+geolocation);
+        }
+    }
 }
