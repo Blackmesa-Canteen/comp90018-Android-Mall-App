@@ -3,6 +3,10 @@ package com.comp90018.assignment2.modules.users.authentication.activity;
  * @author Gengchang Xu
  */
 
+import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
+
+import static cn.jiguang.ar.c.n;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,11 +26,14 @@ import com.comp90018.assignment2.databinding.ActivitySearchProductBinding;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.jetbrains.annotations.NotNull;
@@ -112,7 +119,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                String addressRegex = "^[a-zA-Z0-9_-]{0,100}$";
+                String addressRegex = "^[a-zA-Z0-9!_-]{0,100}$";
                 // No password regex, because it is login
                 if (!address.matches(addressRegex)) {
                     new AlertDialog.Builder(EditProfileActivity.this).setMessage("address should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
@@ -120,13 +127,69 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
 
 
-                String descRegex = "^[a-zA-Z0-9_-]{0,60}$";
+                String descRegex = "^[a-zA-Z0-9!_-]{0,60}$";
                 // No password regex, because it is login
                 if (!description.matches(descRegex)) {
                     new AlertDialog.Builder(EditProfileActivity.this).setMessage("Description should be letters, numbers, underscores and dashes.").setPositiveButton("ok", null).show();
                     return;
                 }
 
+
+                ProgressDialog progressDialog=new ProgressDialog(EditProfileActivity.this);
+                progressDialog.setTitle("Updating");
+                progressDialog.setMessage("Please wait");
+                progressDialog.setCancelable(true);
+
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                String userId = currentUser.getUid();
+                System.out.println(currentUser.getUid());
+                DocumentReference userReference = db.collection(USERS_COLLECTION).document(userId);
+
+
+
+
+                userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        UserDTO userDTO = documentSnapshot.toObject(UserDTO.class);
+                        userDTO.setNickname(nickname);
+                        userDTO.setGender(genderType);
+                        userDTO.setDescription(description);
+                        userDTO.setLocation_text(address);
+                        System.out.println(userDTO.getNickname());
+                        System.out.println(userDTO.getGender());
+
+
+
+                        db.collection(Constants.USERS_COLLECTION)
+                                .document(userId).set(userDTO)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+
+                                            // logout google account, then try to sign-in again
+                                            firebaseAuth.signOut();
+
+                                            // finish the register activity
+                                            progressDialog.dismiss();
+                                            finish();
+                                        }else {
+                                            progressDialog.cancel();
+                                            new AlertDialog.Builder(EditProfileActivity.this)
+                                                    .setTitle("Sorry")
+                                                    .setMessage("IM update issue, please try again later")
+                                                    .setPositiveButton("Ok", null).show();
+                                        }
+                                    }
+                                });
+
+
+
+
+
+                    }
+                });
 
             }
         });
@@ -136,16 +199,6 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
 }
