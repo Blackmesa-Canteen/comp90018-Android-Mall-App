@@ -17,10 +17,10 @@ import java.util.ArrayList;
  */
 public class CategoryLeftAdapter extends BaseAdapter {
     private int mSelect = 0;
-    private Context mContext;
-    private ArrayList<CategoryDTO> categories;
+    private final Context mContext;
+    private final ArrayList<CategoryDTO> categories;
 
-    public CategoryLeftAdapter(Context mContext,  ArrayList<CategoryDTO> categories) {
+    public CategoryLeftAdapter(Context mContext, ArrayList<CategoryDTO> categories) {
         this.mContext = mContext;
         this.categories = categories;
     }

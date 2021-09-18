@@ -4,8 +4,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.CategoryDTO;
@@ -15,6 +17,7 @@ import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter
 import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 
 /**
@@ -48,13 +51,15 @@ public class CategoriesFragment extends BaseFragment {
         db.collection(Constants.CATEGORIES_COLLECTION).orderBy("name").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<CategoryDTO> categories = new ArrayList<>();
-                for (QueryDocumentSnapshot document: task.getResult()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
                     CategoryDTO category = document.toObject(CategoryDTO.class);
                     category.setCategory_id(document.getId());
                     categories.add(category);
                 }
-                leftAdapter = new CategoryLeftAdapter(activityContext, categories);
-                ct_left.setAdapter(leftAdapter);
+                if (isFirst) {
+                    leftAdapter = new CategoryLeftAdapter(activityContext, categories);
+                    ct_left.setAdapter(leftAdapter);
+                }
                 initListener(leftAdapter);
             } else {
                 Log.d(TAG, "Error getting documents: ", task.getException());

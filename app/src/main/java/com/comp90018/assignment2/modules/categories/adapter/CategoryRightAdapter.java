@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
@@ -23,18 +25,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 /**
  * @author Ziyuan Xu
  */
 public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    FirebaseFirestore db;
-    private Context mContext;
-    private ArrayList<SubCategoryDTO> subcategories;
-    private final LayoutInflater mLayoutInflater;
-    private FirebaseStorage storage;
     private final static String TAG = "CategoryRightAdapter";
+    private final LayoutInflater mLayoutInflater;
+    FirebaseFirestore db;
+    private final Context mContext;
+    private ArrayList<SubCategoryDTO> subcategories;
+    private final FirebaseStorage storage;
 
     public CategoryRightAdapter(Context mContext, ArrayList<SubCategoryDTO> subcategories) {
         this.mContext = mContext;
@@ -64,16 +67,16 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
         return subcategories.size();
     }
 
-    class SubcategoryViewHolder extends RecyclerView.ViewHolder  {
-        private Context mContext;
-        private TextView sct_title;
-        private ImageView sct_image;
+    class SubcategoryViewHolder extends RecyclerView.ViewHolder {
+        private final Context mContext;
+        private final TextView sct_title;
+        private final ImageView sct_image;
 
-        public SubcategoryViewHolder(@NonNull View itemView,  final Context mContext) {
+        public SubcategoryViewHolder(@NonNull View itemView, final Context mContext) {
             super(itemView);
             this.mContext = mContext;
             sct_image = (ImageView) itemView.findViewById(R.id.sct_image);
-            sct_title = (TextView)itemView.findViewById(R.id.sct_title);
+            sct_title = (TextView) itemView.findViewById(R.id.sct_title);
         }
 
         public void setData(ArrayList<SubCategoryDTO> subcategories, final int position) {
@@ -84,7 +87,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .into(sct_image);
             sct_title.setText(subcategory.getName());
             itemView.setOnClickListener(v -> {
-                DocumentReference ref = db.document("sub_categories/"+subcategory.getSubcategory_id());
+                DocumentReference ref = db.document("sub_categories/" + subcategory.getSubcategory_id());
                 db.collection(Constants.PRODUCT_COLLECTION)
                         .whereEqualTo("sub_category_ref", ref)
                         .get()
