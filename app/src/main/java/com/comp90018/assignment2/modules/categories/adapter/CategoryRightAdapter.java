@@ -1,8 +1,10 @@
 package com.comp90018.assignment2.modules.categories.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +18,9 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<SubCategoryDTO> subcategories;
     private final LayoutInflater mLayoutInflater;
     private FirebaseStorage storage;
+    private final static String TAG = "CategoryRightAdapter";
 
     public CategoryRightAdapter(Context mContext, ArrayList<SubCategoryDTO> subcategories) {
         this.mContext = mContext;
@@ -45,6 +46,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -82,10 +84,9 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .into(sct_image);
             sct_title.setText(subcategory.getName());
             itemView.setOnClickListener(v -> {
-                System.out.println(subcategory.getSubcategory_id());
-                // TODO: 输入对应的由subcategory名字查询 -> 对应List<ProductDTO> -> 跳转到对应的searchResultActivity
+                DocumentReference ref = db.document("sub_categories/"+subcategory.getSubcategory_id());
                 db.collection(Constants.PRODUCT_COLLECTION)
-                        .whereEqualTo("sub_category_ref", "/sub_categories/"+ subcategory.getSubcategory_id())
+                        .whereEqualTo("sub_category_ref", ref)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
@@ -96,10 +97,11 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                                 }
                                 // start result activity
                                 Intent goToSearchResultIntent = new Intent(mContext, SearchResultActivity.class);
-                                goToSearchResultIntent.putParcelableArrayListExtra("selectedProductDTOList", productDTOList);
+                                goToSearchResultIntent.putParcelableArrayListExtra("productDTOList", productDTOList);
                                 mContext.startActivity(goToSearchResultIntent);
                             } else {
                                 new AlertDialog.Builder(mContext).setMessage("Enter failed, please try again later.").setPositiveButton("ok", null).show();
+                                Log.d(TAG, "Error getting documents: ", task.getException());
                             }
                         });
             });
