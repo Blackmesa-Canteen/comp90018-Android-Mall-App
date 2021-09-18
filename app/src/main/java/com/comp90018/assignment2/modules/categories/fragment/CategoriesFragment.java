@@ -15,6 +15,7 @@ import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryLeftAdapter;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -73,23 +74,18 @@ public class CategoriesFragment extends BaseFragment {
             if (position != 0) {
                 isFirst = false;
             }
-            String selectedCategoryId = adapter.getItem(position).getCategory_id();
-            db.collection(Constants.SUB_CATEGORIES_COLLECTION).
-                get().addOnCompleteListener(task -> {
+            DocumentReference ref = db.document("categories/" + adapter.getItem(position).getCategory_id());
+            db.collection(Constants.SUB_CATEGORIES_COLLECTION)
+                    .whereEqualTo("category_ref", ref)
+                    .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<SubCategoryDTO> subcategories = new ArrayList<>();
-                ArrayList<SubCategoryDTO> selectedCategories = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     SubCategoryDTO subcategory = document.toObject(SubCategoryDTO.class);
                     subcategory.setSubcategory_id(document.getId());
                     subcategories.add(subcategory);
                 }
-                    for (SubCategoryDTO subcategory : subcategories) {
-                        if (subcategory.getCategory_ref().getPath().contains(selectedCategoryId)) {
-                            selectedCategories.add(subcategory);
-                        }
-                    }
-                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, selectedCategories);
+                    CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
                     ct_right.setAdapter(rightAdapter);
                     GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
                     manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
