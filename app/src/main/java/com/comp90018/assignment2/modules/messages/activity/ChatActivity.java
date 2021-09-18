@@ -2,16 +2,21 @@ package com.comp90018.assignment2.modules.messages.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -28,24 +33,37 @@ import com.comp90018.assignment2.modules.messages.view.RecordButtonTextView;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.DensityUtil;
 import com.comp90018.assignment2.utils.VoiceMessageUtil;
+import com.comp90018.assignment2.utils.activity.ImagePreviewActivity;
+import com.comp90018.assignment2.utils.activity.VideoPlayerActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
+import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.content.PromptContent;
+import cn.jpush.im.android.api.content.TextContent;
+import cn.jpush.im.android.api.content.VideoContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
 import cn.jpush.im.android.api.enums.MessageDirect;
 import cn.jpush.im.android.api.enums.MessageStatus;
+import cn.jpush.im.android.api.event.MessageEvent;
+import cn.jpush.im.android.api.event.MessageRetractEvent;
+import cn.jpush.im.android.api.event.OfflineMessageEvent;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.api.BasicCallback;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * Chat window
@@ -79,15 +97,24 @@ public class ChatActivity extends AppCompatActivity {
     boolean isShowingRecordingTextView = false;
     VoiceMessageUtil voiceMessageUtil;
 
+    private PromptDialog dialog;
+
+    EmojIconActions emojIcon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        JMessageClient.registerEventReceiver(this);
+
         // init view binding
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         // attach to layout file
         setContentView(view);
+
+        //
+        dialog = new PromptDialog(this);
 
         // init db
         db = FirebaseFirestore.getInstance();
@@ -102,19 +129,7 @@ public class ChatActivity extends AppCompatActivity {
         keyboardMoreFragment = new KeyboardMoreFragment();
 
         // set emoj
-        EmojIconActions emojIcon = new EmojIconActions(this, (View) binding.rlRoot, binding.etMessageInput, binding.ivEmoji);
-        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
-            @Override
-            public void onKeyboardOpen() {
-                Log.e(TAG, "emoji open");
-
-            }
-
-            @Override
-            public void onKeyboardClose() {
-                Log.e(TAG, "emoji close");
-            }
-        });
+        emojIcon = new EmojIconActions(this, (View) binding.rlRoot, binding.etMessageInput, binding.ivEmoji);
 
         // get info from intent bundle
         chatType = getIntent().getIntExtra(Constants.TYPE, Constants.SINGLE_CHAT);
@@ -183,13 +198,114 @@ public class ChatActivity extends AppCompatActivity {
         // TODO this!
 
         // init keyboard
-//        initInput();
-//        initMore();
+        initInput();
+        initMore();
 
         // init voice service
         initVoiceService();
 
     }
+
+
+    boolean showOption=false;
+    boolean showEmoji=false;
+    /**
+     * init more options behavior
+     */
+    private void initMore() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+                .add(R.id.fl_keyboard_more, keyboardMoreFragment)
+                .commit();
+
+        fragmentManager.beginTransaction()
+                .hide(keyboardMoreFragment)
+                .commit();
+
+        handler.sendEmptyMessage(Constants.HIDDEN_BOTTOM);
+
+        // set click emoj btn behaviour
+        emojIcon.setKeyboardListener(new EmojIconActions.KeyboardListener() {
+            @Override
+            public void onKeyboardOpen() {
+                Log.d(TAG, "emoji open");
+
+                // if click emoj, hide normal keyboard
+//                InputMethodManager inputSoftKeys =
+//                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputSoftKeys.hideSoftInputFromWindow(binding.etMessageInput.getWindowToken(), 0);
+
+                if (showOption) {
+                    showOption = false;
+                    hideOption();
+                }
+
+                showEmoji = !showEmoji;
+            }
+
+            @Override
+            public void onKeyboardClose() {
+                Log.d(TAG, "emoji close");
+            }
+        });
+
+        // set click keyboard more behavior
+        binding.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // if the emoj is on, no show more
+                if (!showEmoji) {
+
+                    // click again to close
+                    if (showOption) {
+                        showOption = false;
+                        hideOption();
+                    } else {
+                        showOption = true;
+                        showOption();
+                    }
+                }
+            }
+        });
+
+    }
+
+    /**
+     * hide keyboard more option
+     */
+    private void hideOption() {
+        handler.sendEmptyMessage(Constants.HIDDEN_BOTTOM);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .hide(keyboardMoreFragment)
+                .commit();
+    }
+
+    /**
+     * show keyboard more option
+     */
+    private void showOption() {
+        handler.sendEmptyMessage(Constants.SHOW_BOTTOM);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .show(keyboardMoreFragment)
+                .commit();
+    }
+
+    /**
+     * send plain text with send btn
+     */
+    private void initInput() {
+        binding.ivSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sentTextMessage(binding.etMessageInput.getText().toString());
+                binding.etMessageInput.setText("");
+            }
+        });
+    }
+
 
     /**
      * init chat message bubble list
@@ -219,9 +335,73 @@ public class ChatActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                // click image bubble and preview the img
                 if (chatMessageBeanList.get(position).getItemType() == ChatMessageBean.IMG_RECEIVE
                         || chatMessageBeanList.get(position).getItemType() == ChatMessageBean.IMG_SEND) {
-                    // TODO this!
+
+                    int first = ((LinearLayoutManager) Objects.requireNonNull(binding.rvChat.getLayoutManager())).findFirstVisibleItemPosition();
+                    int last = ((LinearLayoutManager) Objects.requireNonNull(binding.rvChat.getLayoutManager())).findLastVisibleItemPosition();
+
+                    if (position < first || position > last) {
+                        return;
+                    }
+
+                    ImageContent imageContent = (ImageContent) chatMessageBeanList.get(position).getMessage().getContent();
+
+                    String path = "";
+                    if (!TextUtils.isEmpty(imageContent.getLocalThumbnailPath())) {
+                        path = imageContent.getLocalThumbnailPath();
+                    }
+                    dialog.showLoading("Downloading image...");
+                    String finalPath = path;
+                    imageContent.downloadOriginImage(chatMessageBeanList.get(position).getMessage(), new DownloadCompletionCallback() {
+                        @Override
+                        public void onComplete(int i, String s, File file) {
+                            dialog.dismiss();
+                            // preview the image
+                            Intent goToImagePreviewIntent = new Intent(ChatActivity.this, ImagePreviewActivity.class);
+                            if (i == 0) {
+                                goToImagePreviewIntent.putExtra("image_path", file.getPath());
+                            } else {
+                                goToImagePreviewIntent.putExtra("image_path", finalPath);
+                            }
+                            startActivity(goToImagePreviewIntent);
+                        }
+                    });
+                }
+
+                // if video
+                if(chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VIDEO_RECEIVE||
+                        chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VIDEO_SEND ) {
+                    cn.jpush.im.android.api.model.Message message = chatMessageBeanList
+                            .get(position).getMessage();
+
+                    VideoContent videoContent = (VideoContent) message.getContent();
+
+                    dialog.showLoading("Downloading video...");
+                    videoContent.downloadVideoFile(message, new DownloadCompletionCallback() {
+                        @Override
+                        public void onComplete(int i, String s, File file) {
+                            dialog.dismiss();
+
+                            if (file == null || i != 0) {
+                                Log.w(TAG, "Failed to download video.");
+                                return;
+                            }
+
+                            Intent goToVideoPlayIntent = new Intent(ChatActivity.this, VideoPlayerActivity.class);
+                            goToVideoPlayIntent.putExtra("video_url", file.getPath());
+                            startActivity(goToVideoPlayIntent);
+                        }
+                    });
+                }
+
+                // if record
+                if(chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VOICE_SEND
+                        || chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VOICE_RECEIVE){
+                    if (voiceMessageUtil != null) {
+                        voiceMessageUtil.playVoice(chatMessageBeanList, position);
+                    }
                 }
             }
         });
@@ -299,6 +479,40 @@ public class ChatActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    /**
+     * send plain text to Jmessage server
+     * @param text text
+     */
+    private void sentTextMessage(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            TextContent textContent = new TextContent(text);
+            if (conversation != null) {
+                cn.jpush.im.android.api.model.Message message = conversation.createSendMessage(textContent);
+                ChatMessageBean bean = new ChatMessageBean(message, ChatMessageBean.TEXT_SEND);
+                bean.setUpload(false);
+                chatMessageBeanList.add(bean);
+
+                adapter.notifyItemInserted(chatMessageBeanList.size() - 1);
+
+                int nowSize = chatMessageBeanList.size();
+
+                handler.sendEmptyMessageDelayed(Constants.SCROLL_BOTTOM, 200);
+                message.setOnSendCompleteCallback(new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if (i == 0) {
+                            chatMessageBeanList.get(nowSize - 1).setUpload(true);
+                            adapter.notifyItemInserted(chatMessageBeanList.size() - 1);
+                        }
+                    }
+                });
+
+                JMessageClient.sendMessage(message);
+            }
+
+        }
     }
 
     /**
@@ -434,5 +648,36 @@ public class ChatActivity extends AppCompatActivity {
 
     public RvChatAdapter getAdapter() {
         return adapter;
+    }
+
+    /**
+     * receive new incoming message
+     * @param event jmessage message event
+     */
+    public void onEventMainThread(MessageEvent event) {
+
+        addMessageBeanFromJMessage(event.getMessage());
+    }
+
+    /**
+     * receive offline message
+     * @param event
+     */
+    public void onEvent(OfflineMessageEvent event) {
+        for (cn.jpush.im.android.api.model.Message message : event.getOfflineMessageList()) {
+            addMessageBeanFromJMessage(message);
+        }
+    }
+
+    /**
+     * handle recalled message
+     */
+    public void onEvent(MessageRetractEvent event) {
+        for (ChatMessageBean bean : chatMessageBeanList) {
+            if (event.getRetractedMessage().getId() == bean.getMessage().getId()) {
+                bean.setItemType(ChatMessageBean.RETRACT);
+                adapter.notifyItemChanged(chatMessageBeanList.indexOf(bean));
+            }
+        }
     }
 }

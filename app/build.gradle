@@ -60,6 +60,9 @@ android {
 
 dependencies {
 
+    // video player
+    implementation 'com.ycjiang:VideoPlayModule-Lite:2.3.61'
+
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.21"
 
