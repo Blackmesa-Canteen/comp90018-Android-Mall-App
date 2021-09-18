@@ -259,4 +259,12 @@ public class RvChatAdapter extends BaseMultiItemQuickAdapter<ChatMessageBean, Ba
 
         // attach avatar click event
     }
+
+    public int getPlayVoiceIndex() {
+        return playVoiceIndex;
+    }
+
+    public void setPlayVoiceIndex(int playVoiceIndex) {
+        this.playVoiceIndex = playVoiceIndex;
+    }
 }

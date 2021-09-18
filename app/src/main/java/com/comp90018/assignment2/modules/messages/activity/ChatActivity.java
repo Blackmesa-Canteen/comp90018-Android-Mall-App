@@ -2,8 +2,10 @@ package com.comp90018.assignment2.modules.messages.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,35 +13,38 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityChatBinding;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.messages.adapter.RvChatAdapter;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
 import com.comp90018.assignment2.modules.messages.fragment.KeyboardMoreFragment;
+import com.comp90018.assignment2.modules.messages.view.RecordButtonTextView;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.DensityUtil;
+import com.comp90018.assignment2.utils.VoiceMessageUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.callback.GetUserInfoCallback;
 import cn.jpush.im.android.api.content.PromptContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
+import cn.jpush.im.android.api.enums.MessageDirect;
 import cn.jpush.im.android.api.enums.MessageStatus;
 import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.UserInfo;
-import de.hdodenhof.circleimageview.CircleImageView;
+import cn.jpush.im.api.BasicCallback;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 
 /**
@@ -67,7 +72,12 @@ public class ChatActivity extends AppCompatActivity {
 
     private KeyboardMoreFragment keyboardMoreFragment;
 
+    private UserDTO targetUserDTO;
+
     FirebaseFirestore db;
+
+    boolean isShowingRecordingTextView = false;
+    VoiceMessageUtil voiceMessageUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +139,7 @@ public class ChatActivity extends AppCompatActivity {
 
                                     // get userDTO from firebase
                                     UserDTO userDTO = document.toObject(UserDTO.class);
+
                                     String email = userDTO.getEmail();
                                     if (email != null) {
                                         binding.textUserId.setText(email);
@@ -136,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
                                         binding.textUserId.setText("");
                                     }
 
+                                    targetUserDTO = userDTO;
                                 } else {
                                     Log.d(TAG, "No such document");
                                 }
@@ -158,12 +170,135 @@ public class ChatActivity extends AppCompatActivity {
         // load chat history from server
         if (conversation.getAllMessage() != null) {
             for (cn.jpush.im.android.api.model.Message message : conversation.getAllMessage()) {
-                addMessageFromServer(message);
+                addMessageBeanFromJMessage(message);
             }
-
-
         }
 
+        // init activity title
+        initTitle();
+
+        // init chat message list
+        initList();
+
+        // TODO this!
+
+        // init keyboard
+//        initInput();
+//        initMore();
+
+        // init voice service
+        initVoiceService();
+
+    }
+
+    /**
+     * init chat message bubble list
+     */
+    private void initList() {
+        binding.rvChat.setAdapter(adapter);
+        binding.rvChat.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+                if (chatMessageBeanList.get(position).getMessage().getDirect() == MessageDirect.send) {
+                    ;
+                } else {
+                    if (chatType == Constants.SINGLE_CHAT) {
+                        if (targetUserDTO != null) {
+                            // TODO activity jumping
+//                        Intent goToUserPageActivity =
+                            Toast.makeText(ChatActivity.this, "jump to user:" + targetUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    // now there is only single chat type, no else.
+                }
+            }
+        });
+
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
+                if (chatMessageBeanList.get(position).getItemType() == ChatMessageBean.IMG_RECEIVE
+                        || chatMessageBeanList.get(position).getItemType() == ChatMessageBean.IMG_SEND) {
+                    // TODO this!
+                }
+            }
+        });
+
+    }
+
+    /**
+     * set up voice message handling logic
+     */
+    private void initVoiceService() {
+        voiceMessageUtil = new VoiceMessageUtil(this, adapter);
+
+        binding.ivSound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isShowingRecordingTextView) {
+                    binding.tvSound.setVisibility(View.INVISIBLE);
+                    binding.etMessageInput.setVisibility(View.VISIBLE);
+                    binding.ivSound.setImageResource(R.drawable.microphone);
+                } else {
+                    binding.tvSound.setVisibility(View.VISIBLE);
+                    binding.etMessageInput.setVisibility(View.INVISIBLE);
+                    binding.ivSound.setImageResource(R.drawable.ic_action_keyboard);
+                }
+
+                isShowingRecordingTextView = !isShowingRecordingTextView;
+            }
+        });
+
+        binding.tvSound.setConversation(conversation);
+
+        binding.tvSound.setOnNewMessage(new RecordButtonTextView.OnNewMessage() {
+            @Override
+            public void newMessage(cn.jpush.im.android.api.model.Message message) {
+                if (message == null) {
+                    return;
+                }
+
+                addMessageBeanFromJMessage(message);
+                int nowSize = chatMessageBeanList.size();
+                chatMessageBeanList.get(nowSize - 1).setUpload(false);
+                adapter.notifyItemChanged(nowSize - 1);
+
+                message.setOnSendCompleteCallback(new BasicCallback() {
+                    @Override
+                    public void gotResult(int i, String s) {
+                        if (i == 0) {
+                            chatMessageBeanList.get(nowSize - 1).setUpload(true);
+                            adapter.notifyItemChanged(nowSize - 1);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * set up activity's title click event
+     */
+    private void initTitle() {
+        binding.llUserTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Intent goToUserPageActivityIntent = new Intent();
+                // TODO: jump to user detail
+                if (targetUserDTO != null) {
+                    Toast.makeText(ChatActivity.this, "去用户首页:" + targetUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**
@@ -215,7 +350,7 @@ public class ChatActivity extends AppCompatActivity {
      * and show it.
      * @param message
      */
-    private void addMessageFromServer(cn.jpush.im.android.api.model.Message message) {
+    private void addMessageBeanFromJMessage(cn.jpush.im.android.api.model.Message message) {
         if(message.getStatus() == MessageStatus.send_fail
                 || message.getContentType() == ContentType.eventNotification){
             return;
@@ -241,11 +376,52 @@ public class ChatActivity extends AppCompatActivity {
 
         switch (message.getContentType()) {
             case text:
-                // TODO: zhe li!
+                if (message.getDirect() == MessageDirect.send) {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.TEXT_SEND));
+                } else {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.TEXT_RECEIVE));
+                }
+                break;
+
+            case image:
+                if (message.getDirect() == MessageDirect.send) {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.IMG_SEND));
+                } else {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.IMG_RECEIVE));
+                }
+                break;
+
+            case voice:
+                if (message.getDirect() == MessageDirect.send) {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.VOICE_SEND));
+                } else {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.VOICE_RECEIVE));
+                }
+                break;
+
+            case video:
+                if (message.getDirect() == MessageDirect.send) {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.VIDEO_SEND));
+                } else {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.VIDEO_RECEIVE));
+                }
+                break;
+
+            case location:
+                if (message.getDirect() == MessageDirect.send) {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.ADDRESS_SEND));
+                } else {
+                    chatMessageBeanList.add(new ChatMessageBean(message, ChatMessageBean.ADDRESS_RECEIVE));
+                }
+                break;
+
+            case custom:
+                // no custom for now
+                break;
         }
 
-
-
+        adapter.notifyItemInserted(chatMessageBeanList.size() - 1);
+        handler.sendEmptyMessageDelayed(Constants.SCROLL_BOTTOM, 200);
     }
 
     public Conversation getConversation() {

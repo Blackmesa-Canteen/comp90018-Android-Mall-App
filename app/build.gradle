@@ -2,6 +2,9 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -56,6 +59,9 @@ android {
 
 
 dependencies {
+
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.21"
 
     // picture selector
     implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc08'
