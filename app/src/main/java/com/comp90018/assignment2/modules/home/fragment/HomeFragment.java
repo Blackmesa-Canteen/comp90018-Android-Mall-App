@@ -30,6 +30,8 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -47,7 +49,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
@@ -71,6 +75,8 @@ public class HomeFragment extends BaseFragment {
     String longitude;
     LocationManager locationManager;
     LocationListener locationListener;
+
+
 
     @SuppressLint("MissingPermission")
     @Override
@@ -121,6 +127,24 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
+    // ADD GEO HASH
+    private class GeoHash extends java.lang.Object implements java.io.Serializable{
+        public void addGeoHash() {
+            // Compute the GeoHash for a lat/lng point
+            double lat = 51.5074;
+            double lng = 0.1278;
+            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+
+            // Add the hash and the lat/lng to the document. We will use the hash
+            // for queries and the lat/lng for distance comparisons.
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("geohash", hash);
+            updates.put("lat", lat);
+            updates.put("lng", lng);
+
+            //DocumentReference ref = db.collection()
+        }
+    }
 
 
     /**
