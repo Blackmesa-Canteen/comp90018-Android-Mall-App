@@ -32,6 +32,7 @@ import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQueryBounds;
 import com.gigamole.navigationtabstrip.NavigationTabStrip;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -40,10 +41,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -75,7 +79,7 @@ public class HomeFragment extends BaseFragment {
     String longitude;
     LocationManager locationManager;
     LocationListener locationListener;
-
+    String user_geohash;
 
 
     @SuppressLint("MissingPermission")
@@ -86,19 +90,13 @@ public class HomeFragment extends BaseFragment {
         fakeSearchView = (ImageView) view.findViewById(R.id.img_fake_search_view);
         viewLabel = (NavigationTabStrip) view.findViewById(R.id.view_label);
         mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) view.findViewById(R.id.main_swipe);
-        locationManager = (LocationManager) getActivity()
-                .getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-/*
-        locationManager = (LocationManager) getActivity()
-                .getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-*/
 
-        // Initialize location client
-        client = LocationServices.getFusedLocationProviderClient(getActivity());
+        locationManager = (LocationManager) getActivity()
+                .getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+
+
 
         // attach search jumping listener
         fakeSearchView.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +112,8 @@ public class HomeFragment extends BaseFragment {
         // setup label view
         viewLabel.setTitles("Recommends", "Intra-city");
         viewLabel.setTabIndex(0, true);
+
+
 
         // setup refresh
         /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
@@ -159,10 +159,8 @@ public class HomeFragment extends BaseFragment {
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
 
-        GeoHash geoHash = new GeoHash();
 
         db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
-
             if (task.isSuccessful()) {
                 List<ProductDTO> productDTOList = new ArrayList<>();
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -175,10 +173,6 @@ public class HomeFragment extends BaseFragment {
                 Log.d(TAG, "Error getting documents", task.getException());
             }
         });
-        // get user info from these DTOs, to show user info in the items,
-        // every time finished query, refresh adapter
-
-
     }
 
     private void processData(List<ProductDTO> productDTOList) {
@@ -217,69 +211,59 @@ public class HomeFragment extends BaseFragment {
 
     // Get User Location, from :https://stackoverflow.com/questions/1513485/how-do-i-get-the-current-gps-location-programmatically-in-android
 
-    private class MyLocationListener implements LocationListener {
+    public class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
-            String longitude = "Longitude: " + loc.getLongitude();
-            String latitude = "Latitude: " + loc.getLatitude();
-            /*
-            System.out.println("----------Current Location----------");
-            Log.v(TAG, longitude);
-            Log.v(TAG, latitude);
-            System.out.println("----------Current Location----------");*/
-        }
+            String myLongitude = "Longitude: " + loc.getLongitude();
+            String myLatitude = "Latitude: " + loc.getLatitude();
+            //user_geohash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(45, 144));
 
-        @Override
-        public void onProviderDisabled(String provider) {
-        }
+            final GeoLocation center = new GeoLocation(45, 144);
+            final double radiusInM = 50 * 1000;
 
-        @Override
-        public void onProviderEnabled(String provider) {
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-    }
-        /*------- To get city name from coordinates -------- */
-            /*
-            String cityName = null;
-            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
-            List<Address> addresses;
-            try {
-                addresses = gcd.getFromLocation(loc.getLatitude(),
-                        loc.getLongitude(), 1);
-                if (addresses.size() > 0) {
-                    System.out.println(addresses.get(0).getLocality());
-                    cityName = addresses.get(0).getLocality();
-                }
+            // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+            // a separate query for each pair. There can be up to 9 pairs of bounds
+            // depending on overlap, but in most cases there are 4.
+            List<GeoQueryBounds> bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM);
+            final List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+            for (GeoQueryBounds b : bounds) {
+                Query q = db.collection(Constants.PRODUCT_COLLECTION)
+                        .orderBy("geo_hash")
+                        .startAt(b.startHash)
+                        .endAt(b.endHash);
+                tasks.add(q.get());
             }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-            String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-                    + cityName;
-            editLocation.setText(s);
-        }
-    }*/
 
-    // ADD GEO HASH
-    private class GeoHash extends java.lang.Object implements java.io.Serializable{
-        public void getGeoHash() {
-            // Compute the GeoHash for a lat/lng point
-            double lat = 51.5074;
-            double lng = 0.1278;
-            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
 
-            // Add the hash and the lat/lng to the document. We will use the hash
-            // for queries and the lat/lng for distance comparisons.
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("geohash", hash);
-            updates.put("lat", lat);
-            updates.put("lng", lng);
-            ProductDTO productDTO = new ProductDTO();
-            String geolocation = productDTO.getLocation_coordinate().toString();
-            System.out.println("geolocation: "+geolocation);
+            // Collect all the query results together into a single list
+            Tasks.whenAllComplete(tasks)
+                    .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
+                        @Override
+                        public void onComplete(@NonNull Task<List<Task<?>>> t) {
+                            List<DocumentSnapshot> matchingDocs = new ArrayList<>();
+
+                            for (Task<QuerySnapshot> task : tasks) {
+                                QuerySnapshot snap = task.getResult();
+                                System.out.println("snap: "+snap.getDocuments());
+                                for (DocumentSnapshot doc : snap.getDocuments()) {
+                                    double lat = doc.getDouble("lat");
+                                    double lng = doc.getDouble("lng");
+                                    // We have to filter out a few false positives due to GeoHash
+                                    // accuracy, but most will match
+                                    GeoLocation docLocation = new GeoLocation(lat, lng);
+                                    double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center);
+                                    if (distanceInM <= radiusInM) {
+                                        matchingDocs.add(doc);
+                                    }
+                                }
+                            }
+                            // matchingDocs contains the results
+                            // ...
+                            System.out.println("matchingDocs size: "+matchingDocs.size());
+                            System.out.println("matchingDocs: "+matchingDocs);
+                        }
+                    });
+
         }
     }
 }

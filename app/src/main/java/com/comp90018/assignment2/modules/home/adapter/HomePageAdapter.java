@@ -1,6 +1,8 @@
 package com.comp90018.assignment2.modules.home.adapter;
 
 import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,6 +61,9 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     private double lat;
     private double lon;
     FirebaseFirestore db;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     public HomePageAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
@@ -128,7 +133,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
             ProductDTO productDTO = productDTOList.get(position);
-
             // set product img
             // if default img
             if (productDTO.getImage_address() == null
@@ -267,7 +271,8 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 rating.setRating(0);
             }
 
-            /* This field is used to get geohash of products
+            // This field is used to get geohash of products
+            /*
             location_coordinate = productDTO.getLocation_coordinate();
             lat = location_coordinate.getLatitude();
             lon = location_coordinate.getLongitude();
@@ -291,6 +296,11 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             System.out.println("formattedLikesText: "+formattedLikesText);
             System.out.println("context: "+context);
             System.out.println("---------------------------------------------------------");*/
+
+            // find nearest item
+
+
+
 
             // toast listeners
             UserDTO finalUserDTO = userDTO;
