@@ -86,6 +86,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .load(subcategoryReference)
                     .into(sct_image);
             sct_title.setText(subcategory.getName());
+            // TODO: add progressDialog
             itemView.setOnClickListener(v -> {
                 DocumentReference ref = db.document("sub_categories/" + subcategory.getSubcategory_id());
                 db.collection(Constants.PRODUCT_COLLECTION)
@@ -98,7 +99,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                                     ProductDTO product = document.toObject(ProductDTO.class);
                                     productDTOList.add(product);
                                 }
-                                // start result activity
+                                // start new SearchResultActivity
                                 Intent goToSearchResultIntent = new Intent(mContext, SearchResultActivity.class);
                                 goToSearchResultIntent.putParcelableArrayListExtra("productDTOList", productDTOList);
                                 mContext.startActivity(goToSearchResultIntent);
