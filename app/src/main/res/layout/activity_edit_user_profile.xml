@@ -247,7 +247,7 @@
                 android:layout_marginTop="36dp"
                 android:layout_marginRight="30dp"
                 android:background="@drawable/btn_primary_selector"
-                android:text="Button"
+                android:text="Submit"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
