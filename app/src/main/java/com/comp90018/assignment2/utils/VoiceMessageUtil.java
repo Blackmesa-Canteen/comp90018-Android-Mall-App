@@ -21,6 +21,7 @@ import cn.jpush.im.android.api.model.Message;
 /**
  * util for handle voice message playing
  * @author xiaotian
+ * @author https://github.com/jpush/jchat-android
  */
 public class VoiceMessageUtil {
 
