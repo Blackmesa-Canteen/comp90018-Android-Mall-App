@@ -36,16 +36,18 @@
             android:src="@drawable/fake_search"/>
 
     </RelativeLayout>
-    
+
     <com.gigamole.navigationtabstrip.NavigationTabStrip
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
         android:id="@+id/view_label"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:nts_color="@color/blue_dark"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:onClick="changeIndex"
         app:nts_active_color="@color/black"
-        app:nts_inactive_color="@color/black" />
+        app:nts_color="@color/blue_dark"
+        app:nts_inactive_color="@color/black"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
         android:layout_width="match_parent"

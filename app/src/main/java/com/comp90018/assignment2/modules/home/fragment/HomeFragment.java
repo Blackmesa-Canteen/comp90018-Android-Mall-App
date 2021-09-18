@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
@@ -30,6 +31,7 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.donkingliang.labels.LabelsView;
 import com.firebase.geofire.GeoFireUtils;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQueryBounds;
@@ -62,7 +64,7 @@ import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 /**
  * @author Ka Hou Hong
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment{
 
     private String TAG = "HomeFragment";
     //private ActivityHomePageBinding binding; // inflate layout
@@ -80,7 +82,9 @@ public class HomeFragment extends BaseFragment {
     LocationManager locationManager;
     LocationListener locationListener;
     String user_geohash;
-
+    List<DocumentSnapshot> matchingDocs = new ArrayList<>();
+    List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
+    Boolean INTRA_CITY = Boolean.FALSE;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -95,7 +99,6 @@ public class HomeFragment extends BaseFragment {
                 .getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-
 
 
         // attach search jumping listener
@@ -113,9 +116,28 @@ public class HomeFragment extends BaseFragment {
         viewLabel.setTitles("Recommends", "Intra-city");
         viewLabel.setTabIndex(0, true);
 
+        viewLabel.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {
+            @Override
+            public void onStartTabSelected(String title, int index) {
+               System.out.println("onStartTabSelected");
+               if(index == 1){
+                   INTRA_CITY = Boolean.TRUE;
+                   loadData();
+               }else{
+                   INTRA_CITY = Boolean.FALSE;
+                   loadData();
+               }
+            }
+
+            @Override
+            public void onEndTabSelected(String title, int index) {
+                System.out.println("onEndTabSelected");
+            }
+        });
 
 
-        // setup refresh
+
+                                         // setup refresh
         /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
         mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -159,20 +181,23 @@ public class HomeFragment extends BaseFragment {
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
 
-
-        db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                List<ProductDTO> productDTOList = new ArrayList<>();
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    productDTOList.add(document.toObject(ProductDTO.class));
+        if(INTRA_CITY == Boolean.FALSE) {
+            db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    List<ProductDTO> productDTOList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        productDTOList.add(document.toObject(ProductDTO.class));
+                    }
+                    // shuffle the list
+                    Collections.shuffle(productDTOList);
+                    processData(productDTOList);
+                } else {
+                    Log.d(TAG, "Error getting documents", task.getException());
                 }
-                // shuffle the list
-                Collections.shuffle(productDTOList);
-                processData(productDTOList);
-            } else {
-                Log.d(TAG, "Error getting documents", task.getException());
-            }
-        });
+            });
+        }else{
+            processData(INTRA_CITY_productDTOList);
+        }
     }
 
     private void processData(List<ProductDTO> productDTOList) {
@@ -234,17 +259,15 @@ public class HomeFragment extends BaseFragment {
                 tasks.add(q.get());
             }
 
-
             // Collect all the query results together into a single list
             Tasks.whenAllComplete(tasks)
                     .addOnCompleteListener(new OnCompleteListener<List<Task<?>>>() {
                         @Override
                         public void onComplete(@NonNull Task<List<Task<?>>> t) {
-                            List<DocumentSnapshot> matchingDocs = new ArrayList<>();
-
+                            matchingDocs = new ArrayList<>();
+                            List<ProductDTO> productDTOList = new ArrayList<>();
                             for (Task<QuerySnapshot> task : tasks) {
                                 QuerySnapshot snap = task.getResult();
-                                System.out.println("snap: "+snap.getDocuments());
                                 for (DocumentSnapshot doc : snap.getDocuments()) {
                                     double lat = doc.getDouble("lat");
                                     double lng = doc.getDouble("lng");
@@ -255,15 +278,13 @@ public class HomeFragment extends BaseFragment {
                                     if (distanceInM <= radiusInM) {
                                         matchingDocs.add(doc);
                                     }
+                                    INTRA_CITY_productDTOList.add(doc.toObject(ProductDTO.class));
                                 }
                             }
-                            // matchingDocs contains the results
-                            // ...
-                            System.out.println("matchingDocs size: "+matchingDocs.size());
-                            System.out.println("matchingDocs: "+matchingDocs);
+                           // System.out.println("INTRA_CITY_productDTOList size: "+INTRA_CITY_productDTOList.size());
+                           // System.out.println("INTRA_CITY_productDTOList: "+INTRA_CITY_productDTOList);
                         }
                     });
-
         }
     }
 }
