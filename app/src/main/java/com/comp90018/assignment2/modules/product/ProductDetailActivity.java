@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -46,80 +48,85 @@ public class ProductDetailActivity extends AppCompatActivity {
         // retrieve bundle data from intent li xiaotian
         Intent intent = getIntent();
 
-        recyclerView=binding.lvPdtDetailImages;
+        recyclerView = binding.lvPdtDetailImages;
         ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
         UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
         productDetailAdapter = new ProductDetailAdapter(this, productDTO.getImage_address());
 
-       recyclerView.setAdapter(productDetailAdapter);
-// 2 columns grid
-        GridLayoutManager gvManager = new GridLayoutManager(this, 4);
+        recyclerView.setAdapter(productDetailAdapter);
+        GridLayoutManager gvManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(gvManager);
 
-
-//        binding.pdtDetailUserNickname.setText(userDTO.getNickname());
-//        binding.tvPdtDetailPrice.setText(productDTO.getPrice().toString());
+        binding.pdtDetailUserNickname.setText(userDTO.getNickname());
+        binding.tvPdtDetailRate.setText("rate: " + productDTO.getStar_number().toString());
+        binding.tvPdtUserLocation.setText("Pdt Loc: " + productDTO.getLocation_text());
+        binding.tvPdtPublishTime.setText(productDTO.getPublish_time().toDate().toString());
+        binding.tvPdtDetailPrice.setText("$" + productDTO.getPrice().toString());
+        binding.tvPdtDetailDescription.setText(productDTO.getDescription());
+        binding.tvPdtDetailBrand.setText("Brand: " + productDTO.getBrand());
+        binding.tvPdtDetailStatus.setText("Status: " + productDTO.getStatus());
         StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());
 
-        // query image with the reference
+        // query user avatar with the reference
         Glide.with(ProductDetailActivity.this)
                 .load(imgReference)
                 .into(binding.ivPdtDetailAvatar);
 
 
-//        /** go previous page */
-//        binding.pdtBackBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                finish();
-//
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "Go Previous Page", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
-//        /** go profile page */
-//        binding.pdtDetailBtnProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "Go Profile Page", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
-//        /** add current product to my favourite */
-//        binding.llFavouriteBtnGroup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "Add to my favourite", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
-//        /** comments on current product */
-//        binding.llCommentBtnGroup.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "comments on current product", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
-//        /** want current product */
-//        binding.pdtDetailBtnWantThis.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Toast toast = Toast.makeText(getApplicationContext(),
-//                        "Click Want this", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
+        /** go previous page */
+        binding.pdtBackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Go Previous Page", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        /** go profile page */
+        binding.pdtDetailBtnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
+                startActivity(intent);
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Go Profile Page", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+        /** add current product to my favourite */
+        binding.llFavouriteBtnGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Add to my favourite", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        /** comments on current product */
+        binding.llChatBtnGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "comments on current product", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+        /** want current product */
+        binding.pdtDetailBtnWantThis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Click Want this", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
     }
 }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".modules.product.ProductDetailActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".modules.product.ProductDetailActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +15,7 @@
         android:background="@color/grey5">
 
         <ImageView
+            android:id="@+id/pdt_back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -39,7 +40,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--    User profile start-->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -87,6 +87,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/pdt_detail_user_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -95,12 +96,15 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <RatingBar
+                <TextView
+                    android:id="@+id/tv_pdt_detail_rate"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:numStars="5"
-                    android:scaleX=".5"
-                    android:scaleY=".5" />
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="20dp"
+                    android:text="rate: rate"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -109,9 +113,11 @@
                 android:layout_weight="0.3">
 
                 <TextView
+                    android:id="@+id/tv_pdt_user_location"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Beijing Joined 123 d Sold 12 item" />
+                    android:text="Beijing"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -121,9 +127,11 @@
                 android:layout_weight="0.3">
 
                 <TextView
+                    android:id="@+id/tv_pdt_publish_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Published at 13:13 Aug 11" />
+                    android:text="Publish time"
+                    android:textSize="18sp" />
             </LinearLayout>
 
 
@@ -142,6 +150,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:id="@+id/pdt_detail_btn_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/pdt_blue_btn_normal"
@@ -150,91 +159,93 @@
                 android:textColor="@color/white" />
         </androidx.cardview.widget.CardView>
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--    User profile end-->
-
-    <!--Product price start-->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.05"
-        android:background="@color/white"
-        android:orientation="vertical">
-
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@android:color/darker_gray" />
-
-        <TextView
-            android:id="@+id/tv_pdt_price"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:text="$ 799.9"
-            android:textColor="@color/pdt_red_price"
-            android:textSize="26sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-    <!--Product price end-->
-    <!--Product text description start -->
-    <LinearLayout
-        android:layout_width="fill_parent"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--    User profile end-->
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="2dp"
-        android:layout_weight="0.18"
-        android:orientation="vertical"
-        android:weightSum="4">
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.72">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:gravity="center_vertical"
-            android:lines="2"
-            android:text="M2.5 inch ljljl lasfdsd sdfsd sdfsd sdfsdfsdfsdfsdfsdfsdfsdfjlsslkjfal sfsfasddsdfsds"
-            android:textColor="@color/color_black_333333"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Brand: Browing"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Status: New"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <!--Product text description end -->
-
-
-    <!--Product images start-->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.49">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lv_pdt_detail_images"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:orientation="vertical">
+            <!--Product price start-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tv_pdt_detail_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:text="$ 799.9"
+                    android:textColor="@color/pdt_red_price"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
-    </LinearLayout>
+            </LinearLayout>
+            <!--Product price end-->
+            <!--Product text description start -->
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="2dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_pdt_detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="product description product description"
+                    android:textColor="@color/color_black_333333"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_pdt_detail_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Brand: Browing"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_pdt_detail_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status: New"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <!--Product text description end -->
+
+            <!--Product images start-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lv_pdt_detail_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
     <!--Product images end-->
 
     <!--Bottom bar start-->
@@ -247,7 +258,7 @@
         android:paddingBottom="5dp">
         <!--        favourite button group-->
         <LinearLayout
-            android:id="@+id/ll_fav_btn_group"
+            android:id="@+id/ll_favourite_btn_group"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical"
@@ -277,13 +288,14 @@
         </LinearLayout>
         <!--        comment button group-->
         <LinearLayout
+            android:id="@+id/ll_chat_btn_group"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/ll_fav_btn_group"
+            app:layout_constraintLeft_toRightOf="@id/ll_favourite_btn_group"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -300,7 +312,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.4"
                 android:gravity="center"
-                android:text="Comment"
+                android:text="Chat"
                 android:textColor="@color/pdt_blue_btn_normal" />
 
         </LinearLayout>
@@ -319,6 +331,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
+                android:id="@+id/pdt_detail_btn_want_this"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -329,25 +342,6 @@
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--Bottom bar end-->
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-
-    <!--        > <ImageView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@drawable/back_blue_34"/>-->
-
-    <!--    </LinearLayout>-->
-
-    <!--    <ListView-->
-    <!--        android:id="@+id/lv_product_images"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:divider="@color/transparent"-->
-    <!--        android:paddingLeft="20dp"-->
-    <!--        android:paddingRight="20dp" />-->
 
 </LinearLayout>

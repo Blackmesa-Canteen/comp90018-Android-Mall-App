@@ -4,13 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="15dp"
+    android:layout_marginTop="5dp"
     android:gravity="center">
 
     <com.comp90018.assignment2.utils.view.OvalImageView
         android:id="@+id/item_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:scaleType="fitXY"
         android:src="@drawable/default_image"/>
 
