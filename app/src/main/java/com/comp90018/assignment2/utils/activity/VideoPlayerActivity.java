@@ -38,8 +38,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         exoUserPlayer.onResume();
     }
 

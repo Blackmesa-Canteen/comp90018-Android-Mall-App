@@ -233,6 +233,7 @@ public class RecordButtonTextView extends AppCompatTextView {
              * to set timer's base time
              */
             voiceTime.setBase(SystemClock.elapsedRealtime());
+            Log.d("RecordTv[dev]", "start timing");
             voiceTime.start();
         } catch (IOException e) {
             e.printStackTrace();
@@ -244,7 +245,7 @@ public class RecordButtonTextView extends AppCompatTextView {
             recorder.release();
             recorder = null;
         } catch (RuntimeException e) {
-
+            e.printStackTrace();
             // roll back
             if (recordAudioFile != null) {
                 recordAudioFile.delete();

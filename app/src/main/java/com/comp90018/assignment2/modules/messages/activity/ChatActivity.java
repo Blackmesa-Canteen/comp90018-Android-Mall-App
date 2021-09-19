@@ -1,11 +1,13 @@
 package com.comp90018.assignment2.modules.messages.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -104,6 +106,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         JMessageClient.registerEventReceiver(this);
 
         // init view binding
@@ -137,40 +140,19 @@ public class ChatActivity extends AppCompatActivity {
 
         if (chatType == Constants.SINGLE_CHAT) {
             userId = getIntent().getStringExtra(Constants.DATA_A);
-            nickName = getIntent().getStringExtra(Constants.DATA_B);
+            targetUserDTO = getIntent().getParcelableExtra("targetUserDTO");
 
+            nickName = targetUserDTO.getNickname();
             binding.textNickname.setText(nickName);
             keyboardMoreFragment.setUserId(userId);
 
-            db.collection(Constants.USERS_COLLECTION)
-                    .document(userId)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
+            String email = targetUserDTO.getEmail();
+            if (email != null) {
+                binding.textUserId.setText(email);
+            } else {
+                binding.textUserId.setText("");
+            }
 
-                                    // get userDTO from firebase
-                                    UserDTO userDTO = document.toObject(UserDTO.class);
-
-                                    String email = userDTO.getEmail();
-                                    if (email != null) {
-                                        binding.textUserId.setText(email);
-                                    } else {
-                                        binding.textUserId.setText("");
-                                    }
-
-                                    targetUserDTO = userDTO;
-                                } else {
-                                    Log.d(TAG, "No such document");
-                                }
-                            } else {
-                                Log.d(TAG, "get failed with ", task.getException());
-                            }
-                        }
-                    });
         }
 
         // get into the conversation
@@ -300,7 +282,8 @@ public class ChatActivity extends AppCompatActivity {
         binding.ivSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sentTextMessage(binding.etMessageInput.getText().toString());
+                String text = binding.etMessageInput.getText().toString();
+                sentTextMessage(text);
                 binding.etMessageInput.setText("");
             }
         });
@@ -504,7 +487,7 @@ public class ChatActivity extends AppCompatActivity {
                     public void gotResult(int i, String s) {
                         if (i == 0) {
                             chatMessageBeanList.get(nowSize - 1).setUpload(true);
-                            adapter.notifyItemInserted(chatMessageBeanList.size() - 1);
+                            adapter.notifyItemChanged(chatMessageBeanList.size() - 1);
                         }
                     }
                 });
@@ -678,6 +661,52 @@ public class ChatActivity extends AppCompatActivity {
                 bean.setItemType(ChatMessageBean.RETRACT);
                 adapter.notifyItemChanged(chatMessageBeanList.indexOf(bean));
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // all callbacks and messages will be removed
+        handler.removeCallbacksAndMessages(null);
+        if (voiceMessageUtil != null) {
+            // stop playing when exit
+            voiceMessageUtil.getMediaPlayer().stop();
+        }
+
+        JMessageClient.unRegisterEventReceiver(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (chatType == Constants.SINGLE_CHAT) {
+            JMessageClient.enterSingleConversation(userId);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JMessageClient.exitConversation();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        switch (requestCode) {
+            case Constants.REQUEST_CODE_B:
+                chatMessageBeanList.clear();
+                adapter.notifyDataSetChanged();
+                break;
         }
     }
 }

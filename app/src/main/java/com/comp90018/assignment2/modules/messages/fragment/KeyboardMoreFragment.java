@@ -29,6 +29,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -58,6 +59,8 @@ public class KeyboardMoreFragment extends BaseFragment {
     public View inflateView() {
         View view = View.inflate(activityContext, R.layout.fragment_chat_keyboard_more, null);
         rv_root = view.findViewById(R.id.rv_chat_keyboard_more);
+
+        itemList = new ArrayList<>();
 
         itemList.clear();
         itemList.add(new KeyboardMoreItemBean(R.drawable.media, "Gallery"));

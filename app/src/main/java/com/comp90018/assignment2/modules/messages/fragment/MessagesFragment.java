@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.UserDTO;
@@ -92,9 +93,9 @@ public class MessagesFragment extends BaseFragment {
         rvFragmentMessaging.setHasFixedSize(true);
 
         // jump to chat activity
-        adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+        adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemChildClick(@NonNull BaseQuickAdapter adapter, @NonNull View view, int position) {
+            public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
                 conversationList.get(position).updateConversationExtra("");
                 adapter.notifyItemChanged(position);
 
@@ -119,6 +120,7 @@ public class MessagesFragment extends BaseFragment {
 
                                         Intent goToChatActivityIntent = new Intent(activityContext, ChatActivity.class);
                                         goToChatActivityIntent.putExtra("targetUserDTO", targetUserDTO);
+                                        goToChatActivityIntent.putExtra(Constants.DATA_A, userId);
                                         goToChatActivityIntent.putExtra(Constants.TYPE, Constants.SINGLE_CHAT);
                                         progressDialog.dismiss();
                                         startActivity(goToChatActivityIntent);
@@ -131,6 +133,7 @@ public class MessagesFragment extends BaseFragment {
                                 }
                             });
                 }
+
 
             }
         });
@@ -193,6 +196,7 @@ public class MessagesFragment extends BaseFragment {
      * @param event message event
      */
     public void onEventMainThread(MessageEvent event){
+        Log.d(TAG, "[dev] receive new message!");
         boolean handleable = false;
         Message message = event.getMessage();
 

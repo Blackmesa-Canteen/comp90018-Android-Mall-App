@@ -151,7 +151,7 @@ public class RvChatAdapter extends BaseMultiItemQuickAdapter<ChatMessageBean, Ba
                                         .load(imgReference)
                                         .into((CircleImageView) helper.getView(R.id.iv_head));
                             } else {
-                                Log.d(TAG, "No such document");
+                                Log.d(TAG, "###" + userId + "###" + ", No such document");
                             }
                         } else {
                             Log.d(TAG, "get failed with ", task.getException());
