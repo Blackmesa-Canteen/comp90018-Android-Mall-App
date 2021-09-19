@@ -68,15 +68,17 @@
         </androidx.cardview.widget.CardView>
         <!--User profile content, align center, start-->
         <LinearLayout
+            android:id="@+id/pdt_user_info_center_part"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:gravity="start"
+            android:layout_height="75dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/cv_pdt_detail_avatar"
             app:layout_constraintRight_toLeftOf="@id/cv_pdt_detail_btn_profile"
-            app:layout_constraintTop_toTopOf="parent">
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,7 +165,8 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@android:color/darker_gray"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:layout_marginBottom="-1dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--    User profile end-->
     <ScrollView
