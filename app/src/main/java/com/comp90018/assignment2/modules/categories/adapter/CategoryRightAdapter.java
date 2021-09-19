@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.categories.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -86,7 +87,9 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .load(subcategoryReference)
                     .into(sct_image);
             sct_title.setText(subcategory.getName());
-            // TODO: add progressDialog
+            ProgressDialog progressDialog = new ProgressDialog(mContext);
+            progressDialog.setTitle("Loading");
+            progressDialog.setMessage("Please wait");
             itemView.setOnClickListener(v -> {
                 DocumentReference ref = db.document("sub_categories/" + subcategory.getSubcategory_id());
                 db.collection(Constants.PRODUCT_COLLECTION)
@@ -103,6 +106,7 @@ public class CategoryRightAdapter extends RecyclerView.Adapter<RecyclerView.View
                                 Intent goToSearchResultIntent = new Intent(mContext, SearchResultActivity.class);
                                 goToSearchResultIntent.putParcelableArrayListExtra("productDTOList", productDTOList);
                                 mContext.startActivity(goToSearchResultIntent);
+                                progressDialog.dismiss();
                             } else {
                                 new AlertDialog.Builder(mContext).setMessage("Enter failed, please try again later.").setPositiveButton("ok", null).show();
                                 Log.d(TAG, "Error getting documents: ", task.getException());

@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.categories.fragment;
 
+import android.app.ProgressDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -54,7 +55,13 @@ public class CategoriesFragment extends BaseFragment {
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
         db = FirebaseFirestore.getInstance();
-        // TODO: add progressDialog
+        // show process dialog
+        ProgressDialog progressDialog = new ProgressDialog(activityContext);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
+
+        // show loading dialog
+        progressDialog.show();
         db.collection(Constants.CATEGORIES_COLLECTION).orderBy("name").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -72,13 +79,13 @@ public class CategoriesFragment extends BaseFragment {
                                 subcategory.setSubcategory_id(sub_document.getId());
                                 subcategories.add(subcategory);
                             }
+                            progressDialog.dismiss();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     });
                     categoryBundles.put(category, subcategories);
                 }
-                // TODO: show sth when first click
                 if (isFirst) {
                     leftAdapter = new CategoryLeftAdapter(activityContext, categories);
                     ct_left.setAdapter(leftAdapter);
@@ -96,9 +103,9 @@ public class CategoriesFragment extends BaseFragment {
             if (position != 0) {
                 isFirst = false;
             }
-            // TODO: if not found...show sth
             CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext,
                     Objects.requireNonNull(categoryBundles.get(adapter.getItem(position))));
+
             ct_right.setAdapter(rightAdapter);
             GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
             manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
