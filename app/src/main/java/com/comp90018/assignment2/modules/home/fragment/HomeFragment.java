@@ -54,7 +54,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -123,14 +122,12 @@ public class HomeFragment extends BaseFragment{
         viewLabel.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {
             @Override
             public void onStartTabSelected(String title, int index) {
-               System.out.println("onStartTabSelected");
-               if(index == 1){
-                   INTRA_CITY = Boolean.TRUE;
-                   loadData();
-               }else{
-                   INTRA_CITY = Boolean.FALSE;
-                   loadData();
-               }
+                if(index == 1){
+                    INTRA_CITY = Boolean.TRUE;
+                }else{
+                    INTRA_CITY = Boolean.FALSE;
+                }
+                loadData();
             }
 
             @Override
@@ -138,9 +135,6 @@ public class HomeFragment extends BaseFragment{
                 System.out.println("onEndTabSelected");
             }
         });
-
-
-
                                          // setup refresh
         /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
         mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
@@ -208,7 +202,7 @@ public class HomeFragment extends BaseFragment{
                     Log.d(TAG, "Error getting documents", task.getException());
                 }
             });
-        }else{
+        }else{ //INTRA-CITY
             Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
         }
