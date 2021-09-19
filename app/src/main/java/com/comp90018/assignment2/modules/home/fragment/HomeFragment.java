@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.home.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
+import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.donkingliang.labels.LabelsView;
 import com.firebase.geofire.GeoFireUtils;
@@ -52,7 +54,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,26 +66,24 @@ import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
  * @author Ka Hou Hong
  */
 public class HomeFragment extends BaseFragment{
-
     private String TAG = "HomeFragment";
     //private ActivityHomePageBinding binding; // inflate layout
-    List<ProductDTO> productDTOList;
+    private List<ProductDTO> productDTOList;
     private HomePageAdapter adapter; // adapter
     private TextView textNoResult;
     private RecyclerView recyclerView; // bind rv id
     private ImageView fakeSearchView;
     private NavigationTabStrip viewLabel;
     private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
-    FirebaseFirestore db;
-    FusedLocationProviderClient client;
-    String latitude;
-    String longitude;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    String user_geohash;
-    List<DocumentSnapshot> matchingDocs = new ArrayList<>();
-    List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
-    Boolean INTRA_CITY = Boolean.FALSE;
+    private FirebaseFirestore db;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private List<DocumentSnapshot> matchingDocs = new ArrayList<>();
+    private List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
+    private Boolean INTRA_CITY = Boolean.FALSE;
+    private Boolean refresh    = Boolean.FALSE;
+    ProgressDialog progressDialog;
+    private boolean needShowDialog = true;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -100,6 +99,10 @@ public class HomeFragment extends BaseFragment{
         locationListener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 
+        // init progress dialog
+        progressDialog = new ProgressDialog(activityContext);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
 
         // attach search jumping listener
         fakeSearchView.setOnClickListener(new View.OnClickListener() {
@@ -119,14 +122,13 @@ public class HomeFragment extends BaseFragment{
         viewLabel.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {
             @Override
             public void onStartTabSelected(String title, int index) {
-               System.out.println("onStartTabSelected");
-               if(index == 1){
-                   INTRA_CITY = Boolean.TRUE;
-                   loadData();
-               }else{
-                   INTRA_CITY = Boolean.FALSE;
-                   loadData();
-               }
+                if(index == 1){
+                    INTRA_CITY = Boolean.TRUE;
+                }else{
+                    INTRA_CITY = Boolean.FALSE;
+                }
+                needShowDialog = true;
+                loadData();
             }
 
             @Override
@@ -134,9 +136,6 @@ public class HomeFragment extends BaseFragment{
                 System.out.println("onEndTabSelected");
             }
         });
-
-
-
                                          // setup refresh
         /* https://github.com/recruit-lifestyle/WaveSwipeRefreshLayout */
         mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
@@ -160,7 +159,9 @@ public class HomeFragment extends BaseFragment{
 
         protected String[] doInBackground(Void... voids) {
             if(INTRA_CITY==Boolean.FALSE) {
+                refresh = Boolean.TRUE;
                 loadData(); // shuffle
+                refresh = Boolean.FALSE;
             }
             return new String[0]; //can't convert the type to void, so have to return String[]
         }
@@ -177,10 +178,23 @@ public class HomeFragment extends BaseFragment{
     @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
+        /*
+        if(refresh ==  false) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Loading");
+            progressDialog.setMessage("Please wait");
+            // show loading dialog
+            progressDialog.show();
+        }*/
+
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
-
         if(INTRA_CITY == Boolean.FALSE) {
+            if (needShowDialog) {
+                // show loading dialog
+                progressDialog.show();
+            }
+
             db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<ProductDTO> productDTOList = new ArrayList<>();
@@ -190,14 +204,22 @@ public class HomeFragment extends BaseFragment{
                     // shuffle the list
                     Collections.shuffle(productDTOList);
                     processData(productDTOList);
+                    if (needShowDialog) {
+                        progressDialog.dismiss();
+                        needShowDialog = false;
+                    }
                 } else {
                     Log.d(TAG, "Error getting documents", task.getException());
                 }
             });
-        }else{
+        }else{ //INTRA-CITY
             Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
         }
+        /*
+        if(refresh ==  false) {
+            progressDialog.dismiss();
+        }*/
     }
 
     private void processData(List<ProductDTO> productDTOList) {

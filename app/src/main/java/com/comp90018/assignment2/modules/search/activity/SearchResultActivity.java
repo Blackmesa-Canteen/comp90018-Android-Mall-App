@@ -137,7 +137,6 @@ public class SearchResultActivity extends AppCompatActivity {
                         processData(productDTOList);
                         // dismiss loding dialog
                         progressDialog.dismiss();
-
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
 
