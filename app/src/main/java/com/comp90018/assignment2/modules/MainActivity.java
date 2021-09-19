@@ -70,19 +70,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private FirebaseAuth firebaseAuth;
 
-    PromptDialog promptDialog = new PromptDialog(MainActivity.this);
-
-    /**
-     * handling permission
-     */
-    private Rationale mRationale = new Rationale() {
-        @Override
-        public void showRationale(Context context, Object data, RequestExecutor executor) {
-        promptDialog.showWarn("Please grant permissions: camera, location, microphone and storage.");
-
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
