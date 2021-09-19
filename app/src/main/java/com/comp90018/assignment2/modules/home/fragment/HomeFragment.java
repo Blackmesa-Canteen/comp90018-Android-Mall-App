@@ -82,6 +82,8 @@ public class HomeFragment extends BaseFragment{
     private List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
     private Boolean INTRA_CITY = Boolean.FALSE;
     private Boolean refresh    = Boolean.FALSE;
+    ProgressDialog progressDialog;
+    private boolean needShowDialog = true;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -97,6 +99,10 @@ public class HomeFragment extends BaseFragment{
         locationListener = new MyLocationListener();
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 
+        // init progress dialog
+        progressDialog = new ProgressDialog(activityContext);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
 
         // attach search jumping listener
         fakeSearchView.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +127,7 @@ public class HomeFragment extends BaseFragment{
                 }else{
                     INTRA_CITY = Boolean.FALSE;
                 }
+                needShowDialog = true;
                 loadData();
             }
 
@@ -183,11 +190,11 @@ public class HomeFragment extends BaseFragment{
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
         if(INTRA_CITY == Boolean.FALSE) {
-            ProgressDialog progressDialog = new ProgressDialog(activityContext);
-            progressDialog.setTitle("Loading");
-            progressDialog.setMessage("Please wait");
-            // show loading dialog
-            progressDialog.show();
+            if (needShowDialog) {
+                // show loading dialog
+                progressDialog.show();
+            }
+
             db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<ProductDTO> productDTOList = new ArrayList<>();
@@ -197,7 +204,10 @@ public class HomeFragment extends BaseFragment{
                     // shuffle the list
                     Collections.shuffle(productDTOList);
                     processData(productDTOList);
-                    progressDialog.dismiss();
+                    if (needShowDialog) {
+                        progressDialog.dismiss();
+                        needShowDialog = false;
+                    }
                 } else {
                     Log.d(TAG, "Error getting documents", task.getException());
                 }
