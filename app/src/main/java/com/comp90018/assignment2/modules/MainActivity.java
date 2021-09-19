@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +20,19 @@ import com.comp90018.assignment2.modules.users.authentication.activity.LoginActi
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
+import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
+import com.yanzhenjie.permission.runtime.Permission;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * main facade activity of the app
@@ -60,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
      * firebase authenticator
      */
     private FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
