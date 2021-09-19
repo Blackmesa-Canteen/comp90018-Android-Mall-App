@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.home.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,6 +31,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.home.adapter.HomePageAdapter;
 import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
+import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.donkingliang.labels.LabelsView;
 import com.firebase.geofire.GeoFireUtils;
@@ -85,6 +87,8 @@ public class HomeFragment extends BaseFragment{
     List<DocumentSnapshot> matchingDocs = new ArrayList<>();
     List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
     Boolean INTRA_CITY = Boolean.FALSE;
+    Boolean refresh    = Boolean.FALSE;
+    ProgressDialog progressDialog;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -160,7 +164,9 @@ public class HomeFragment extends BaseFragment{
 
         protected String[] doInBackground(Void... voids) {
             if(INTRA_CITY==Boolean.FALSE) {
+                refresh = Boolean.TRUE;
                 loadData(); // shuffle
+                refresh = Boolean.FALSE;
             }
             return new String[0]; //can't convert the type to void, so have to return String[]
         }
@@ -177,9 +183,17 @@ public class HomeFragment extends BaseFragment{
     @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
+
+        if(refresh ==  false) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Loading");
+            progressDialog.setMessage("Please wait");
+            // show loading dialog
+            progressDialog.show();
+        }
+
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
-
         if(INTRA_CITY == Boolean.FALSE) {
             db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -197,6 +211,10 @@ public class HomeFragment extends BaseFragment{
         }else{
             Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
+        }
+
+        if(refresh ==  false) {
+            progressDialog.dismiss();
         }
     }
 
