@@ -7,9 +7,6 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +28,7 @@ public class SubCategoryDTO implements Parcelable {
     private DocumentReference category_ref;
     private String image_address;
     private String name;
+    private String subcategory_id;
 
     protected SubCategoryDTO(Parcel in) {
         category_ref = FirebaseFirestore.getInstance().document(in.readString());
@@ -57,11 +55,10 @@ public class SubCategoryDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
         String category_ref_text = category_ref.getPath();
         dest.writeString(category_ref_text);
-
         dest.writeString(image_address);
         dest.writeString(name);
+        dest.writeString(subcategory_id);
     }
 }

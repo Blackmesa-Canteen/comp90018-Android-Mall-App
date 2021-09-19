@@ -18,8 +18,8 @@ android {
 
         ndk {
             //选择要添加的对应cpu类型的.so库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86', 'x86_64'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+            abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86_64', 'arm-v8a', 'x86', 'arm64-v8a'
+                    // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
 
         manifestPlaceholders = [
@@ -87,8 +87,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
+    // categories
+    implementation "androidx.constraintlayout:constraintlayout:2.1.0"
+    
     // lombok for pojos
-    //noinspection AnnotationProcessorOnCompilePath
+    // noinspection AnnotationProcessorOnCompilePath
 //    compileOnly "org.projectlombok:lombok:1.18.20"
     implementation 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'

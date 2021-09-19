@@ -19,7 +19,6 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         mContext = this;
-
         /*
          * The SDK initializes and specifies whether message logging roaming is enabled.
          * After message roaming is enabled, when the user logs in between devices,
