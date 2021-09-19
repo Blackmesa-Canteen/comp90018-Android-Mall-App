@@ -66,7 +66,6 @@ import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
  * @author Ka Hou Hong
  */
 public class HomeFragment extends BaseFragment{
-
     private String TAG = "HomeFragment";
     //private ActivityHomePageBinding binding; // inflate layout
     List<ProductDTO> productDTOList;
@@ -177,18 +176,23 @@ public class HomeFragment extends BaseFragment{
     @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
-
+        /*
         if(refresh ==  false) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Loading");
             progressDialog.setMessage("Please wait");
             // show loading dialog
             progressDialog.show();
-        }
+        }*/
 
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
         if(INTRA_CITY == Boolean.FALSE) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Loading");
+            progressDialog.setMessage("Please wait");
+            // show loading dialog
+            progressDialog.show();
             db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<ProductDTO> productDTOList = new ArrayList<>();
@@ -198,6 +202,7 @@ public class HomeFragment extends BaseFragment{
                     // shuffle the list
                     Collections.shuffle(productDTOList);
                     processData(productDTOList);
+                    progressDialog.dismiss();
                 } else {
                     Log.d(TAG, "Error getting documents", task.getException());
                 }
@@ -205,11 +210,12 @@ public class HomeFragment extends BaseFragment{
         }else{ //INTRA-CITY
             Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
-        }
-
-        if(refresh ==  false) {
             progressDialog.dismiss();
         }
+        /*
+        if(refresh ==  false) {
+            progressDialog.dismiss();
+        }*/
     }
 
     private void processData(List<ProductDTO> productDTOList) {
