@@ -159,8 +159,9 @@ public class HomeFragment extends BaseFragment{
         @Override
 
         protected String[] doInBackground(Void... voids) {
-            loadData(); // shuffle
-
+            if(INTRA_CITY==Boolean.FALSE) {
+                loadData(); // shuffle
+            }
             return new String[0]; //can't convert the type to void, so have to return String[]
         }
 
@@ -171,8 +172,6 @@ public class HomeFragment extends BaseFragment{
             super.onPostExecute(result);
         }
     }
-
-
 
     // Get User Location END
     @SuppressLint("MissingPermission")
@@ -196,6 +195,7 @@ public class HomeFragment extends BaseFragment{
                 }
             });
         }else{
+            Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
         }
     }
@@ -208,7 +208,6 @@ public class HomeFragment extends BaseFragment{
         recyclerView.setHasFixedSize(true);
         adapter = new HomePageAdapter(activityContext, productDTOList);
         recyclerView.setAdapter(adapter);
-
 
         for (int i = 0; i < productDTOList.size(); i++) {
             ProductDTO productDTO = productDTOList.get(i);
