@@ -76,17 +76,13 @@ public class HomeFragment extends BaseFragment{
     private NavigationTabStrip viewLabel;
     private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     FirebaseFirestore db;
-    FusedLocationProviderClient client;
-    String latitude;
-    String longitude;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    String user_geohash;
-    List<DocumentSnapshot> matchingDocs = new ArrayList<>();
-    List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
-    Boolean INTRA_CITY = Boolean.FALSE;
-    Boolean refresh    = Boolean.FALSE;
-    ProgressDialog progressDialog;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private List<DocumentSnapshot> matchingDocs = new ArrayList<>();
+    private List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
+    private Boolean INTRA_CITY = Boolean.FALSE;
+    private Boolean refresh    = Boolean.FALSE;
+    private ProgressDialog progressDialog;
 
     @SuppressLint("MissingPermission")
     @Override
