@@ -15,6 +15,11 @@ import com.comp90018.assignment2.modules.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
+
+import java.util.List;
 
 
 /**
@@ -34,6 +39,25 @@ public class WelcomeActivity extends AppCompatActivity {
             public void run() {
                 // run() is in main thread
                 // start main page
+
+                // request permission
+                AndPermission.with(WelcomeActivity.this)
+                        .runtime()
+                        .permission(
+                                Permission.Group.CAMERA,
+                                Permission.Group.LOCATION,
+                                Permission.Group.MICROPHONE,
+                                Permission.Group.STORAGE
+                        )
+                        .rationale(mRationale)
+                        .onDenied(new Action<List<String>>() {
+                            @Override
+                            public void onAction(List<String> data) {
+                                if (AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)) {
+
+                                }
+                            }
+                        });
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
             }

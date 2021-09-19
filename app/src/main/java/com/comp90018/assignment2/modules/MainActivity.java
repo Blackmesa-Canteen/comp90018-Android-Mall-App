@@ -24,9 +24,7 @@ import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
 import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.runtime.Permission;
 
@@ -93,25 +91,6 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        // request permission
-        AndPermission.with(this)
-                .runtime()
-                .permission(
-                        Permission.Group.CAMERA,
-                        Permission.Group.LOCATION,
-                        Permission.Group.MICROPHONE,
-                        Permission.Group.STORAGE
-                )
-                .rationale(mRationale)
-                .onDenied(new Action<List<String>>() {
-                    @Override
-                    public void onAction(List<String> data) {
-                        if (AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)) {
-
-                        }
-                    }
-                })
 
         if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
             Toast.makeText(this, "Welcome back, " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
