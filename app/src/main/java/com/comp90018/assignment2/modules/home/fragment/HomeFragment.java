@@ -68,21 +68,20 @@ import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 public class HomeFragment extends BaseFragment{
     private String TAG = "HomeFragment";
     //private ActivityHomePageBinding binding; // inflate layout
-    List<ProductDTO> productDTOList;
+    private List<ProductDTO> productDTOList;
     private HomePageAdapter adapter; // adapter
     private TextView textNoResult;
     private RecyclerView recyclerView; // bind rv id
     private ImageView fakeSearchView;
     private NavigationTabStrip viewLabel;
     private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private List<DocumentSnapshot> matchingDocs = new ArrayList<>();
     private List<ProductDTO> INTRA_CITY_productDTOList = new ArrayList<>();
     private Boolean INTRA_CITY = Boolean.FALSE;
     private Boolean refresh    = Boolean.FALSE;
-    private ProgressDialog progressDialog;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -184,7 +183,7 @@ public class HomeFragment extends BaseFragment{
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
         if(INTRA_CITY == Boolean.FALSE) {
-            progressDialog = new ProgressDialog(getActivity());
+            ProgressDialog progressDialog = new ProgressDialog(activityContext);
             progressDialog.setTitle("Loading");
             progressDialog.setMessage("Please wait");
             // show loading dialog
@@ -206,7 +205,6 @@ public class HomeFragment extends BaseFragment{
         }else{ //INTRA-CITY
             Collections.shuffle(INTRA_CITY_productDTOList);
             processData(INTRA_CITY_productDTOList);
-            progressDialog.dismiss();
         }
         /*
         if(refresh ==  false) {
