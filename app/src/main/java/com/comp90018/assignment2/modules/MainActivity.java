@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +20,21 @@ import com.comp90018.assignment2.modules.users.authentication.activity.LoginActi
 import com.comp90018.assignment2.modules.users.me.fragment.MeFragment;
 import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.databinding.ActivityMainBinding;
+import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
+import com.yanzhenjie.permission.RequestExecutor;
+import com.yanzhenjie.permission.runtime.Permission;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * main facade activity of the app
@@ -61,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private FirebaseAuth firebaseAuth;
 
+    PromptDialog promptDialog = new PromptDialog(MainActivity.this);
+
+    /**
+     * handling permission
+     */
+    private Rationale mRationale = new Rationale() {
+        @Override
+        public void showRationale(Context context, Object data, RequestExecutor executor) {
+        promptDialog.showWarn("Please grant permissions: camera, location, microphone and storage.");
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +93,25 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        // request permission
+        AndPermission.with(this)
+                .runtime()
+                .permission(
+                        Permission.Group.CAMERA,
+                        Permission.Group.LOCATION,
+                        Permission.Group.MICROPHONE,
+                        Permission.Group.STORAGE
+                )
+                .rationale(mRationale)
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        if (AndPermission.hasAlwaysDeniedPermission(MainActivity.this, data)) {
+
+                        }
+                    }
+                })
 
         if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
             Toast.makeText(this, "Welcome back, " + firebaseAuth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();

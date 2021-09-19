@@ -57,6 +57,12 @@ android {
 
 dependencies {
 
+    // better dialog
+    implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
+
+    // ask for permission
+    implementation 'com.yanzhenjie:permission:2.0.3'
+
     // fresh ui
     implementation 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
 
