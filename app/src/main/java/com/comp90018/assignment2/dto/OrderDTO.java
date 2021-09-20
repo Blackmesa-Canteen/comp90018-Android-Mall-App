@@ -29,6 +29,7 @@ import lombok.ToString;
 @ToString
 public class OrderDTO implements Parcelable {
 
+    private String id;
     private String address;
     private DocumentReference buyer_ref;
     private Timestamp created_time;
@@ -41,6 +42,7 @@ public class OrderDTO implements Parcelable {
     private String seller_address;
 
     protected OrderDTO(Parcel in) {
+        id = in.readString();
 
         buyer_ref = FirebaseFirestore.getInstance().document(in.readString());
         product_ref = FirebaseFirestore.getInstance().document(in.readString());
@@ -84,6 +86,7 @@ public class OrderDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
 
         String buyer_ref_text = buyer_ref.getPath();
         dest.writeString(buyer_ref_text);
