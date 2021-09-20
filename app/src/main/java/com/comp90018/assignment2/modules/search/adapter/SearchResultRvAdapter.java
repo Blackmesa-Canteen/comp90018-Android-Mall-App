@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.product.ProductDetailActivity;
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;

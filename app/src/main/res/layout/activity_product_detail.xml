@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".modules.product.ProductDetailActivity">
+    tools:context=".modules.product.activity.ProductDetailActivity">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,23 +90,31 @@
 
                 <TextView
                     android:id="@+id/pdt_detail_user_nickname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="Saber"
                     android:textColor="@color/color_black_333333"
                     android:textSize="20sp"
+                    android:maxLines="1"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_pdt_detail_rate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="right|center_vertical"
-                    android:paddingRight="20dp"
-                    android:text="rate: rate"
-                    android:textSize="20sp" />
+                <RatingBar
+                    android:id="@+id/item_rating"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:theme="@style/RatingBar"
+                    android:layout_width="76dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:rating="3"
+                    android:scaleX=".5"
+                    android:scaleY=".5"
+                    android:stepSize="0.1"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="10dp"
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -119,7 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Beijing"
-                    android:textSize="18sp" />
+                    android:maxLines="1"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -132,8 +141,8 @@
                     android:id="@+id/tv_pdt_publish_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="Publish time"
-                    android:textSize="18sp" />
+                    android:text="Published: "
+                    android:textSize="15sp" />
             </LinearLayout>
 
 
@@ -273,9 +282,10 @@
 
             <ImageView
                 android:layout_width="26dp"
-                android:layout_height="0dp"
+                android:layout_height="1dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="0.6"
                 android:background="@drawable/star_blue"
                 android:scaleType="fitCenter" />
@@ -305,7 +315,8 @@
                 android:layout_width="32dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="7dp"
                 android:layout_weight="0.6"
                 android:background="@drawable/chat_bubble_outline_24dp"
                 android:scaleType="fitCenter" />

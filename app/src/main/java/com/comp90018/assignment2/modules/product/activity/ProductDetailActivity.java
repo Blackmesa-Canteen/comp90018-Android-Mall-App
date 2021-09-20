@@ -1,32 +1,23 @@
-package com.comp90018.assignment2.modules.product;
+package com.comp90018.assignment2.modules.product.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityProductDetailBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
-import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
-import com.comp90018.assignment2.modules.search.adapter.SearchResultRvAdapter;
+import com.comp90018.assignment2.modules.product.ProductDetailAdapter;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.List;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -58,13 +49,33 @@ public class ProductDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gvManager);
 
         binding.pdtDetailUserNickname.setText(userDTO.getNickname());
-        binding.tvPdtDetailRate.setText("rate: " + productDTO.getStar_number().toString());
-        binding.tvPdtUserLocation.setText("Pdt Loc: " + productDTO.getLocation_text());
+        binding.itemRating.setRating(userDTO.getStar_number().floatValue());
+        binding.tvPdtUserLocation.setText("From: " + productDTO.getLocation_text());
         binding.tvPdtPublishTime.setText(productDTO.getPublish_time().toDate().toString());
         binding.tvPdtDetailPrice.setText("$" + productDTO.getPrice().toString());
         binding.tvPdtDetailDescription.setText(productDTO.getDescription());
         binding.tvPdtDetailBrand.setText("Brand: " + productDTO.getBrand());
-        binding.tvPdtDetailStatus.setText("Status: " + productDTO.getStatus());
+        switch (productDTO.getStatus()) {
+            case Constants.HEAVILY_USED:
+                binding.tvPdtDetailStatus.setText("Status: Heavily used");
+                break;
+            case Constants.WELL_USED:
+                binding.tvPdtDetailStatus.setText("Status: Well used");
+                break;
+            case Constants.AVERAGE_CONDITION:
+                binding.tvPdtDetailStatus.setText("Status: Average");
+                break;
+            case Constants.SLIGHTLY_USED:
+                binding.tvPdtDetailStatus.setText("Status: Slightly used");
+                break;
+            case Constants.EXCELLENT:
+                binding.tvPdtDetailStatus.setText("Status: Excellent");
+                break;
+            default:
+                binding.tvPdtDetailStatus.setText("Status: Average");
+                break;
+        }
+
         StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());
 
         // query user avatar with the reference
@@ -88,8 +99,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.pdtDetailBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
-                startActivity(intent);
 
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Go Profile Page", Toast.LENGTH_SHORT);
@@ -101,6 +110,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.llFavouriteBtnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // check whther the item is liked or not
+                
 
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Add to my favourite", Toast.LENGTH_SHORT);
