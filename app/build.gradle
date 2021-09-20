@@ -2,13 +2,16 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.comp90018.assignment2"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -19,7 +22,7 @@ android {
         ndk {
             //选择要添加的对应cpu类型的.so库。
             abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a', 'x86_64', 'arm-v8a', 'x86', 'arm64-v8a'
-                    // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         }
 
         manifestPlaceholders = [
@@ -56,6 +59,26 @@ android {
 
 
 dependencies {
+
+    // video player
+    implementation 'com.ycjiang:VideoPlayModule-Lite:2.3.61'
+
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.21"
+
+    // picture selector
+    implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc08'
+
+    // better dialog
+    implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
+
+    // quickRecyclerViewAdapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+    implementation project(path: ':supernova-emoji-library')
+
+    // android-flat-button
+    compile 'info.hoang8f:fbutton:1.0.5'
 
     // better dialog
     implementation 'com.github.limxing:Android-PromptDialog:1.1.3'
@@ -95,7 +118,7 @@ dependencies {
 
     // categories
     implementation "androidx.constraintlayout:constraintlayout:2.1.0"
-    
+
     // lombok for pojos
     // noinspection AnnotationProcessorOnCompilePath
 //    compileOnly "org.projectlombok:lombok:1.18.20"
