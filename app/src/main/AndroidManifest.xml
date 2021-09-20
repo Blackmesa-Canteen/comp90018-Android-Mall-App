@@ -18,13 +18,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
+
+        <activity
+            android:name=".modules.product.activity.ProductDetailActivity"
+            android:exported="true">
+        </activity>
+
         <activity android:name=".modules.search.activity.SearchProductActivity">
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
@@ -46,12 +46,11 @@
         <activity
             android:name=".modules.entrance.WelcomeActivity"
             android:theme="@style/Theme.AppName.NoActionBar">
+            <!-- entrance is here!! -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- entrance is here!! -->
         </activity>
         <activity
             android:name=".modules.MainActivity"
