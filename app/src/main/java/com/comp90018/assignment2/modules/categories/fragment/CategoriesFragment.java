@@ -108,16 +108,6 @@ public class CategoriesFragment extends BaseFragment {
 
             ct_right.setAdapter(rightAdapter);
             GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
-            manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    if (position == 0) {
-                        return 3;
-                    } else {
-                        return 1;
-                    }
-                }
-            });
             ct_right.setLayoutManager(manager);
             leftAdapter.notifyDataSetChanged();
         });
