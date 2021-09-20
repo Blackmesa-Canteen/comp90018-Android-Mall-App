@@ -32,6 +32,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ProductDTO implements Parcelable {
+    private String id;
     private String brand;
     private DocumentReference category_ref;
     private Integer currency;
@@ -56,6 +57,7 @@ public class ProductDTO implements Parcelable {
     FirebaseFirestore db;
 
     protected ProductDTO(Parcel in) {
+        id = in.readString();
 
         category_ref = FirebaseFirestore.getInstance().document(in.readString());
         owner_ref = FirebaseFirestore.getInstance().document(in.readString());
@@ -127,6 +129,7 @@ public class ProductDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
 
         String category_ref_text = category_ref.getPath();
         dest.writeString(category_ref_text);
