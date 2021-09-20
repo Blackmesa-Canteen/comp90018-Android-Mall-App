@@ -1,40 +1,22 @@
-package com.comp90018.assignment2.modules.product;
+package com.comp90018.assignment2.modules.product.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.dto.ProductDTO;
-import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.search.adapter.SearchResultRvAdapter;
-import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
-import com.donkingliang.labels.LabelsView;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProductDetailAdapter extends RecyclerView.Adapter {
 
