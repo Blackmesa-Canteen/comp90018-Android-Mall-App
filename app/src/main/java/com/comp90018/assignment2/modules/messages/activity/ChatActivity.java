@@ -79,7 +79,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private FrameLayout flKeyboardMore;
 
-    /** default chat type */
+    /**
+     * default chat type
+     */
     private int chatType = Constants.SINGLE_CHAT;
 
     private String userId = "";
@@ -97,11 +99,11 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
     boolean isShowingRecordingTextView = false;
-    VoiceMessageUtil voiceMessageUtil;
+    private VoiceMessageUtil voiceMessageUtil;
 
     private PromptDialog dialog;
 
-    EmojIconActions emojIcon;
+    private EmojIconActions emojIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +179,6 @@ public class ChatActivity extends AppCompatActivity {
         // init chat message list
         initList();
 
-        // TODO this!
-
         // init keyboard
         initInput();
         initMore();
@@ -189,8 +189,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    boolean showOption=false;
-    boolean showEmoji=false;
+    boolean showOption = false;
+    boolean showEmoji = false;
+
     /**
      * init more options behavior
      */
@@ -229,6 +230,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onKeyboardClose() {
                 Log.d(TAG, "emoji close");
+                showEmoji = false;
             }
         });
 
@@ -238,6 +240,10 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // if the emoj is on, no show more
                 if (!showEmoji) {
+                    // hide normal keyboard
+                    InputMethodManager inputSoftKeys =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputSoftKeys.hideSoftInputFromWindow(binding.etMessageInput.getWindowToken(), 0);
 
                     // click again to close
                     if (showOption) {
@@ -354,8 +360,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 // if video
-                if(chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VIDEO_RECEIVE||
-                        chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VIDEO_SEND ) {
+                if (chatMessageBeanList.get(position).getItemType() == ChatMessageBean.VIDEO_RECEIVE ||
+                        chatMessageBeanList.get(position).getItemType() == ChatMessageBean.VIDEO_SEND) {
                     cn.jpush.im.android.api.model.Message message = chatMessageBeanList
                             .get(position).getMessage();
 
@@ -380,8 +386,8 @@ public class ChatActivity extends AppCompatActivity {
                 }
 
                 // if record
-                if(chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VOICE_SEND
-                        || chatMessageBeanList.get(position).getItemType()==ChatMessageBean.VOICE_RECEIVE){
+                if (chatMessageBeanList.get(position).getItemType() == ChatMessageBean.VOICE_SEND
+                        || chatMessageBeanList.get(position).getItemType() == ChatMessageBean.VOICE_RECEIVE) {
                     if (voiceMessageUtil != null) {
                         voiceMessageUtil.playVoice(chatMessageBeanList, position);
                     }
@@ -466,6 +472,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * send plain text to Jmessage server
+     *
      * @param text text
      */
     private void sentTextMessage(String text) {
@@ -500,7 +507,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * UI handler for chat activity
-     *
+     * <p>
      * Since Android only allows updates to the UI in the main thread,
      * the purpose of the Handler is to act as a bridge between threads
      * and then update the UI through the main thread
@@ -534,6 +541,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * add new message in to adapter, refresh it, and roll to it
+     *
      * @param messageBean
      */
     public void addNewMessageBeanToAdapter(ChatMessageBean messageBean) {
@@ -545,11 +553,12 @@ public class ChatActivity extends AppCompatActivity {
     /**
      * add Message obj from server, change it to bean
      * and show it.
+     *
      * @param message
      */
     private void addMessageBeanFromJMessage(cn.jpush.im.android.api.model.Message message) {
-        if(message.getStatus() == MessageStatus.send_fail
-                || message.getContentType() == ContentType.eventNotification){
+        if (message.getStatus() == MessageStatus.send_fail
+                || message.getContentType() == ContentType.eventNotification) {
             return;
         }
 
@@ -635,6 +644,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * receive new incoming message
+     *
      * @param event jmessage message event
      */
     public void onEventMainThread(MessageEvent event) {
@@ -644,6 +654,7 @@ public class ChatActivity extends AppCompatActivity {
 
     /**
      * receive offline message
+     *
      * @param event
      */
     public void onEvent(OfflineMessageEvent event) {

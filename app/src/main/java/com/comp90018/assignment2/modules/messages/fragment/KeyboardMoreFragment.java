@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
+import com.comp90018.assignment2.config.GlideEngine;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.messages.adapter.KeyboardMoreItemAdapter;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
@@ -77,6 +78,7 @@ public class KeyboardMoreFragment extends BaseFragment {
                         // gallery button clicked
                         PictureSelector.create(KeyboardMoreFragment.this)
                                 .openGallery(PictureMimeType.ofAll())
+                                .imageEngine(GlideEngine.createGlideEngine())
                                 .maxSelectNum(1)
                                 .minSelectNum(1)
                                 .selectionMode(PictureConfig.SINGLE)
