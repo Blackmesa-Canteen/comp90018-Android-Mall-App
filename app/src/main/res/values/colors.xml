@@ -154,4 +154,9 @@
     <color name="white_btn_text_press">#888888</color>
     <color name="white_btn_text_normal">#2C2C2C</color>
 
+    <color name="pdt_blue_btn_normal">#2979FF</color>
+    <color name="pdt_blue_btn_pressed">#569EDB</color>
+    <color name="pdt_red_price">#E64A19</color>
+    <color name="pdt_green_want_this">#09AF00</color>
+
 </resources>
