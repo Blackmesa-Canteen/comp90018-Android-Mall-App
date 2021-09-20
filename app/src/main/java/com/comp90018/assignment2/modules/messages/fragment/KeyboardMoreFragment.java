@@ -114,14 +114,14 @@ public class KeyboardMoreFragment extends BaseFragment {
 
                 // if has image
                 if ( selectList != null && selectList.size() == 1 && selectList.get(0) != null) {
-
+                    Log.d(TAG,"img path: " + selectList.get(0).getRealPath());
                     String jMessageType = Constants.IMG_TYPE;
                     if (PictureMimeType.isHasImage(selectList.get(0).getMimeType())) {
                         jMessageType = Constants.IMG_TYPE;
 
                         String finalJMessageType = jMessageType;
                         ImageContent.createImageContentAsync(
-                                new File(selectList.get(0).getPath()),
+                                new File(selectList.get(0).getRealPath()),
                                 new ImageContent.CreateImageContentCallback() {
                                     @Override
                                     public void gotResult(int i, String s, ImageContent imageContent) {
@@ -133,6 +133,7 @@ public class KeyboardMoreFragment extends BaseFragment {
                                             sendMessage(messageToSend, ChatMessageBean.IMG_SEND);
                                         } else {
                                             Log.w(TAG, "Create image message failed!");
+                                            Log.w(TAG, s);
                                         }
                                     }
                                 }
@@ -141,13 +142,13 @@ public class KeyboardMoreFragment extends BaseFragment {
                     } else if (PictureMimeType.isHasVideo(selectList.get(0).getMimeType())) {
                         jMessageType = Constants.VIDEO_TYPE;
 
-                        int index = selectList.get(0).getPath().lastIndexOf('/');
+                        int index = selectList.get(0).getRealPath().lastIndexOf('/');
                         String fileName = "";
                         if (index > 0) {
-                            fileName = selectList.get(0).getPath().substring(index + 1);
+                            fileName = selectList.get(0).getRealPath().substring(index + 1);
                         }
                         MediaMetadataRetriever media = new MediaMetadataRetriever();
-                        media.setDataSource(selectList.get(0).getPath());
+                        media.setDataSource(selectList.get(0).getRealPath());
 
                         // thumbImage
                         Bitmap bitmap = media.getFrameAtTime();
@@ -160,7 +161,7 @@ public class KeyboardMoreFragment extends BaseFragment {
                                         Constants.JPUSH_APPKEY,
                                         bitmap,
                                         "jpeg",
-                                        new File(selectList.get(0).getPath()),
+                                        new File(selectList.get(0).getRealPath()),
                                         fileName,
                                         1000);
                             } catch (IOException e) {

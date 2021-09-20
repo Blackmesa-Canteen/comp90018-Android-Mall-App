@@ -238,21 +238,21 @@ public class ChatActivity extends AppCompatActivity {
         binding.ivMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // if the emoj is on, no show more
-                if (!showEmoji) {
-                    // hide normal keyboard
-                    InputMethodManager inputSoftKeys =
-                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputSoftKeys.hideSoftInputFromWindow(binding.etMessageInput.getWindowToken(), 0);
+                // if the emoji pad is on, hide emoji pad
+                emojIcon.hidePopup();
 
-                    // click again to close
-                    if (showOption) {
-                        showOption = false;
-                        hideOption();
-                    } else {
-                        showOption = true;
-                        showOption();
-                    }
+                // hide normal keyboard
+                InputMethodManager inputSoftKeys =
+                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputSoftKeys.hideSoftInputFromWindow(binding.etMessageInput.getWindowToken(), 0);
+
+                // click again to close
+                if (showOption) {
+                    showOption = false;
+                    hideOption();
+                } else {
+                    showOption = true;
+                    showOption();
                 }
             }
         });
@@ -379,6 +379,7 @@ public class ChatActivity extends AppCompatActivity {
                             }
 
                             Intent goToVideoPlayIntent = new Intent(ChatActivity.this, VideoPlayerActivity.class);
+                            Log.d(TAG, "video url: " + file.getPath());
                             goToVideoPlayIntent.putExtra("video_url", file.getPath());
                             startActivity(goToVideoPlayIntent);
                         }

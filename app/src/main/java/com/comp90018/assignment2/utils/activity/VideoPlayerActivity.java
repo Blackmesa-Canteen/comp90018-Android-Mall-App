@@ -26,13 +26,14 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String video_url = getIntent().getStringExtra("video_url");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         videoPlayerView = (VideoPlayerView) findViewById(R.id.exo_play_context_id);
         exoUserPlayer = new VideoPlayerManager
                 .Builder(VideoPlayerManager.TYPE_PLAY_USER, videoPlayerView)
                 .setTitle("playing")
-                .setPlayUri(getIntent().getStringExtra("video_url"))
+                .setPlayUri(video_url)
                 .create()
                 .startPlayer();
     }
