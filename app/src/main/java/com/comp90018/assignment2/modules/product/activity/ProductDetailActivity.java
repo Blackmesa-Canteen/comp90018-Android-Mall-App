@@ -1,11 +1,13 @@
 package com.comp90018.assignment2.modules.product.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,15 +18,29 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.product.ProductDetailAdapter;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.List;
+
 public class ProductDetailActivity extends AppCompatActivity {
 
+    private static final String TAG = "[dev]ProductDetail";
     private ActivityProductDetailBinding binding;
     private FirebaseStorage storage;
     private ProductDetailAdapter productDetailAdapter;
     private RecyclerView recyclerView;
+
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
+    private UserDTO currentUserDTO;
+
 
 
     @Override
@@ -32,6 +48,27 @@ public class ProductDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         storage = FirebaseStorage.getInstance();
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // query current login user
+        if (firebaseAuth.getCurrentUser() != null) {
+            String currentUserId = firebaseAuth.getUid();
+            db.collection(Constants.USERS_COLLECTION)
+                    .document(currentUserId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                currentUserDTO = document.toObject(UserDTO.class);
+                            } else {
+                                Log.w(TAG, "current user info db connection failed");
+                            }
+                        }
+                    });
+        }
 
         binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -89,10 +126,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Go Previous Page", Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
         /** go profile page */
@@ -111,12 +144,40 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // check whther the item is liked or not
-                
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Please login in.", Toast.LENGTH_SHORT).show();
 
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Add to my favourite", Toast.LENGTH_SHORT);
-                toast.show();
+                } else if (currentUserDTO == null){
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                }else {
+                    // check whther the item is liked or not
+                    boolean isThisProductLiked = false;
+                    List<DocumentReference> favorite_refs = currentUserDTO.getFavorite_refs();
+                    for (DocumentReference ref : favorite_refs) {
+                        if (ref.getId().equals(productDTO.getId())) {
+                            isThisProductLiked = true;
+                            break;
+                        }
+                    }
+
+                    if (!isThisProductLiked) {
+                        // if the user have not liked the product
+                        Toast.makeText(ProductDetailActivity.this,
+                                "Added to favourite.", Toast.LENGTH_SHORT).show();
+
+                        // product's like number + 1
+                        int prevFavoriteNumber = productDTO.getFavorite_number();
+                        productDTO.setFavorite_number(prevFavoriteNumber + 1);
+                        db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId())
+                                .set(productDTO);
+                    } else {
+                        Toast.makeText(ProductDetailActivity.this,
+                                "You've already liked this product.", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
         /** comments on current product */
@@ -124,9 +185,18 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "comments on current product", Toast.LENGTH_SHORT);
-                toast.show();
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Please login in.", Toast.LENGTH_SHORT).show();
+
+                } else if (currentUserDTO == null){
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "comments on current product", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
         /** want current product */
@@ -134,9 +204,18 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Click Want this", Toast.LENGTH_SHORT);
-                toast.show();
+                if (firebaseAuth.getCurrentUser() == null) {
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Please login in.", Toast.LENGTH_SHORT).show();
+
+                } else if (currentUserDTO == null){
+                    Toast.makeText(ProductDetailActivity.this,
+                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Click Want this", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
 
