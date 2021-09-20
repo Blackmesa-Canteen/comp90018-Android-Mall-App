@@ -39,6 +39,7 @@ public class ProductDTO implements Parcelable {
     private String description;
     private Integer favorite_number;
     private List<String> image_address;
+    @Deprecated
     private GeoPoint location_coordinate;
     private String location_text;
     private DocumentReference owner_ref;
@@ -52,8 +53,8 @@ public class ProductDTO implements Parcelable {
     private Integer view_number;
     private String geo_hash;
 
-    private double lat;
-    private double lng;
+    private Double lat;
+    private Double lng;
     FirebaseFirestore db;
 
     protected ProductDTO(Parcel in) {
@@ -63,7 +64,17 @@ public class ProductDTO implements Parcelable {
         owner_ref = FirebaseFirestore.getInstance().document(in.readString());
         sub_category_ref = FirebaseFirestore.getInstance().document(in.readString());
         location_coordinate = new GeoPoint(in.readDouble(), in.readDouble());
+        if (in.readByte() == 0) {
+            lat = null;
+        } else {
+            lat = in.readDouble();
+        }
 
+        if (in.readByte() == 0) {
+            lng = null;
+        } else {
+            lng = in.readDouble();
+        }
 
         brand = in.readString();
         if (in.readByte() == 0) {
@@ -143,8 +154,19 @@ public class ProductDTO implements Parcelable {
         // geo location
         dest.writeDouble(location_coordinate.getLatitude());
         dest.writeDouble(location_coordinate.getLongitude());
-        lat = location_coordinate.getLatitude();
-        lng = location_coordinate.getLongitude();
+        if (lat == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(lat);
+        }
+
+        if (lng == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(lng);
+        }
 
         dest.writeString(brand);
         if (currency == null) {
