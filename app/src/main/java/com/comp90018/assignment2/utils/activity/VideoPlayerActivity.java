@@ -3,8 +3,10 @@ package com.comp90018.assignment2.utils.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.comp90018.assignment2.R;
+import com.comp90018.assignment2.config.VideoDataSource;
 
 import chuangyuan.ycj.videolibrary.video.ExoUserPlayer;
 import chuangyuan.ycj.videolibrary.video.VideoPlayerManager;
@@ -32,6 +34,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoPlayerView = (VideoPlayerView) findViewById(R.id.exo_play_context_id);
         exoUserPlayer = new VideoPlayerManager
                 .Builder(VideoPlayerManager.TYPE_PLAY_USER, videoPlayerView)
+                .setDataSource(new VideoDataSource(this))
                 .setTitle("playing")
                 .setPlayUri(video_url)
                 .create()
