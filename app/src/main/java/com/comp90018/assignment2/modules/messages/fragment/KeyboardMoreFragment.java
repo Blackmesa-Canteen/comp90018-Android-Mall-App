@@ -154,7 +154,6 @@ public class KeyboardMoreFragment extends BaseFragment {
                         Bitmap bitmap = media.getFrameAtTime();
 
                         Message message = null;
-
                         if (chatType == Constants.SINGLE_CHAT) {
                             try {
                                 message = JMessageClient.createSingleVideoMessage(userId,
