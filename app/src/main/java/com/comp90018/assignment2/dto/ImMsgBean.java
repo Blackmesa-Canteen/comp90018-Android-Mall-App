@@ -1,6 +1,10 @@
 package com.comp90018.assignment2.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import cn.jpush.im.android.api.model.Message;
@@ -11,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImMsgBean {
+public class ImMsgBean implements Serializable {
 
     public final static int CHAT_SENDER_OTHER= 0;
     public final static int CHAT_SENDER_ME = 1;

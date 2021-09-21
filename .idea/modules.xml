@@ -1,10 +1,11 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/appName.iml" filepath="$PROJECT_DIR$/.idea/modules/appName.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/appName.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/appName.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/emoji/appName.emoji.iml" filepath="$PROJECT_DIR$/.idea/modules/emoji/appName.emoji.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/supernova-emoji-library/appName.supernova-emoji-library.iml" filepath="$PROJECT_DIR$/.idea/modules/supernova-emoji-library/appName.supernova-emoji-library.iml" />
     </modules>
   </component>
 </project>
