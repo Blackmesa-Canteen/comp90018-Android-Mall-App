@@ -18,5 +18,26 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
 
+    <string name="jmui_time_format_year_month_day">yyyy-MM-dd</string>
+    <string name="jmui_time_format_accuracy">yyyy-MM-dd HH:mm:ss </string>
+    <string name="jmui_time_format_hours">HH:mm</string>
+    <string name="jmui_yesterday">yesterday</string>
+    <string name="jmui_before_yesterday">the day before yesterday</string>
+    <string name="jmui_before_dawn">before dawn</string>
+    <string name="jmui_morning">moring</string>
+    <string name="jmui_afternoon">afternoon</string>
+    <string name="jmui_night">evening</string>
+    <string name="jmui_monday">Mon.</string>
+    <string name="jmui_tuesday">Tue.</string>
+    <string name="jmui_wednesday">Wed.</string>
+    <string name="jmui_thursday">Thu.</string>
+    <string name="jmui_friday">Fri.</string>
+    <string name="jmui_saturday">Sat.</string>
+    <string name="jmui_sunday">Sun.</string>
+    <string name="year">year</string>
+    <string name="jmui_month">month</string>
+    <string name="jmui_day">day</string>
+    <string name="second">sec</string>
+
     <!-- im -->
 </resources>

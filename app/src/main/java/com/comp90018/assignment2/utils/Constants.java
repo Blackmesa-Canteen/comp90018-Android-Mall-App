@@ -2,6 +2,8 @@ package com.comp90018.assignment2.utils;
 
 public class Constants {
 
+    public static final String JPUSH_APPKEY = "4787283def67f5866a0a1451";
+
     /** gender */
     public static final int GENDER_UNKNOWN = 0;
     public static final int FEMALE = 1;
@@ -44,4 +46,31 @@ public class Constants {
 
     /** currency type */
     public static final Integer AUS_DOLLAR = 0;
+
+    /** activity jumping state code */
+    // open the activity with refresh
+    public final static int REQUEST_CODE_A = 10101;
+    public final static int REQUEST_CODE_B = 10102;
+
+    // used for intent bundle name
+    public final static String DATA_A = "DATA_A";
+    public final static String DATA_B = "DATA_B";
+
+    /** handler control code */
+    public final static int SCROLL_BOTTOM = 10103;
+    public final static int HIDDEN_BOTTOM = 10104;
+    public final static int SHOW_BOTTOM = 10105;
+
+    /** IM Message custom type */
+    public final static String TYPE = "TYPE";
+    public final static int SINGLE_CHAT = 0;
+    public final static int GROUP_CHAT= 1;
+
+    public final static String ADDRESS = "ADDRESS";
+    public final static String NEW_MESSAGE = "NEW_MESSAGE";
+
+    /** message type */
+    public final static String IMG_TYPE = "IMG";
+    public final static String VIDEO_TYPE = "VIDEO";
+
 }

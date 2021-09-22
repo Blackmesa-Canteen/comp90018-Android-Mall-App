@@ -30,6 +30,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class UserDTO implements Parcelable {
+    private String id;
 
     private String avatar_address;
     private Timestamp created_time;
@@ -49,7 +50,7 @@ public class UserDTO implements Parcelable {
     private Double star_number;
 
     protected UserDTO(Parcel in) {
-
+        id = in.readString();
 
         List<String> tempStringReferenceTextList = null;
 
@@ -118,6 +119,7 @@ public class UserDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
 
         List<String> favorite_refs_text_list = new ArrayList<>();
         for (DocumentReference documentReference : favorite_refs) {

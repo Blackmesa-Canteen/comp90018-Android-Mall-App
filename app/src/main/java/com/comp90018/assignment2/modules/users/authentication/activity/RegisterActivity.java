@@ -203,6 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                                                 // store userDTO in the database
                                                 UserDTO newUserDto = new UserDTO();
+                                                newUserDto.setId(userId);
                                                 newUserDto.setEmail(usernameStr);
                                                 newUserDto.setNickname(nickName);
                                                 newUserDto.setAvatar_address(Constants.DEFAULT_AVATAR_PATH);

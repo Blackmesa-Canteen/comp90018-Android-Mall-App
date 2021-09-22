@@ -32,12 +32,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ProductDTO implements Parcelable {
+    private String id;
     private String brand;
     private DocumentReference category_ref;
     private Integer currency;
     private String description;
     private Integer favorite_number;
     private List<String> image_address;
+    @Deprecated
     private GeoPoint location_coordinate;
     private String location_text;
     private DocumentReference owner_ref;
@@ -51,12 +53,28 @@ public class ProductDTO implements Parcelable {
     private Integer view_number;
     private String geo_hash;
 
+    private Double lat;
+    private Double lng;
+    FirebaseFirestore db;
+
     protected ProductDTO(Parcel in) {
+        id = in.readString();
 
         category_ref = FirebaseFirestore.getInstance().document(in.readString());
         owner_ref = FirebaseFirestore.getInstance().document(in.readString());
         sub_category_ref = FirebaseFirestore.getInstance().document(in.readString());
         location_coordinate = new GeoPoint(in.readDouble(), in.readDouble());
+        if (in.readByte() == 0) {
+            lat = null;
+        } else {
+            lat = in.readDouble();
+        }
+
+        if (in.readByte() == 0) {
+            lng = null;
+        } else {
+            lng = in.readDouble();
+        }
 
         brand = in.readString();
         if (in.readByte() == 0) {
@@ -122,6 +140,7 @@ public class ProductDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
 
         String category_ref_text = category_ref.getPath();
         dest.writeString(category_ref_text);
@@ -135,7 +154,19 @@ public class ProductDTO implements Parcelable {
         // geo location
         dest.writeDouble(location_coordinate.getLatitude());
         dest.writeDouble(location_coordinate.getLongitude());
+        if (lat == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(lat);
+        }
 
+        if (lng == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(lng);
+        }
 
         dest.writeString(brand);
         if (currency == null) {
@@ -187,5 +218,6 @@ public class ProductDTO implements Parcelable {
         }
 
         dest.writeString(geo_hash);
+        System.out.println("location_coordinate:" +location_coordinate);
     }
 }

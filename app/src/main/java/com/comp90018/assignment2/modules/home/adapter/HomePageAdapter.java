@@ -1,6 +1,8 @@
 package com.comp90018.assignment2.modules.home.adapter;
 
 import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +23,12 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.core.GeoHash;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -35,7 +42,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.NonNull;
-
+/**
+ * @author Ka Hou Hong
+ */
 
 public class HomePageAdapter extends RecyclerView.Adapter {
 
@@ -48,12 +57,21 @@ public class HomePageAdapter extends RecyclerView.Adapter {
     private FirebaseStorage storage;
     private final static String TAG = "HomePageAdapter";
 
+    private GeoPoint location_coordinate;
+    private double lat;
+    private double lon;
+    FirebaseFirestore db;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
     public HomePageAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
         this.productDTOList = productDTOList;
         this.userDTOMap = new HashMap<>();
         storage = FirebaseStorage.getInstance();
         layoutInflater = LayoutInflater.from(context);
+        location_coordinate = null;
     }
 
     @Override
@@ -115,7 +133,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
         public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
             ProductDTO productDTO = productDTOList.get(position);
-
             // set product img
             // if default img
             if (productDTO.getImage_address() == null
@@ -144,7 +161,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             }
 
             textProductDescriptionCut.setText(descriptionCut);
-            System.out.println("textProductDescriptionCut: "+textProductDescriptionCut);
+            //System.out.println("textProductDescriptionCut: "+textProductDescriptionCut);
             // set labels: brand and quality
             ArrayList<String> labelStrings = new ArrayList<>();
 
@@ -178,7 +195,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
             labelStrings.add(brandNameCut);
             labelStrings.add(qualityText);
-            //labels.setLabels(labelStrings);
+            labels.setLabels(labelStrings);
 
             // set Price
             double price = productDTO.getPrice();
@@ -253,6 +270,23 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             } else {
                 rating.setRating(0);
             }
+
+            // This field is used to get geohash of products
+            /*
+            location_coordinate = productDTO.getLocation_coordinate();
+            lat = location_coordinate.getLatitude();
+            lon = location_coordinate.getLongitude();
+            //System.out.println("location_coordinate: "+location_coordinate+" # "+lat+ " # " +lon);
+            String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lon));
+            // Add the hash and the lat/lng to the document. We will use the hash
+            // for queries and the lat/lng for distance comparisons.
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("geohash", hash);
+            updates.put("lat", lat);
+            updates.put("lng", lon);
+            System.out.println("geohash~ : "+updates+", "+productDTO.getDescription());
+            */
+
             /*
             System.out.println("---------------------------------------------------------");
             System.out.println("descriptionCut: "+descriptionCut);
@@ -263,6 +297,11 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             System.out.println("context: "+context);
             System.out.println("---------------------------------------------------------");*/
 
+            // find nearest item
+
+
+
+
             // toast listeners
             UserDTO finalUserDTO = userDTO;
             View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
@@ -270,9 +309,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     Toast.makeText(context, "Clicked item: "+ descriptionCut, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Clicked d: "+ descriptionCut);
-                    System.out.println("---------------------------------------------------------");
-                    System.out.println("Clicked");
-                    System.out.println("---------------------------------------------------------");
                 }
             };
 
@@ -281,9 +317,6 @@ public class HomePageAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
-                    System.out.println("---------------------------------------------------------");
-                    System.out.println("Clicked");
-                    System.out.println("---------------------------------------------------------");
                 }
             };
 
