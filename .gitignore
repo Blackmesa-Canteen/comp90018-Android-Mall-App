@@ -409,3 +409,4 @@ lint/tmp/
 # Android Profiling
 *.hprof
 
+app/src/main/java/com/comp90018/assignment2/modules/home/fragment/HomeFragment.java

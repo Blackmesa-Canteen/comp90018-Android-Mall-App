@@ -1,21 +1,20 @@
 package com.comp90018.assignment2.modules.home.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
@@ -23,9 +22,6 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
-import com.firebase.geofire.GeoFireUtils;
-import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.core.GeoHash;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -42,6 +38,8 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.NonNull;
+
+
 /**
  * @author Ka Hou Hong
  */
@@ -307,8 +305,12 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Clicked item: "+ descriptionCut, Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Clicked d: "+ descriptionCut);
+                    Intent intent = new Intent(context, ProductDetailActivity.class);
+                    intent.putExtra("productDTO", productDTO);
+                    intent.putExtra("userDTO", finalUserDTO);
+                    context.startActivity(intent);
+                    Toast.makeText(context, "to detail activity: "+ descriptionCut, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "to detail activity: "+ descriptionCut);
                 }
             };
 
