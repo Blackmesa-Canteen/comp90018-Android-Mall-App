@@ -59,7 +59,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.app.ProgressDialog;
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 /**
@@ -122,6 +122,7 @@ public class HomeFragment extends BaseFragment{
         viewLabel.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {
             @Override
             public void onStartTabSelected(String title, int index) {
+<<<<<<< Updated upstream
                 if(index == 1){
                     INTRA_CITY = Boolean.TRUE;
                 }else{
@@ -129,6 +130,20 @@ public class HomeFragment extends BaseFragment{
                 }
                 needShowDialog = true;
                 loadData();
+=======
+               System.out.println("onStartTabSelected");
+                ProgressDialog progressDialog=new ProgressDialog(getActivity());
+                progressDialog.setTitle("Searching");
+                progressDialog.setMessage("Please wait");
+                progressDialog.show();
+               if(index == 1){
+                   INTRA_CITY = Boolean.TRUE;
+                   loadData();
+               }else{
+                   INTRA_CITY = Boolean.FALSE;
+                   loadData();
+               }
+>>>>>>> Stashed changes
             }
 
             @Override
