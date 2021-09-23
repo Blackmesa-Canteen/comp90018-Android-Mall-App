@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_root"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/v_new"
+            style="@style/NoticeSpot"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.1"
+            android:src="@drawable/default_avatar"/>
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_nickname_cut"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Loading nickname..."
+                android:textStyle="bold"
+                android:textSize="15dp"
+                android:maxLines="1"
+                android:maxLength="20"
+                android:textColor="@color/black"/>
+
+            <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
+                android:id="@+id/emoji_text_newest_msg_cut"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:textSize="12dp"
+                android:maxLines="1"
+                android:maxLength="25"
+                android:gravity="center"
+                android:text="Loading..."/>
+
+            <TextView
+                android:id="@+id/text_newest_msg_time"
+                android:layout_width="wrap_content"
+                android:layout_height="12dp"
+                android:textSize="8dp"
+                android:maxLines="1"
+                android:gravity="bottom"
+                android:text="Aug 8  17:22"/>
+
+        </LinearLayout>
+
+<!--        <com.comp90018.assignment2.utils.view.OvalImageView-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_weight="0.2"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/default_image"/>-->
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/grey2"/>
+</LinearLayout>

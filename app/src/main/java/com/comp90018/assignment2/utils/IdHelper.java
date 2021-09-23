@@ -4,6 +4,10 @@ import android.content.Context;
 
 import java.lang.reflect.Field;
 
+/**
+ * utils to get resource id
+ * @author xiaotian li
+ */
 public class IdHelper {
 
     public static int getLayout(Context context, String layoutName) {
