@@ -133,7 +133,6 @@ public class HomeFragment extends BaseFragment{
                 ProgressDialog progressDialog=new ProgressDialog(getActivity());
                 progressDialog.setTitle("Searching");
                 progressDialog.setMessage("Please wait");
-                progressDialog.show();
                if(index == 1){
                    INTRA_CITY = Boolean.TRUE;
                    loadData();
@@ -222,6 +221,7 @@ public class HomeFragment extends BaseFragment{
                     }
                 } else {
                     Log.d(TAG, "Error getting documents", task.getException());
+                    progressDialog.dismiss();
                 }
             });
         }else{ //INTRA-CITY
