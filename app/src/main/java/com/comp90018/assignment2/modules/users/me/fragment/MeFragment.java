@@ -54,7 +54,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
-
 /**
  *
  * @author Zhonghui Jiang
@@ -150,18 +149,19 @@ public class MeFragment extends BaseFragment {
 
 
 
-//    public void onActivityCreated(Bundle savedInstanceStade) {
-//
-//        super.onActivityCreated(savedInstanceStade);
-//        ImageButton b1 = (ImageButton) getActivity().findViewById(R.id.ib_profile_arrow);
-//        b1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent ToEditProfileActivity = new Intent(activityContext, EditProfileActivity.class);
-//                startActivity(ToEditProfileActivity);
-//            }
-//        });
-//    }
+    public void onActivityCreated(Bundle savedInstanceStade) {
+
+        super.onActivityCreated(savedInstanceStade);
+        tv_update = (TextView) getActivity().findViewById(R.id.tv_update);
+        tv_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent ToEditProfileActivity = new Intent(activityContext, EditProfileActivity.class);
+                startActivity(ToEditProfileActivity);
+            }
+        });
+
+    }
     //点击跳转activity
     private class onClick implements View.OnClickListener {
         @Override
@@ -210,33 +210,23 @@ public class MeFragment extends BaseFragment {
                     Toast.makeText(activityContext, "关于", Toast.LENGTH_SHORT).show();
                     break;
 
-                case R.id.tv_update:
-                    intent = new Intent(activityContext, EditProfileActivity.class);
-                    startActivity(intent);
-
-                    break;
+//                case R.id.tv_update:
+//                    intent = new Intent(activityContext, EditProfileActivity.class);
+//                    startActivity(intent);
+//
+//                    break;
                 case R.id.tv_logout:
                     intent = new Intent(activityContext, LoginActivity.class);
                     startActivity(intent);
 
+
                     break;
             }
 
+
         }
+
     }
-
-//     public void onActivityCreated(Bundle savedInstanceStade) {
-
-//         super.onActivityCreated(savedInstanceStade);
-//         ImageButton b1 = (ImageButton) getActivity().findViewById(R.id.ib_profile_arrow);
-//         b1.setOnClickListener(new View.OnClickListener() {
-//             @Override
-//             public void onClick(View view) {
-//                 Intent ToEditProfileActivity = new Intent(activityContext, EditProfileActivity.class);
-//                 startActivity(ToEditProfileActivity);
-//             }
-//         });
-//     }
 
     @Override
     public void loadData() {
