@@ -67,7 +67,7 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
 
         <activity
-            android:name=".modules.users.authentication.activity.EditProfileActivity"
+            android:name=".modules.users.me.activity.EditProfileActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
 
