@@ -32,6 +32,9 @@ public class Constants {
     public static final int SLIGHTLY_USED = 3;
     public static final int EXCELLENT = 4;
 
+    /** firebase storage bucket name */
+    public static final String STORAGE_ROOT_PATH = "gs://comp90018-mobile-caa7c.appspot.com";
+
     /** default image path */
     public static final String DEFAULT_IMAGE_PATH = "gs://comp90018-mobile-caa7c.appspot.com/public/default.png";
     public static final String DEFAULT_AVATAR_PATH = "gs://comp90018-mobile-caa7c.appspot.com/users/default_avatar.jpg";

@@ -66,6 +66,11 @@
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
 
+        <activity
+            android:name=".modules.users.authentication.activity.EditProfileActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+
         <meta-data
             android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
             android:value="AK" />
