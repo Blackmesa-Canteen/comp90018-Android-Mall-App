@@ -10,33 +10,64 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="zzw.imtest.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+
+    <!-- make app can call up camera activity -->
+    <queries package="com.comp90018.assignment2">
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+        </intent>
+    </queries>
 
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
+        <activity
+            android:name=".utils.activity.VideoPlayerActivity"
+            android:exported="true" />
+        <activity
+            android:name=".utils.activity.ImagePreviewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.messages.activity.ChatActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".modules.product.activity.ProductDetailActivity"
+            android:exported="true">
+        </activity>
+
         <activity android:name=".modules.search.activity.SearchProductActivity">
-
-            <!--            <intent-filter>-->
-            <!--                <action android:name="android.intent.action.MAIN" />-->
-
-            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-            <!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
-            android:launchMode="singleInstance">
-        </activity>
+            android:launchMode="singleInstance" />
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
             android:name=".modules.users.authentication.activity.RegisterActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+
+        <activity
+            android:name=".modules.users.me.activity.EditProfileActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
 
@@ -47,12 +78,11 @@
         <activity
             android:name=".modules.entrance.WelcomeActivity"
             android:theme="@style/Theme.AppName.NoActionBar">
+            <!-- entrance is here!! -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- entrance is here!! -->
         </activity>
         <activity
             android:name=".modules.MainActivity"

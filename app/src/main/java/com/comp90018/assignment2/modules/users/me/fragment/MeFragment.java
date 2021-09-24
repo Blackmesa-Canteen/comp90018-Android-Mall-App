@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.users.me.fragment;
 
+
 import static com.comp90018.assignment2.config.VideoDataSource.TAG;
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 
@@ -8,10 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+
+import android.content.Intent;
+import android.os.Bundle;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
+
 import com.comp90018.assignment2.db.service.UserService;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.users.authentication.activity.EditProfileActivity;
@@ -36,6 +41,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import com.comp90018.assignment2.modules.users.authentication.activity.EditProfileActivity;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -216,6 +224,19 @@ public class MeFragment extends BaseFragment {
 
         }
     }
+
+//     public void onActivityCreated(Bundle savedInstanceStade) {
+
+//         super.onActivityCreated(savedInstanceStade);
+//         ImageButton b1 = (ImageButton) getActivity().findViewById(R.id.ib_profile_arrow);
+//         b1.setOnClickListener(new View.OnClickListener() {
+//             @Override
+//             public void onClick(View view) {
+//                 Intent ToEditProfileActivity = new Intent(activityContext, EditProfileActivity.class);
+//                 startActivity(ToEditProfileActivity);
+//             }
+//         });
+//     }
 
     @Override
     public void loadData() {

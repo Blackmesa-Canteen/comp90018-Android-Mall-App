@@ -3,11 +3,12 @@ package com.comp90018.assignment2.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * Parcelable DTO that mapped from the database object
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CategoryDTO implements Parcelable {
     private String name;
-
+    private String category_id;
     protected CategoryDTO(Parcel in) {
         name = in.readString();
     }
@@ -47,5 +48,6 @@ public class CategoryDTO implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(category_id);
     }
 }

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:emojicon="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".modules.messages.activity.ChatActivity">
+
+    <!-- action bar -->
+    <LinearLayout
+        android:id="@+id/action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey6"
+        android:layout_marginTop="5dp"
+        android:paddingBottom="10dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0"
+            android:src="@drawable/left"
+            android:layout_marginStart="10dp" />
+
+        <LinearLayout
+            android:id="@+id/ll_user_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nickname"
+                android:textColor="@color/black"
+                android:textSize="15dp"
+                android:textStyle="bold"
+
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/text_user_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:example@example.org"
+                android:textColor="@color/grey1"
+                android:textSize="11dp"
+
+                android:gravity="center"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- product info card -->
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/rl_product_info_card"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_below="@id/action_bar">-->
+
+<!--        <com.comp90018.assignment2.utils.view.OvalImageView-->
+<!--            android:id="@+id/img_product_image"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="10dp"-->
+<!--            android:scaleType="fitXY"-->
+<!--            android:src="@drawable/default_image" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/text_product_price"-->
+<!--            android:layout_width="120dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="15dp"-->
+<!--            android:layout_toRightOf="@id/img_product_image"-->
+<!--            android:maxLength="9"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="$233.3"-->
+<!--            android:textColor="@color/red"-->
+<!--            android:textSize="20dp" />-->
+
+<!--        <info.hoang8f.widget.FButton-->
+<!--            android:id="@+id/btn_product_info_behavior"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_alignParentRight="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginRight="15dp"-->
+<!--            android:maxLines="1"-->
+<!--            android:text="Want this"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="9dp"-->
+<!--            app:buttonColor="@color/green_light" />-->
+
+
+<!--    </RelativeLayout>-->
+
+<!--    &lt;!&ndash; divide line &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/divide_line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="3dp"-->
+<!--        android:background="@color/grey5"-->
+<!--        android:layout_below="@id/rl_product_info_card"/>-->
+
+    <!-- chat list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/rl_keyboard"
+        android:layout_below="@id/action_bar" />
+
+    <!-- keyboard -->
+    <RelativeLayout
+        android:id="@+id/rl_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_above="@id/fl_keyboard_more"
+        android:background="@color/grey6">
+
+        <ImageView
+            android:id="@+id/iv_sound"
+            android:layout_width="20dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:src="@drawable/microphone" />
+
+        <ImageView
+            android:id="@+id/iv_emoji"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/iv_sound"
+            android:src="@drawable/smile" />
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="22dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/iv_emoji"
+            android:src="@drawable/add" />
+
+        <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+            android:id="@+id/et_message_input"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toStartOf="@id/iv_send"
+            android:layout_toLeftOf="@id/iv_send"
+            android:layout_toEndOf="@id/iv_more"
+            android:layout_toRightOf="@id/iv_more"
+            android:padding="5dp"
+            android:paddingLeft="10dp"
+            android:textCursorDrawable="@drawable/et_cursor"
+            emojicon:emojiconSize="20sp" />
+
+        <com.comp90018.assignment2.modules.messages.view.RecordButtonTextView
+            android:id="@+id/tv_sound"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toLeftOf="@id/iv_send"
+            android:layout_toRightOf="@id/iv_more"
+            android:background="@drawable/et_bg"
+            android:gravity="center"
+            android:text="Press to speak"
+            android:textColor="@color/blue_dark"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_send"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/send" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_keyboard_more"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        />
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -29,22 +30,22 @@
         android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <com.donkingliang.labels.LabelsView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/item_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:isIndicator="true"
             app:labelBackground="@drawable/label_bg"
             app:labelTextColor="@color/red"
-            app:labelTextSize="10dp"
-            app:labelTextPaddingTop="2dp"
             app:labelTextPaddingBottom="2dp"
             app:labelTextPaddingLeft="5dp"
             app:labelTextPaddingRight="5dp"
+            app:labelTextPaddingTop="2dp"
+            app:labelTextSize="10dp"
             app:lineMargin="3dp"
-            app:wordMargin="5dp"
             app:maxLines="1"
-            app:isIndicator="true" />
+            app:wordMargin="5dp" />
     </LinearLayout>
 
     <LinearLayout
