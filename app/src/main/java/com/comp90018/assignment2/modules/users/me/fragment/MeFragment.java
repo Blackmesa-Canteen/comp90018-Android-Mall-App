@@ -3,16 +3,12 @@ package com.comp90018.assignment2.modules.users.me.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
-import com.comp90018.assignment2.db.service.UserService;
-import com.comp90018.assignment2.modules.users.authentication.activity.EditProfileActivity;
-import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
+import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**

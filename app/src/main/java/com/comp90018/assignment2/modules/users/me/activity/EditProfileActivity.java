@@ -1,8 +1,6 @@
-package com.comp90018.assignment2.modules.users.authentication.activity;
+package com.comp90018.assignment2.modules.users.me.activity;
 
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
-
-import static cn.jiguang.ar.c.n;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,25 +24,15 @@ import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.config.GlideEngine;
 import com.comp90018.assignment2.databinding.ActivityEditUserProfileBinding;
-import com.comp90018.assignment2.databinding.ActivityRegisterBinding;
-import com.comp90018.assignment2.databinding.ActivitySearchProductBinding;
-import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.search.activity.SearchProductActivity;
-import com.comp90018.assignment2.modules.search.activity.SearchResultActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -56,12 +44,10 @@ import com.luck.picture.lib.entity.LocalMedia;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
-import cn.jpush.im.android.api.options.RegisterOptionalUserInfo;
 import cn.jpush.im.api.BasicCallback;
 
 /**
@@ -233,17 +219,17 @@ public class EditProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                String addressRegex = "^[\\u4e00-\\u9fa5]|[a-zA-Z0-9 -]{0,20}$";
+                String addressRegex = "^[a-zA-Z0-9 !?,.;@\"'()-]{0,40}$";
                 // No password regex, because it is login
                 if (!address.matches(addressRegex)) {
-                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("address should be letters, numbers and space").setPositiveButton("ok", null).show();
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("address should be letters, numbers, common symbols and space").setPositiveButton("ok", null).show();
                     return;
                 }
 
-                String descRegex = "^[\\u4e00-\\u9fa5]|[a-zA-Z0-9 -]{0,40}$";
+                String descRegex = "^[a-zA-Z0-9 !?,.;@\"'()-]{0,40}$";
                 // No password regex, because it is login
                 if (!description.matches(descRegex)) {
-                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("Description should be letters, numbers and space").setPositiveButton("ok", null).show();
+                    new AlertDialog.Builder(EditProfileActivity.this).setMessage("Description should be letters, numbers, common symbols and space").setPositiveButton("ok", null).show();
                     return;
                 }
 
@@ -258,6 +244,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     currentUserDto.setDescription(description);
                     currentUserDto.setLocation_text(address);
 
+                    progressDialog.show();
                     db.collection(Constants.USERS_COLLECTION)
                             .document(currentUserDto.getId())
                             .set(currentUserDto)
