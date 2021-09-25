@@ -1,410 +1,449 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
+    android:layout_height="wrap_content">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="121dp"
-        android:background="#eee">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/ci_user"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            app:civ_border_color="@color/blue"
-            app:civ_border_width="1dp"
-            android:src="@drawable/default_avatar">
-
-        </de.hdodenhof.circleimageview.CircleImageView>
-
-        <ImageButton
-            android:id="@+id/ib_profile_arrow"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/right_blue"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="121dp"
+            android:background="#eee">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ci_user"
+                android:layout_width="66dp"
+                android:layout_height="66dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                app:civ_border_color="@color/blue"
+                app:civ_border_width="1dp"
+                android:src="@drawable/default_avatar">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
+
+            <ImageButton
+                android:id="@+id/ib_profile_arrow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/right_blue"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+
+                    android:id="@+id/tv_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="94dp"
+                    android:layout_marginLeft="94dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Nick Name"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginEnd="45dp"
+                    android:layout_marginRight="45dp"
+                    android:text="Profile"
+                    android:textColor="@color/blue_light"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+
+                    android:id="@+id/tv_follower_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginLeft="9dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_followers"
+                    app:layout_constraintStart_toStartOf="@+id/tv_loginID"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+
+                    android:id="@+id/tv_following_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="1"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_following"
+                    app:layout_constraintStart_toStartOf="@+id/tv_following"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+
+                    android:id="@+id/tv_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="74dp"
+                    android:layout_marginRight="74dp"
+                    android:layout_marginBottom="7dp"
+                    android:text="Following"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+
+                    android:id="@+id/tv_loginID"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Login ID：default@example.com"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_follower_number"
+                    app:layout_constraintStart_toStartOf="@+id/tv_nick_name"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+
+                    android:id="@+id/tv_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:text="Followers"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_follower_number"
+                    app:layout_constraintStart_toEndOf="@+id/tv_follower_number"
+                    tools:ignore="MissingConstraints" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:padding="10dp">
 
             <TextView
-
+                android:id="@+id/orders"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="94dp"
-                android:layout_marginLeft="94dp"
-                android:layout_marginTop="16dp"
-                android:text="Nick Name"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Orders"
+                android:textColor="#5d5d5d"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="113dp"
+            android:padding="10dp">
 
             <TextView
-                android:id="@+id/tv_profile"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_published"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="43dp"
-                android:layout_marginLeft="43dp"
-                android:layout_marginTop="22dp"
-                android:layout_marginEnd="45dp"
-                android:layout_marginRight="45dp"
-                android:text="Profile"
-                android:textColor="@color/blue_light"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                android:layout_weight="1"
+                android:drawableTop="@drawable/sell"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="Published"
+                android:textColor="#5d5d5d" />
 
             <TextView
-
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_sold"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="107dp"
-                tools:layout_editor_absoluteY="73dp" />
+                android:layout_weight="1"
+                android:drawableTop="@drawable/money_fill"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="Sold"
+                android:textColor="#5d5d5d" />
 
             <TextView
-
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_purchased"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="285dp"
-                tools:layout_editor_absoluteY="73dp" />
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="74dp"
-                android:layout_marginRight="74dp"
-                android:layout_marginBottom="7dp"
-                android:text="Following"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Login ID：default@example.com"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="98dp"
-                tools:layout_editor_absoluteY="49dp" />
-
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Followers"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="87dp"
-                tools:layout_editor_absoluteY="95dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_weight="1"
+                android:drawableTop="@drawable/order_red"
+                android:drawablePadding="10dp"
+                android:gravity="center"
+                android:text="Purchased"
+                android:textColor="#5d5d5d" />
 
 
-    </RelativeLayout>
+        </LinearLayout>
 
-    <RelativeLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#eee" />
+
+
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/orders"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Orders"
-            android:textColor="#5d5d5d"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:padding="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="113dp"
-        android:padding="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My"
+                android:textColor="#5d5d5d"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_published"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
+
+            <ImageView
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/love_blue" />
+
+            <TextView
+                android:id="@+id/tv_favorate"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Favorate" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:background="#eee" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
+
+            <ImageView
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/express" />
+
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Delivery Address" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:background="#eee" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
+
+            <ImageView
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/payment" />
+
+            <TextView
+                android:id="@+id/tv_payment"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Payment Information" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:background="#eee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
+
+            <ImageView
+
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/profile" />
+
+            <TextView
+                android:id="@+id/tv_update"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Update Profile" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/sell"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="Published"
-            android:textColor="#5d5d5d" />
+            android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tv_sold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/money_fill"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="Sold"
-            android:textColor="#5d5d5d" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App"
+                android:textColor="#5d5d5d"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_purchased"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/order_red"
-            android:drawablePadding="10dp"
-            android:gravity="center"
-            android:text="Purchased"
-            android:textColor="#5d5d5d" />
+            <ImageView
 
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
-    </LinearLayout>
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/service" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="#eee" />
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Feedback" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="My"
-            android:textColor="#5d5d5d"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:background="#eee" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
+            <ImageView
 
-        <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/setting" />
 
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/love_blue" />
+            <TextView
+                android:id="@+id/tv_setting"
+                android:layout_marginLeft="30dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:text="Settings" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_favorate"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Favorate" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="50dp"
+            android:background="#eee" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
 
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="45dp"
-        android:background="#eee" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
+            <ImageView
 
-        <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/about" />
 
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/express" />
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="About"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_address"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Delivery Address" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:padding="10dp">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/tv_logout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:text="Log out"
+                android:layout_gravity="center"
+                android:background="@color/red_dark"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:textAlignment="center"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="45dp"
-        android:background="#eee" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
+        </LinearLayout>
 
-        <ImageView
-
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/payment" />
-
-        <TextView
-            android:id="@+id/tv_payment"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Payment Information" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#eee" />
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="45dp"
-        android:background="#eee" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
-
-        <ImageView
-
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/profile" />
-
-        <TextView
-            android:id="@+id/tv_update"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Update Profile" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="App"
-            android:textColor="#5d5d5d"
-            android:textSize="15dp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
-
-        <ImageView
-
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/service" />
-
-        <TextView
-            android:id="@+id/tv_feedback"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Feedback" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="45dp"
-        android:background="#eee" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
-
-        <ImageView
-
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/setting" />
-
-        <TextView
-            android:id="@+id/tv_setting"
-            android:layout_marginLeft="30dp"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:text="Settings" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="50dp"
-        android:background="#eee" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:padding="10dp">
-
-        <ImageView
-
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/about" />
-
-        <TextView
-            android:id="@+id/tv_about"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30dp"
-            android:gravity="center_vertical"
-            android:text="About"
-            android:textSize="18sp" />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="#eee" />
-
-
-
-</LinearLayout>
+</ScrollView>
