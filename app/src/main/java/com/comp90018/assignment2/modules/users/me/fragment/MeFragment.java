@@ -4,20 +4,25 @@ package com.comp90018.assignment2.modules.users.me.fragment;
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.base.BaseFragment;
 
 import com.comp90018.assignment2.dto.UserDTO;
 
+import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
@@ -26,29 +31,36 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import cn.jpush.im.android.api.JMessageClient;
 
 /**
+ * Me fragment
  *
  * @author Zhonghui Jiang
+ * @author Xiaotian Li
  */
 public class MeFragment extends BaseFragment {
 
-    /**
-     * 缺省占位
-     */
+    private static final String TAG = "MeFragment[dev]";
+
     private de.hdodenhof.circleimageview.CircleImageView ci_user;
     private ImageButton ib_profile_arrow;
 
     private TextView tv_profile;
-    private TextView tv_published;
-    private TextView tv_sold;
-    private TextView tv_purchased;
+    private LinearLayout tv_published;
+    private LinearLayout tv_sold;
+    private LinearLayout tv_purchased;
     private TextView tv_favorate;
     private TextView tv_address;
     private TextView tv_payment;
     private TextView tv_update;
-    private TextView tv_feedback;
+//    private TextView tv_feedback;
     private TextView tv_setting;
     private TextView tv_about;
     private TextView tv_follower_number;
@@ -60,9 +72,9 @@ public class MeFragment extends BaseFragment {
     private TextView tv_nick_name;
     private TextView tv_loginID;
 
-
-
-
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore db;
+    private FirebaseStorage firebaseStorage;
 
 
     @Override
@@ -77,31 +89,36 @@ public class MeFragment extends BaseFragment {
         ib_profile_arrow = (ImageButton) view.findViewById(R.id.ib_profile_arrow);
 
         tv_profile = (TextView) view.findViewById(R.id.tv_profile);
-        tv_published = (TextView) view.findViewById(R.id.tv_published);
-        tv_sold = (TextView) view.findViewById(R.id.tv_sold);
-        tv_purchased = (TextView) view.findViewById(R.id.tv_purchased);
+        tv_published = (LinearLayout) view.findViewById(R.id.tv_published);
+        tv_sold = (LinearLayout) view.findViewById(R.id.tv_sold);
+        tv_purchased = (LinearLayout) view.findViewById(R.id.tv_purchased);
         tv_favorate = (TextView) view.findViewById(R.id.tv_favorate);
         tv_address = (TextView) view.findViewById(R.id.tv_address);
         tv_payment = (TextView) view.findViewById(R.id.tv_payment);
         tv_update = (TextView) view.findViewById(R.id.tv_update);
-        tv_feedback = (TextView) view.findViewById(R.id.tv_feedback);
+//        tv_feedback = (TextView) view.findViewById(R.id.tv_feedback);
         tv_setting = (TextView) view.findViewById(R.id.tv_setting);
         tv_about = (TextView) view.findViewById(R.id.tv_about);
-        tv_logout=(Button) view.findViewById(R.id.tv_logout);
-        tv_follower_number=(TextView) view.findViewById(R.id.tv_follower_number);
-        tv_following_number=(TextView) view.findViewById(R.id.tv_following_number);
+        tv_logout = (Button) view.findViewById(R.id.tv_logout);
+        tv_follower_number = (TextView) view.findViewById(R.id.tv_follower_number);
+        tv_following_number = (TextView) view.findViewById(R.id.tv_following_number);
 
 
         tv_nick_name = (TextView) view.findViewById(R.id.tv_nick_name);
-        tv_loginID =(TextView) view.findViewById(R.id.tv_loginID);
+        tv_loginID = (TextView) view.findViewById(R.id.tv_loginID);
 
         setListeners();
+
+        // setup services
+        firebaseAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
 
         return view;
     }
 
-    private void setListeners(){
-        onClick onClick= new onClick();
+    private void setListeners() {
+        onClick onClick = new onClick();
         ib_profile_arrow.setOnClickListener(onClick);
         tv_profile.setOnClickListener(onClick);
         tv_published.setOnClickListener(onClick);
@@ -112,7 +129,7 @@ public class MeFragment extends BaseFragment {
         tv_favorate.setOnClickListener(onClick);
         tv_address.setOnClickListener(onClick);
         tv_payment.setOnClickListener(onClick);
-        tv_feedback.setOnClickListener(onClick);
+//        tv_feedback.setOnClickListener(onClick);
         tv_setting.setOnClickListener(onClick);
         tv_about.setOnClickListener(onClick);
         tv_follower_number.setOnClickListener(onClick);
@@ -120,7 +137,6 @@ public class MeFragment extends BaseFragment {
 
 
     }
-
 
 
     public void onActivityCreated(Bundle savedInstanceStade) {
@@ -134,15 +150,9 @@ public class MeFragment extends BaseFragment {
                 startActivity(ToEditProfileActivity);
 
             }
-
-
         });
 
     }
-
-
-
-
 
 
     //点击跳转activity
@@ -152,12 +162,12 @@ public class MeFragment extends BaseFragment {
         public void onClick(View v) {
 
             Intent intent = null;
-            switch (v.getId()){
+            switch (v.getId()) {
 
 
                 case R.id.ib_profile_arrow:  //点击profile或者箭头跳转用户个人信息
 
-                case R.id.tv_profile :
+                case R.id.tv_profile:
                     Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
 
                     break;
@@ -189,87 +199,104 @@ public class MeFragment extends BaseFragment {
                 case R.id.tv_setting:
                     Toast.makeText(activityContext, "设置", Toast.LENGTH_SHORT).show();
                     break;
-                case R.id.tv_feedback:
-                    Toast.makeText(activityContext, "反馈", Toast.LENGTH_SHORT).show();
-                    break;
+//                case R.id.tv_feedback:
+//                    Toast.makeText(activityContext, "反馈", Toast.LENGTH_SHORT).show();
+//                    break;
                 case R.id.tv_about:
                     Toast.makeText(activityContext, "关于", Toast.LENGTH_SHORT).show();
                     break;
 
-//                case R.id.tv_update:
-//                    intent = new Intent(activityContext, EditProfileActivity.class);
-//                    startActivity(intent);
-//
-//                    break;
-                case R.id.tv_logout:
-                    intent = new Intent(activityContext, LoginActivity.class);
+                case R.id.tv_update:
+                    intent = new Intent(activityContext, EditProfileActivity.class);
                     startActivity(intent);
 
+                    break;
+                case R.id.tv_logout:
 
+                    if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
+
+                        Log.d("Authentication_status", "firebaseAccount:" + firebaseAuth.getCurrentUser().getUid());
+                        Log.d("Authentication_status", "JMessageAccount:" + JMessageClient.getMyInfo().getUserName());
+
+                        firebaseAuth.signOut();
+                        JMessageClient.logout();
+                    }
+
+                    Intent loginIntent = new Intent(activityContext, LoginActivity.class);
+                    startActivity(loginIntent);
+                    // jump to home if not login.
+                    ((MainActivity) activityContext).getBinding().radioGroupMain.check(R.id.button_main_home);
                     break;
             }
-
-
         }
-
     }
 
     @Override
     public void loadData() {
         /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
 //        imageView.setImageResource(R.drawable.profile);
-        FirebaseAuth firebaseAuth;
-        FirebaseFirestore db;
-        firebaseAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-
 
         String loginID = firebaseAuth.getCurrentUser().getEmail();
-        String userID=firebaseAuth.getCurrentUser().getUid();
-        Uri avatar=firebaseAuth.getCurrentUser().getPhotoUrl();
+        String userID = firebaseAuth.getCurrentUser().getUid();
 
+        tv_loginID.setText("Login ID: " + loginID);
 
         DocumentReference userReference = db.collection(USERS_COLLECTION).document(userID);
         userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                UserDTO userDTO = documentSnapshot.toObject(UserDTO.class);
-                String follower = String.valueOf(userDTO.getFollower_refs().size());
-                String following = String.valueOf(userDTO.getFollowing_refs().size());
-
-                tv_loginID.setText("Login ID: " + loginID);
-
-                ci_user.setImageURI(avatar);
-                tv_nick_name.setText(userDTO.getNickname());
-                tv_follower_number.setText(follower);
-                tv_following_number.setText(following);
-
-
+                // handle db query result
+                handleQueryResult(documentSnapshot);
             }
         });
 
+        // IMPORTANT: listen to recent data update
+        userReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "Listen failed: " + error);
+                    return;
+                }
 
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    // handle db query result
+                    handleQueryResult(snapshot);
+                    
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
     }
 
+    /**
+     * attach db's query result to views
+     * @param documentSnapshot firebase query result
+     */
+    private void handleQueryResult(DocumentSnapshot documentSnapshot) {
+        UserDTO currentUserDto = documentSnapshot.toObject(UserDTO.class);
+        String follower = String.valueOf(currentUserDto.getFollower_refs().size());
+        String following = String.valueOf(currentUserDto.getFollowing_refs().size());
 
-
-
-
+        // show current user's avatar
+        if (currentUserDto == null
+                || currentUserDto.getAvatar_address() == null
+                || currentUserDto.getAvatar_address().equals("")
+                || currentUserDto.getAvatar_address().equals("default")
+                || currentUserDto.getAvatar_address().equals("gs://comp90018-mobile-caa7c.appspot.com/public/default.png")) {
+            ci_user.setImageResource(R.drawable.default_avatar);
+        } else {
+            StorageReference imgReference = firebaseStorage.getReferenceFromUrl(currentUserDto.getAvatar_address());
+            Glide.with(activityContext)
+                    .load(imgReference)
+                    .into(ci_user);
+        }
+        tv_nick_name.setText(currentUserDto.getNickname());
+        tv_follower_number.setText(follower);
+        tv_following_number.setText(following);
+    }
 }

@@ -156,43 +156,74 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="113dp"
-            android:padding="10dp">
+            android:layout_height="wrap_content"
+            android:padding="5dp">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/tv_published"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/sell"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:text="Published"
-                android:textColor="#5d5d5d" />
+                android:orientation="vertical">
 
-            <TextView
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/sell"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Published"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/tv_sold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/money_fill"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:text="Sold"
-                android:textColor="#5d5d5d" />
+                android:orientation="vertical">
 
-            <TextView
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/money_fill"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Sold"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/tv_purchased"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTop="@drawable/order_red"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:text="Purchased"
-                android:textColor="#5d5d5d" />
+                android:orientation="vertical">
 
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/order_red"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:text="Purchased"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -200,9 +231,6 @@
             android:layout_height="8dp"
             android:background="#eee" />
 
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -341,35 +369,35 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
         </RelativeLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="10dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:padding="10dp">-->
 
-            <ImageView
+<!--            <ImageView-->
 
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
 
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/service" />
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:src="@drawable/service" />-->
 
-            <TextView
-                android:id="@+id/tv_feedback"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:text="Feedback" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_feedback"-->
+<!--                android:layout_marginLeft="30dp"-->
+<!--                android:textSize="18sp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="Feedback" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="45dp"
-            android:background="#eee" />
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginLeft="45dp"-->
+<!--            android:background="#eee" />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -430,7 +458,8 @@
                 android:id="@+id/tv_logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Log out"
                 android:layout_gravity="center"
                 android:background="@color/red_dark"
