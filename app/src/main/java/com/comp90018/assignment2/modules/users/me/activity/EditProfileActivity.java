@@ -25,6 +25,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.config.GlideEngine;
 import com.comp90018.assignment2.databinding.ActivityEditUserProfileBinding;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.authentication.activity.EditPasswordActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -171,8 +172,8 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (currentUserDto != null) {
-                    // TODO: jump to edit password activity
-                    Toast.makeText(EditProfileActivity.this, "Jump to edit password activity", Toast.LENGTH_SHORT).show();
+                    Intent goToEditPasswordActivityIntent = new Intent(EditProfileActivity.this, EditPasswordActivity.class);
+                    startActivity(goToEditPasswordActivityIntent);
                 }
             }
         });
@@ -254,7 +255,6 @@ public class EditProfileActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
 
                                         // logout google account, then try to sign-in again
-                                        // TODO ???
 //                                        firebaseAuth.signOut();
 
                                         // finish the register activity
