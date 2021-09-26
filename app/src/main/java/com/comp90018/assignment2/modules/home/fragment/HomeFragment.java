@@ -320,4 +320,25 @@ public class HomeFragment extends BaseFragment{
                     });
         }
     }
+
+    /**
+     * refresh items when switch back
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        new RefreshTask().execute();
+    }
+
+    /**
+     * refresh items when switch back
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            // equivalent to onResume
+            new RefreshTask().execute();
+        }
+    }
 }
