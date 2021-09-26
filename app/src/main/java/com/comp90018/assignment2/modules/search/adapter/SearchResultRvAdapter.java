@@ -286,7 +286,6 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
                         intent.putExtra("productDTO", productDTO);
                         intent.putExtra("userDTO", finalUserDTO);
                         context.startActivity(intent);
-                        Toast.makeText(context, "to detail activity: "+ descriptionCut, Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "to detail activity: "+ descriptionCut);
                     }
                 };

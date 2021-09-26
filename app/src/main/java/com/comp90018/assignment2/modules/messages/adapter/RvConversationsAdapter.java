@@ -1,9 +1,9 @@
 package com.comp90018.assignment2.modules.messages.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,12 +14,15 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.messages.fragment.MessagesFragment;
 import com.comp90018.assignment2.utils.Calculator;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -32,6 +35,7 @@ import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * adapter for message fragment
@@ -47,12 +51,19 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
 
     private final static String TAG = "RvConversationsAdapter";
 
+    private final ProgressDialog progressDialog;
+
     public RvConversationsAdapter(int layoutResId, @Nullable List<Conversation> data, Context context) {
         super(layoutResId, data);
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         this.context = context;
+
+        // init progress dialog
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Loading");
+        progressDialog.setMessage("Please wait");
     }
 
     @Override
@@ -65,35 +76,22 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
             // we stored firebase userId as userName in Jmessage server
             // need to query it
             String userId = userInfo.getUserName();
+
+            progressDialog.show();
             db.collection(Constants.USERS_COLLECTION)
                     .document(userId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                            progressDialog.dismiss();
+
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
 
-                                    // get userDTO from firebase
-                                    UserDTO userDTO = document.toObject(UserDTO.class);
-
-                                    // storage Reference of firebase
-                                    StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());
-
-                                    // query image with the reference, then show avatar
-                                    Glide.with(context)
-                                            .load(imgReference)
-                                            .into((CircleImageView) helper.getView(R.id.img_avatar));
-
-                                    // nickname
-                                    String nickname;
-                                    if (userDTO.getNickname().length() > 10) {
-                                        nickname = userDTO.getNickname().substring(0, 10) + "...";
-                                    } else {
-                                        nickname = userDTO.getNickname();
-                                    }
-                                    helper.setText(R.id.text_nickname_cut, nickname);
+                                    attachDataToViews(document, helper);
 
                                 } else {
                                     Log.d(TAG, "No such document");
@@ -174,5 +172,27 @@ public class RvConversationsAdapter extends BaseQuickAdapter<Conversation, BaseV
 
         }
 
+    }
+
+    private void attachDataToViews(DocumentSnapshot document, @NonNull BaseViewHolder helper) {
+        // get userDTO from firebase
+        UserDTO userDTO = document.toObject(UserDTO.class);
+
+        // storage Reference of firebase
+        StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());
+
+        // query image with the reference, then show avatar
+        Glide.with(context)
+                .load(imgReference)
+                .into((CircleImageView) helper.getView(R.id.img_avatar));
+
+        // nickname
+        String nickname;
+        if (userDTO.getNickname().length() > 10) {
+            nickname = userDTO.getNickname().substring(0, 10) + "...";
+        } else {
+            nickname = userDTO.getNickname();
+        }
+        helper.setText(R.id.text_nickname_cut, nickname);
     }
 }
