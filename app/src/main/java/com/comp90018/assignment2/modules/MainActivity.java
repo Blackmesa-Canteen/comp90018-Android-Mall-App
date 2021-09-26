@@ -248,9 +248,11 @@ public class MainActivity extends AppCompatActivity {
         Drawable originalMessageDrawable = getResources().getDrawable(R.drawable.button_messages_selector);
         if (b) {
             messageBtn.setCompoundDrawablesWithIntrinsicBounds(null, newMessageDrawable, null, null);
+            Log.d("MainActivity[dev]", "show red pod on message btn.");
 
         } else {
             messageBtn.setCompoundDrawablesWithIntrinsicBounds(null, originalMessageDrawable, null, null);
+            Log.d("MainActivity[dev]", "NOT show red pod on message btn.");
         }
     }
 

@@ -257,7 +257,7 @@ public class RvChatAdapter extends BaseMultiItemQuickAdapter<ChatMessageBean, Ba
             helper.getView(R.id.pb).setVisibility(View.VISIBLE);
         }
 
-        // attach avatar click event
+        // TODO: attach avatar click event
     }
 
     public int getPlayVoiceIndex() {

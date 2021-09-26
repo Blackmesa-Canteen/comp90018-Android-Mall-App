@@ -233,13 +233,11 @@ public class MeFragment extends BaseFragment {
 
     @Override
     public void loadData() {
-        /* 实际上，这个方法会从网上请求数据，然后你要把数据在这个方法里装到对应的view里 */
-//        imageView.setImageResource(R.drawable.profile);
 
         String loginID = firebaseAuth.getCurrentUser().getEmail();
         String userID = firebaseAuth.getCurrentUser().getUid();
 
-        tv_loginID.setText("Login ID: " + loginID);
+        tv_loginID.setText("User ID: " + loginID);
 
         DocumentReference userReference = db.collection(USERS_COLLECTION).document(userID);
         userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -298,5 +296,20 @@ public class MeFragment extends BaseFragment {
         tv_nick_name.setText(currentUserDto.getNickname());
         tv_follower_number.setText(follower);
         tv_following_number.setText(following);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            // equivalent to onResume
+            loadData();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
     }
 }

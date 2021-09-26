@@ -43,6 +43,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * message fragment
+ *
  * @author xiaotian li
  */
 public class MessagesFragment extends BaseFragment {
@@ -65,11 +66,11 @@ public class MessagesFragment extends BaseFragment {
     public View inflateView() {
 
         View view = View.inflate(activityContext, R.layout.fragment_messages, null);
-        imgAvatar = (CircleImageView) view.findViewById( R.id.img_avatar );
-        rlmParent = (RelativeLayout) view.findViewById( R.id.rlm_parent );
-        textNewNotificationTime = (TextView) view.findViewById( R.id.text_new_notification_time );
-        textNewNotification = (TextView) view.findViewById( R.id.text_new_notification );
-        rvFragmentMessaging = (RecyclerView) view.findViewById( R.id.rv_fragment_messaging );
+        imgAvatar = (CircleImageView) view.findViewById(R.id.img_avatar);
+        rlmParent = (RelativeLayout) view.findViewById(R.id.rlm_parent);
+        textNewNotificationTime = (TextView) view.findViewById(R.id.text_new_notification_time);
+        textNewNotification = (TextView) view.findViewById(R.id.text_new_notification);
+        rvFragmentMessaging = (RecyclerView) view.findViewById(R.id.rv_fragment_messaging);
 
         // init db
         db = FirebaseFirestore.getInstance();
@@ -104,7 +105,7 @@ public class MessagesFragment extends BaseFragment {
                     String userId = jMessageUserInfo.getUserName();
 
                     // show process dialog
-                    ProgressDialog progressDialog=new ProgressDialog(activityContext);
+                    ProgressDialog progressDialog = new ProgressDialog(activityContext);
                     progressDialog.setTitle("Loading");
                     progressDialog.setMessage("Please wait");
                     progressDialog.show();
@@ -137,6 +138,7 @@ public class MessagesFragment extends BaseFragment {
 
             }
         });
+        handleRedSpot();
     }
 
     @Override
@@ -157,6 +159,17 @@ public class MessagesFragment extends BaseFragment {
 //        }
 
         refreshConversationList();
+        handleRedSpot();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            // equivalent to onResume
+            refreshConversationList();
+            handleRedSpot();
+        }
     }
 
     @Override
@@ -166,7 +179,7 @@ public class MessagesFragment extends BaseFragment {
             return;
         }
 
-        switch (requestCode){
+        switch (requestCode) {
             case Constants.REQUEST_CODE_A:
                 refreshConversationList();
                 break;
@@ -193,9 +206,10 @@ public class MessagesFragment extends BaseFragment {
 
     /**
      * watch for new message event
+     *
      * @param event message event
      */
-    public void onEventMainThread(MessageEvent event){
+    public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "[dev] receive new message!");
         boolean handleable = false;
         Message message = event.getMessage();
@@ -262,6 +276,7 @@ public class MessagesFragment extends BaseFragment {
 
     /**
      * switch red spot to show whether there is new message or not
+     *
      * @param b turn on or turn off
      */
     private void setNewRedSpot(boolean b) {
