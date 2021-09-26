@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/grey6"
-        android:layout_marginTop="5dp"
         android:paddingBottom="10dp"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
@@ -83,9 +82,8 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_width="39dp"
+                    android:layout_height="24dp"
                     app:srcCompat="@drawable/user_grey" />
 
                 <com.comp90018.assignment2.utils.view.ClearWriteEditText
@@ -129,9 +127,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginLeft="16dp"
+                        android:layout_width="39dp"
+                        android:layout_height="24dp"
                         android:src="@drawable/gender_grey" />
 
                     <TextView
@@ -198,9 +195,10 @@
 
 
                 <ImageView
+                    android:id="@+id/imageView3"
                     android:layout_width="39dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/comment" />
+                    app:srcCompat="@drawable/description_gray" />
 
                 <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/profile_desc"
@@ -239,9 +237,10 @@
 
 
                 <ImageView
+                    android:id="@+id/imageView4"
                     android:layout_width="39dp"
                     android:layout_height="24dp"
-                    app:srcCompat="@drawable/location" />
+                    app:srcCompat="@drawable/location_gray" />
 
                 <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/profile_address"
