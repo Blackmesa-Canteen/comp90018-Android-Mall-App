@@ -23,6 +23,8 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.MainActivity;
+import com.comp90018.assignment2.modules.orders.activity.PurchasedPdtListActivity;
+import com.comp90018.assignment2.modules.orders.activity.SoldPdtListActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
@@ -181,10 +183,12 @@ public class MeFragment extends BaseFragment {
 
                     break;
                 case R.id.tv_sold:
-                    Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(activityContext, SoldPdtListActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.tv_purchased:
-                    Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(activityContext, PurchasedPdtListActivity.class);
+                    startActivity(intent);
                     break;
 //                点击publish，sold，purchased 分别跳转相应界面
                 case R.id.tv_favorate:

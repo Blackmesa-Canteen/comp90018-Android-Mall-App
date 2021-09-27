@@ -36,6 +36,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
+            android:name=".modules.orders.activity.SoldPdtListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.orders.activity.PurchasedPdtListActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.users.authentication.activity.EditPasswordActivity"
             android:exported="true" />
         <activity
@@ -49,8 +55,8 @@
             android:exported="true" />
         <activity
             android:name=".modules.product.activity.ProductDetailActivity"
-            android:exported="true"></activity>
-        <activity android:name=".modules.search.activity.SearchProductActivity"></activity>
+            android:exported="true" />
+        <activity android:name=".modules.search.activity.SearchProductActivity" />
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
             android:launchMode="singleInstance" />
