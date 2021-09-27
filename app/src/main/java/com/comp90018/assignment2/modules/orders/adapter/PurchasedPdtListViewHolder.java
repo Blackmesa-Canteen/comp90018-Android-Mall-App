@@ -11,12 +11,14 @@ import com.comp90018.assignment2.dto.OrderDTO;
 
 import java.util.List;
 
-public class ItemPurchasedPdtListViewHolder extends RecyclerView.ViewHolder {
+public class PurchasedPdtListViewHolder extends RecyclerView.ViewHolder {
     private Context context;
+    // TODO 闲鱼 我 买入或卖出列表 右上角那个"交易成功" 是订单状态还是 发货追踪 还是都不是？
     private TextView trackingInfo;
+    // my purchased-pdt-list page displays the buyers username and avatar
     private TextView sellerUsername;
 
-    public ItemPurchasedPdtListViewHolder(Context context, View view) {
+    public PurchasedPdtListViewHolder(Context context, View view) {
         super(view);
         this.context = context;
 

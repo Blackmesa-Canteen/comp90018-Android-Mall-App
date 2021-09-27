@@ -12,38 +12,37 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.google.firebase.storage.FirebaseStorage;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
-public class PurchasedPdtListAdapter extends RecyclerView.Adapter {
+public class SoldPdtListAdapter extends RecyclerView.Adapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private FirebaseStorage storage;
     private List<OrderDTO> orderDTOList;
 
-    public PurchasedPdtListAdapter(Context ctx, List<OrderDTO> orderDTOList) {
+    public SoldPdtListAdapter(Context ctx, List<OrderDTO> orderDTOList) {
         this.context = ctx;
         this.orderDTOList = orderDTOList;
         storage = FirebaseStorage.getInstance();
         layoutInflater = LayoutInflater.from(context);
     }
 
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        // only one type of view
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_purchased_pdt_list, parent, false);
-        return new PurchasedPdtListViewHolder(context, view);
-
+    @NonNull
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sold_pdt_list, parent, false);
+        return new SoldPdtListViewHolder(context, view);
 
     }
 
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
-        PurchasedPdtListViewHolder viewHolder = (PurchasedPdtListViewHolder) holder;
-        viewHolder.setData(orderDTOList, position);
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        SoldPdtListViewHolder soldPdtListViewHolder = (SoldPdtListViewHolder) holder;
+        soldPdtListViewHolder.setData(orderDTOList, position);
     }
 
+    @Override
     public int getItemCount() {
         return orderDTOList.size();
     }
-
 }
