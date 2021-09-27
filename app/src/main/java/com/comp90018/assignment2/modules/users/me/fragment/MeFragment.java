@@ -181,11 +181,18 @@ public class MeFragment extends BaseFragment {
 
                     break;
                 case R.id.tv_sold:
-                    Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(activityContext,SoldPdtLstActivity.class);
+                    startActivity(intent);
                     break;
+//                    Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
+//                    break;
                 case R.id.tv_purchased:
-                    Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(activityContext,PurchasedPdtLstActivity.class);
+                    startActivity(intent);
                     break;
+
+//                    Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
+//                    break;
 //                点击publish，sold，purchased 分别跳转相应界面
                 case R.id.tv_favorate:
                     Toast.makeText(activityContext, "收藏商品", Toast.LENGTH_SHORT).show();
