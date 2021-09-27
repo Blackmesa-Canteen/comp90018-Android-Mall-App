@@ -26,6 +26,7 @@ import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -168,13 +169,13 @@ public class MeFragment extends BaseFragment {
                 case R.id.ib_profile_arrow:  //点击profile或者箭头跳转用户个人信息
 
                 case R.id.tv_profile:
-                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
-
-                    break;
-
-//                    intent = new Intent(activityContext, profileActivity.class);
-//                    startActivity(intent);
+//                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
+//
 //                    break;
+
+                    intent = new Intent(activityContext, UserPageActivity.class);
+                    startActivity(intent);
+                    break;
                 case R.id.tv_published:
 
                     Toast.makeText(activityContext, "商品发布详情", Toast.LENGTH_SHORT).show();

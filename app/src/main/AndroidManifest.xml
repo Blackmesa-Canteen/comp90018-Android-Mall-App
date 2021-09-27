@@ -35,6 +35,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
+
         <activity
             android:name=".modules.users.authentication.activity.EditPasswordActivity"
             android:exported="true" />
@@ -49,8 +50,8 @@
             android:exported="true" />
         <activity
             android:name=".modules.product.activity.ProductDetailActivity"
-            android:exported="true"></activity>
-        <activity android:name=".modules.search.activity.SearchProductActivity"></activity>
+            android:exported="true" />
+        <activity android:name=".modules.search.activity.SearchProductActivity" />
         <activity
             android:name=".modules.search.activity.SearchResultActivity"
             android:launchMode="singleInstance" />
@@ -64,6 +65,10 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
             android:name=".modules.users.me.activity.EditProfileActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
+            android:name=".modules.users.me.activity.UserPageActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
 
