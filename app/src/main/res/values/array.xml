@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quality_arrays">
+        <item>HEAVILY_USED</item>
+        <item>WELL_USED</item>
+        <item>AVERAGE_CONDITION</item>
+        <item>SLIGHTLY_USED</item>
+        <item>EXCELLENT</item>
+    </string-array>
+</resources>

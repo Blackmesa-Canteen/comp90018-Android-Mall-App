@@ -61,4 +61,8 @@ public class SubCategoryDTO implements Parcelable {
         dest.writeString(name);
         dest.writeString(subcategory_id);
     }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
