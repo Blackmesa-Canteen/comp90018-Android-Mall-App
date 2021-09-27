@@ -86,6 +86,14 @@ public class LoginActivity extends AppCompatActivity {
                 signIn(usernameStr, loginPassword);
             }
         });
+
+        // forget password dummy
+        binding.resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(LoginActivity.this, "Reset mail sent. please check inbox", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -167,7 +175,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Login 极光IM
                             if (user != null) {
                                 String userId = user.getUid();
-                                Toast.makeText(LoginActivity.this, "userid:"+userId, Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Almost done, please wait...", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "userId: " + userId);
                                 JMessageClient.login(userId, password, new BasicCallback() {
                                     @Override
                                     public void gotResult(int i, String s) {

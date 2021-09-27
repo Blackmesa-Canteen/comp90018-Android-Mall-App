@@ -1,6 +1,7 @@
 package com.comp90018.assignment2.modules.product.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.databinding.ActivityProductDetailBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.product.adapter.ProductDetailAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,11 +24,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
+
+import me.leefeng.promptlibrary.PromptDialog;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private UserDTO currentUserDTO;
 
-
+    private PromptDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+        dialog = new PromptDialog(this);
 
         // query current login user
         if (firebaseAuth.getCurrentUser() != null) {
@@ -64,6 +71,25 @@ public class ProductDetailActivity extends AppCompatActivity {
                                 currentUserDTO = document.toObject(UserDTO.class);
                             } else {
                                 Log.w(TAG, "current user info db connection failed");
+                            }
+                        }
+                    });
+
+            // handle update info
+            db.collection(Constants.USERS_COLLECTION)
+                    .document(currentUserId)
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                            if (error != null) {
+                                Log.w(TAG, "Listen failed.", error);
+                                return;
+                            }
+
+                            if (snapshot != null && snapshot.exists()) {
+                                currentUserDTO = snapshot.toObject(UserDTO.class);
+                            } else {
+                                Log.d(TAG, "Current data: null");
                             }
                         }
                     });
@@ -144,12 +170,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Please login in.", Toast.LENGTH_SHORT).show();
+                    dialog.showWarn("Please login in.");
 
                 } else if (currentUserDTO == null){
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                    dialog.showWarn("Handling login status, try again later.");
                 }else {
                     // check whther the item is liked or not
                     boolean isThisProductLiked = false;
@@ -163,38 +187,51 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     if (!isThisProductLiked) {
                         // if the user have not liked the product
-                        Toast.makeText(ProductDetailActivity.this,
-                                "Added to favourite.", Toast.LENGTH_SHORT).show();
+                        dialog.showSuccess("Added to favourite.");
 
                         // product's like number + 1
                         int prevFavoriteNumber = productDTO.getFavorite_number();
                         productDTO.setFavorite_number(prevFavoriteNumber + 1);
-                        db.collection(Constants.PRODUCT_COLLECTION)
-                                .document(productDTO.getId())
-                                .set(productDTO);
+
+                        DocumentReference productDocumentRef = db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId());
+                        productDocumentRef.set(productDTO);
+
+                        // add product ref to user's favorate
+                        currentUserDTO.getFavorite_refs().add(productDocumentRef);
+                        db.collection(Constants.USERS_COLLECTION)
+                                .document(currentUserDTO.getId())
+                                .set(currentUserDTO);
                     } else {
-                        Toast.makeText(ProductDetailActivity.this,
-                                "You've already liked this product.", Toast.LENGTH_SHORT).show();
+                        dialog.showInfo("You've already liked this product.");
                     }
                 }
             }
         });
-        /** comments on current product */
+
+        /** chat with product owner */
         binding.llChatBtnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Please login in.", Toast.LENGTH_SHORT).show();
+                    dialog.showWarn("Please login in.");
 
-                } else if (currentUserDTO == null){
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                } else if (currentUserDTO == null || userDTO == null){
+                    dialog.showWarn("Handling login status, try again later.");
                 }else {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "comments on current product", Toast.LENGTH_SHORT);
-                    toast.show();
+
+                    // can't talk with your self
+                    if (!currentUserDTO.equals(userDTO)) {
+                        Intent goToChatActivityIntent = new Intent(ProductDetailActivity.this, ChatActivity.class);
+                        goToChatActivityIntent.putExtra("targetUserDTO", userDTO);
+                        goToChatActivityIntent.putExtra(Constants.DATA_A, userDTO.getId());
+                        goToChatActivityIntent.putExtra(Constants.TYPE, Constants.SINGLE_CHAT);
+                        startActivity(goToChatActivityIntent);
+                    } else {
+                        dialog.showInfo("This is your own product!");
+                    }
+
                 }
             }
         });
@@ -204,13 +241,16 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (firebaseAuth.getCurrentUser() == null) {
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Please login in.", Toast.LENGTH_SHORT).show();
+                    dialog.showWarn("Please login in.");
 
                 } else if (currentUserDTO == null){
-                    Toast.makeText(ProductDetailActivity.this,
-                            "Handling login status, try again later.", Toast.LENGTH_SHORT).show();
+                    dialog.showWarn("Handling login status, try again later.");
                 }else {
+                    // can't buy self
+                    if (currentUserDTO.equals(userDTO)) {
+                        dialog.showInfo("This is your own product!");
+                        return;
+                    }
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Click Want this", Toast.LENGTH_SHORT);
                     toast.show();

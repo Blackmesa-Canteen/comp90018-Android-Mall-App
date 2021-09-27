@@ -174,21 +174,7 @@ public class MainActivity extends AppCompatActivity {
                         // publish button
 
                         /* TODO： start publish activity */
-                        // debug
-                        if (firebaseAuth.getCurrentUser() != null && JMessageClient.getMyInfo() != null) {
-
-                            Log.d("Authentication_status", "firebaseAccount:"+firebaseAuth.getCurrentUser().getUid());
-                            Log.d("Authentication_status", "JMessageAccount:"+JMessageClient.getMyInfo().getUserName());
-
-                            firebaseAuth.signOut();
-                            JMessageClient.logout();
-                        }
-
-                        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(loginIntent);
-
-                        // check the original one
-                        binding.radioGroupMain.check(R.id.button_main_home);
+                        Toast.makeText(MainActivity.this, "Start publish activity", Toast.LENGTH_SHORT).show();
                         return;
                     default:
                         position = 0;
@@ -262,9 +248,11 @@ public class MainActivity extends AppCompatActivity {
         Drawable originalMessageDrawable = getResources().getDrawable(R.drawable.button_messages_selector);
         if (b) {
             messageBtn.setCompoundDrawablesWithIntrinsicBounds(null, newMessageDrawable, null, null);
+            Log.d("MainActivity[dev]", "show red pod on message btn.");
 
         } else {
             messageBtn.setCompoundDrawablesWithIntrinsicBounds(null, originalMessageDrawable, null, null);
+            Log.d("MainActivity[dev]", "NOT show red pod on message btn.");
         }
     }
 
@@ -285,5 +273,9 @@ public class MainActivity extends AppCompatActivity {
 
         // if main activity is destroyed, unregister event listener
         JMessageClient.unRegisterEventReceiver(this);
+    }
+
+    public ActivityMainBinding getBinding() {
+        return binding;
     }
 }

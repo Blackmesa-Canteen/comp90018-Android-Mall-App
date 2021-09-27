@@ -133,7 +133,6 @@ public class HomeFragment extends BaseFragment{
                 ProgressDialog progressDialog=new ProgressDialog(getActivity());
                 progressDialog.setTitle("Searching");
                 progressDialog.setMessage("Please wait");
-                progressDialog.show();
                if(index == 1){
                    INTRA_CITY = Boolean.TRUE;
                    loadData();
@@ -222,6 +221,7 @@ public class HomeFragment extends BaseFragment{
                     }
                 } else {
                     Log.d(TAG, "Error getting documents", task.getException());
+                    progressDialog.dismiss();
                 }
             });
         }else{ //INTRA-CITY
@@ -318,6 +318,27 @@ public class HomeFragment extends BaseFragment{
                            // System.out.println("INTRA_CITY_productDTOList: "+INTRA_CITY_productDTOList);
                         }
                     });
+        }
+    }
+
+    /**
+     * refresh items when switch back
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        new RefreshTask().execute();
+    }
+
+    /**
+     * refresh items when switch back
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            // equivalent to onResume
+            new RefreshTask().execute();
         }
     }
 }
