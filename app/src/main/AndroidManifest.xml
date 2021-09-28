@@ -76,8 +76,8 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
 
         <meta-data
-            android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
-            android:value="AK" />
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="AzV72hBP1PhDKbVv07gYZL7WdUsWgplD" />
 
         <activity
             android:name=".modules.entrance.WelcomeActivity"
