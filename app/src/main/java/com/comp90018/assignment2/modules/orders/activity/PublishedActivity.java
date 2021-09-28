@@ -26,6 +26,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.leefeng.promptlibrary.PromptDialog;
+
 /**
  * published activity
  *
@@ -38,8 +40,9 @@ public class PublishedActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
-    private UserDTO currentUserDTO;
     List<ProductDTO> productDTOList;
+
+    private PromptDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,36 +69,20 @@ public class PublishedActivity extends AppCompatActivity {
         // set up data structure
         productDTOList = new ArrayList<>();
 
-        // get current User info
+        loadData();
+    }
+
+    private void loadData() {
+        // get current User info, if not login, exit to prevent crash
         if (auth.getCurrentUser() == null) {
             Toast.makeText(App.getContext(), "Please login.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        // current user info
         String currentUserId = auth.getCurrentUser().getUid();
         DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUserId);
 
-        // query current user, if it is needed
-        db.collection(Constants.USERS_COLLECTION)
-                .document(currentUserId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot snapshot = task.getResult();
-                            currentUserDTO = snapshot.toObject(UserDTO.class);
-                            Log.d(TAG, "db get current user: " + currentUserDTO.getEmail());
-                        } else {
-                            Log.w(TAG, "db get current user failed... " + task.getException() );
-                            Toast.makeText(App.getContext(), "Can't get user information, please try again.", Toast.LENGTH_SHORT).show();
-                            // to prevent crash, if db failed, exit this activity
-                            finish();
-                        }
-                    }
-                });
-
+        dialog.showLoading("Loading");
         // init: query products belong to current user, put it in the List
         db.collection(Constants.PRODUCT_COLLECTION)
                 .whereNotEqualTo("status", Constants.REMOVED)
@@ -110,9 +97,16 @@ public class PublishedActivity extends AppCompatActivity {
                                 productDTOList.add(productDTO);
                             }
 
+                            // attach adapter
+
+
+                            dialog.dismiss();
+
                             // TODO: refresh adapter;
                         } else {
+                            dialog.dismiss();
                             Log.w(TAG, "Error getting documents: ", task.getException());
+                            dialog.showWarn("Db connection failed, please try again later");
                         }
                     }
                 });

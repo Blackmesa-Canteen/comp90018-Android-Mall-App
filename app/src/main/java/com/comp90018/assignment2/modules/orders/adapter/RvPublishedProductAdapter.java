@@ -3,8 +3,10 @@ package com.comp90018.assignment2.modules.orders.adapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -51,33 +55,33 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, ProductDTO productDTO) {
+
+        // get this dto's position
+        int itemPosition = getItemPosition(productDTO);
+
+        // get three buttons
+        Button buttonR = (Button)helper.getView(R.id.btn_r);
+        Button buttonL = (Button)helper.getView(R.id.btn_l);
+        Button buttonS = (Button)helper.getView(R.id.btn_s);
+
         // handle different product
         switch (productDTO.getStatus()) {
             case Constants.PUBLISHED:
 
                 // handle static resource logic
                 attachStaticDataToViews(helper, productDTO);
-                // show status
-                helper.setText(R.id.text_product_status,
-                        "On Sell...");
-                helper.setTextColor(R.id.text_product_status,
-                        ContextCompat.getColor(context, R.color.blue));
-
-                // handle dynamic button logic
-                Button buttonR = (Button)helper.getView(R.id.btn_r);
-                Button buttonL = (Button)helper.getView(R.id.btn_l);
-                Button buttonS = (Button)helper.getView(R.id.btn_s);
-                buttonR.setText("Edit");
-                buttonL.setText("Pend");
-                buttonS.setText("Remove");
+                // handle different views in different status
+                showViewsForPublished(helper, buttonR, buttonL, buttonS);
 
                 // go to product edit page
                 // TODO go to product edit activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(context, "Go to product edit", Toast.LENGTH_SHORT).show();
 
-
+                        // do not need to refresh, because
+                        // it goes to another activity, so onResume will be called
                     }
                 });
 
@@ -85,7 +89,25 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 buttonL.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        productDTO.setStatus(Constants.UNDERCARRIAGE);
+                        // change status
+                        progressDialog.show();
+                        db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId())
+                                .set(productDTO)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        if (task.isSuccessful()) {
 
+                                            // refresh this item view
+                                            notifyItemChanged(itemPosition);
+                                        } else {
+                                            Log.w(TAG, "update product status err: " + task.getException());
+                                        }
+                                    }
+                                });
                     }
                 });
 
@@ -93,7 +115,24 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 buttonS.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        productDTO.setStatus(Constants.REMOVED);
+                        // change status
+                        progressDialog.show();
+                        db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId())
+                                .set(productDTO)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        if (task.isSuccessful()) {
+                                            // refresh this item view
+                                            notifyItemChanged(itemPosition);
+                                        } else {
+                                            Log.w(TAG, "update product status err: " + task.getException());
+                                        }
+                                    }
+                                });
                     }
                 });
 
@@ -102,37 +141,165 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
             case Constants.UNDERCARRIAGE:
                 // handle static resource logic
                 attachStaticDataToViews(helper, productDTO);
-                // show status
-                helper.setText(R.id.text_product_status,
-                        "Pending...");
+                // handle different views in different status
+                showViewsForPending(helper, buttonR, buttonL, buttonS);
 
-                helper.setTextColor(R.id.text_product_status,
-                        ContextCompat.getColor(context, R.color.yellow_dark));
+                // go to product edit page
+                // TODO go to product edit activity
+                buttonR.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Go to product edit", Toast.LENGTH_SHORT).show();
+
+                        // do not need to refresh, because
+                        // it goes to another activity, so onResume will be called
+                    }
+                });
+
+                // republish the product selling
+                buttonL.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        productDTO.setStatus(Constants.PUBLISHED);
+                        // change status
+                        progressDialog.show();
+                        db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId())
+                                .set(productDTO)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        if (task.isSuccessful()) {
+
+                                            // refresh this item view
+                                            notifyItemChanged(itemPosition);
+                                        } else {
+                                            Log.w(TAG, "update product status err: " + task.getException());
+                                        }
+                                    }
+                                });
+                    }
+                });
+
+                // remove this item
+                buttonS.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        productDTO.setStatus(Constants.REMOVED);
+                        // change status
+                        progressDialog.show();
+                        db.collection(Constants.PRODUCT_COLLECTION)
+                                .document(productDTO.getId())
+                                .set(productDTO)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        progressDialog.dismiss();
+                                        if (task.isSuccessful()) {
+                                            // refresh this item view
+                                            notifyItemChanged(itemPosition);
+                                        } else {
+                                            Log.w(TAG, "update product status err: " + task.getException());
+                                        }
+                                    }
+                                });
+                    }
+                });
                 break;
 
             case Constants.SOLD_OUT:
                 // handle static resource logic
                 attachStaticDataToViews(helper, productDTO);
-                // show status
-                helper.setText(R.id.text_product_status,
-                        "Sold out.");
+                // handle different views in different status
+                showViewsForSoldOut(helper, buttonR, buttonL, buttonS);
 
-                helper.setTextColor(R.id.text_product_status,
-                        ContextCompat.getColor(context, R.color.green_dark));
+                // go to product edit page
+                // TODO go to order details activity
+                buttonR.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // gone button does nothing
+                buttonL.setOnClickListener(null);
+                buttonS.setOnClickListener(null);
+
                 break;
 
             default:
                 // handle static resource logic
                 attachStaticDataToViews(helper, productDTO);
-                // show status
-                helper.setText(R.id.text_product_status,
-                        "Invalid.");
+                showViewsForRemoved(helper, buttonR, buttonL, buttonS);
 
-                helper.setTextColor(R.id.text_product_status,
-                        ContextCompat.getColor(context, R.color.grey1));
-
+                // gone button does nothing
+                buttonR.setOnClickListener(null);
+                buttonL.setOnClickListener(null);
+                buttonS.setOnClickListener(null);
                 break;
         }
+    }
+
+    private void showViewsForPublished(@NonNull BaseViewHolder helper, Button buttonR, Button buttonL, Button buttonS) {
+        // show status
+        helper.setText(R.id.text_product_status,
+                "On Sell...");
+        helper.setTextColor(R.id.text_product_status,
+                ContextCompat.getColor(context, R.color.blue));
+
+        // handle dynamic button logic
+        buttonR.setVisibility(View.VISIBLE);
+        buttonR.setText("Edit");
+        buttonL.setVisibility(View.VISIBLE);
+        buttonL.setText("Pend");
+        buttonS.setVisibility(View.VISIBLE);
+        buttonS.setText("Remove");
+    }
+
+    private void showViewsForPending(@NonNull BaseViewHolder helper, Button buttonR, Button buttonL, Button buttonS) {
+        // show status
+        helper.setText(R.id.text_product_status,
+                "Pending...");
+        helper.setTextColor(R.id.text_product_status,
+                ContextCompat.getColor(context, R.color.yellow_dark));
+
+        // handle dynamic button logic
+        buttonR.setVisibility(View.VISIBLE);
+        buttonR.setText("Edit");
+        buttonL.setVisibility(View.VISIBLE);
+        buttonL.setText("Republish");
+        buttonS.setVisibility(View.VISIBLE);
+        buttonS.setText("Remove");
+    }
+
+    private void showViewsForRemoved(@NonNull BaseViewHolder helper, Button buttonR, Button buttonL, Button buttonS) {
+        // show status
+        helper.setText(R.id.text_product_status,
+                "Removed.");
+
+        helper.setTextColor(R.id.text_product_status,
+                ContextCompat.getColor(context, R.color.grey1));
+
+        // handle dynamic button logic
+        buttonR.setVisibility(View.GONE);
+        buttonL.setVisibility(View.GONE);
+        buttonS.setVisibility(View.GONE);
+    }
+
+    private void showViewsForSoldOut(@NonNull BaseViewHolder helper, Button buttonR, Button buttonL, Button buttonS) {
+        // show status
+        helper.setText(R.id.text_product_status,
+                "Sold out.");
+        helper.setTextColor(R.id.text_product_status,
+                ContextCompat.getColor(context, R.color.green_dark));
+
+        // handle dynamic button logic
+        buttonR.setVisibility(View.VISIBLE);
+        buttonR.setText("Details");
+        buttonL.setVisibility(View.GONE);
+        buttonS.setVisibility(View.GONE);
     }
 
     private void attachStaticDataToViews(@NonNull BaseViewHolder helper, ProductDTO productDTO) {
