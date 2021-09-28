@@ -13,13 +13,14 @@ import java.util.Map;
  * 2. Coordinate converter:
  *
  *  Could be used for convert coordinate in China if we use map API.
+ *
  *  Chinese government has encrypted coordinate, if we use locating
- *  service in China, we need do coordinate converting.
+ *  service in China, we need do coordinate converting, otherwise there
+ *  will be a terrible error in the map.
  *
  *  Can be adapted to many common 3th party Map provider.
  *
  * @author xiaotian li
- * @author 宏信动力(北京)科技有限公司
  */
 public class Calculator {
 
@@ -50,7 +51,6 @@ public class Calculator {
      * @param lat double
      * @return is out of china?
      *
-     * @author xiaotain li
      */
     private static boolean outOfChina(double lon, double lat) {
         if ((lon < 72.004 || lon > 137.8347) && (lat < 0.8293 || lat > 55.8271)) {
@@ -77,11 +77,9 @@ public class Calculator {
     }
 
     /**
-     * @Discription: 百度坐标(bd09II)转火星坐标(GCJ02)
-     * @Param lat  百度坐标纬度
-     * @Param lon  百度坐标经度
-     * @Created on: 2020/12/23 15:40
-     * @author muyuanpei
+     * Baidu coordinates (bd09II) to Mars coordinates (GCJ02)
+     * @Param lat  baidu map latitude
+     * @Param lon  baidu map longitude
      */
     public static Map<String, Double> baiduTomars(double lat, double lon) {
         Map<String, Double> mars_point = new HashMap<>();
@@ -98,11 +96,9 @@ public class Calculator {
     }
 
     /**
-     * @Discription: 火星坐标系(GCJ02)转百度坐标系(bd09II)
-     * @Param gcjLat  火星坐标纬度
-     * @Param gcjLon  火星坐标经度
-     * @Created on: 2020/12/23 15:42
-     * @author muyuanpei
+     * Mars coordinates (GCJ02) to Baidu coordinates (bd09II)
+     * @Param gcjLat  Mars coordinates lat
+     * @Param gcjLon  Mars coordinates lon
      */
     public static Map<String, Double> marsTobaidu(double gcjLat, double gcjLon) {
         HashMap<String, Double> baidu_point = new HashMap<>();
@@ -119,11 +115,9 @@ public class Calculator {
     }
 
     /**
-     * @Discription: 火星坐标系(GCJ02)转地球坐标系(WGS84)
-     * @Param lat  火星坐标纬度
-     * @Param lon  火星坐标经度
-     * @Created on: 2020/12/23 15:42
-     * @author muyuanpei
+     * @Discription: Mars (GCJ02) to Earth (WGS84)
+     * @Param lat  Mars (GCJ02) mar
+     * @Param lon  Mars (GCJ02) lon
      */
     public static Map<String, Double> transformGCJ2WGS(double gcjLat, double gcjLon) {
         Map<String, Double> map = delta(gcjLat, gcjLon);
@@ -153,24 +147,22 @@ public class Calculator {
     }
 
     /**
-     * @Discription: 地球坐标系(WGS - 84)转火星坐标系(GCJ)
-     * @Param wgLat  地球坐标纬度
-     * @Param wgLon  地球坐标经度
-     * @Created on: 2020/12/23 15:42
-     * @author muyuanpei
+     * @Discription: Earth coordinate system (WGS-84) to Mars coordinate system (GCJ)
+     * @Param wgLat  earth lat
+     * @Param wgLon  earth lon
      */
     public static Map<String, Double> transform(double wgLat, double wgLon) {
 
         HashMap<String, Double> mars_point = new HashMap<>();
         mars_point.put("lon", 0D);
         mars_point.put("lat", 0D);
-        // 如果是国外坐标点，则直接返回传进来的坐标点
+        // If it is a coordinate point out of China, the coordinate point passed in is returned directly
         if (outOfChina(wgLon, wgLat)) {
             mars_point.put("lon", wgLon);
             mars_point.put("lat", wgLat);
             return mars_point;
         }
-        // 如果为国内坐标点，则计算偏移量
+        // If it is a coordinate point in China, the offset is calculated
         double dLat = transformLat(wgLon - 105.0, wgLat - 35.0, PI);
         double dLon = transformLon(wgLon - 105.0, wgLat - 35.0, PI);
         double radLat = wgLat / 180.0 * PI;
