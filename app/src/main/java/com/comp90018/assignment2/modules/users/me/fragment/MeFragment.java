@@ -23,6 +23,7 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.MainActivity;
+import com.comp90018.assignment2.modules.orders.activity.PublishedActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
@@ -176,9 +177,9 @@ public class MeFragment extends BaseFragment {
 //                    startActivity(intent);
 //                    break;
                 case R.id.tv_published:
-
-                    Toast.makeText(activityContext, "商品发布详情", Toast.LENGTH_SHORT).show();
-
+                    // go to published list
+                    Intent goToPublishedIntent = new Intent(activityContext, PublishedActivity.class);
+                    startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
                     Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();

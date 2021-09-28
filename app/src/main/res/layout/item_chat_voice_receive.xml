@@ -43,7 +43,7 @@
                 android:maxWidth="200dp"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="13dp" />
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/iv_voice"

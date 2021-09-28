@@ -21,7 +21,6 @@ import cn.jpush.im.android.api.model.Message;
 /**
  * util for handle voice message playing
  * @author xiaotian
- * @author https://github.com/jpush/jchat-android
  */
 public class VoiceMessageUtil {
 
@@ -42,7 +41,6 @@ public class VoiceMessageUtil {
         // not ringing and no call established
         audioManager.setMode(AudioManager.MODE_NORMAL);
 
-        // TODO: not sure
         if (!audioManager.isSpeakerphoneOn()) {
             audioManager.setSpeakerphoneOn(true);
         } else {
