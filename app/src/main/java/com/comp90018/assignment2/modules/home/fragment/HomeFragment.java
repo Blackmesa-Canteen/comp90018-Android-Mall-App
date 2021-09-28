@@ -189,6 +189,15 @@ public class HomeFragment extends BaseFragment{
     @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
+        /*
+        if(refresh ==  false) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Loading");
+            progressDialog.setMessage("Please wait");
+            // show loading dialog
+            progressDialog.show();
+        }*/
+
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
         if(INTRA_CITY == Boolean.FALSE) {
@@ -197,9 +206,7 @@ public class HomeFragment extends BaseFragment{
                 progressDialog.show();
             }
 
-            db.collection(Constants.PRODUCT_COLLECTION)
-                    .whereEqualTo("status", Constants.PUBLISHED)
-                    .get().addOnCompleteListener(task -> {
+            db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<ProductDTO> productDTOList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
