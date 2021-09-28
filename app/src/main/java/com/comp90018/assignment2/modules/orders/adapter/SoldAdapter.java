@@ -59,7 +59,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_purchased_pdt_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sold_pdt_list, parent, false);
         return new ItemProductInfoViewHolder(context, view);
     }
 
@@ -117,20 +117,20 @@ public class SoldAdapter extends RecyclerView.Adapter{
             super(inflate);
             this.context = context;
 
-            imgAvatar = (CircleImageView) inflate.findViewById(R.id.purchased_seller_avatar);
-            textNickname = (TextView) inflate.findViewById(R.id.purchased_seller_username);
-            transaction_state = (TextView) inflate.findViewById(R.id.purchased_transaction_state);
+            imgAvatar = (CircleImageView) inflate.findViewById(R.id.sold_buyer_avatar);
+            textNickname = (TextView) inflate.findViewById(R.id.sold_buyer_username);
+            transaction_state = (TextView) inflate.findViewById(R.id.sold_transaction_state);
 
             //product image and name
-            ProductImage = (OvalImageView) inflate.findViewById(R.id.purchased_pdt_img);
-            ProductDescriptionCut = (TextView) inflate.findViewById(R.id.purchased_pdt_name);
+            ProductImage = (OvalImageView) inflate.findViewById(R.id.sold_pdt_img);
+            ProductDescriptionCut = (TextView) inflate.findViewById(R.id.sold_pdt_name);
 
             // product price
-            ProductPrice = (TextView) inflate.findViewById(R.id.purchased_pdt_price);
+            ProductPrice = (TextView) inflate.findViewById(R.id.sold_pdt_price);
 
             // contact and detail
-            ContactImage = (ImageView) inflate.findViewById(R.id.purchased_contact_image);
-            DetailButton = (Button) inflate.findViewById(R.id.purchased_pdt_detail_btn);
+            ContactImage = (ImageView) inflate.findViewById(R.id.sold_contact_image);
+            DetailButton = (Button) inflate.findViewById(R.id.sold_pdt_detail_btn);
         }
 
         /**
