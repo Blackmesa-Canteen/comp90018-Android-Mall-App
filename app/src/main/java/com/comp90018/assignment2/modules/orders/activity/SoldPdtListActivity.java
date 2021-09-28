@@ -11,14 +11,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivitySoldPdtListBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.orders.adapter.SoldAdapter;
-import com.comp90018.assignment2.modules.orders.adapter.SoldPdtListAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

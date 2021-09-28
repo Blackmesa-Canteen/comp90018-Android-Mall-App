@@ -39,7 +39,6 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
 
     private static final String TAG = "[dev]ProductDetail";
     private ActivityPurchasedPdtListBinding binding;
-    //private PurchasedPdtListAdapter purchasedPdtListAdapter;
     private RecyclerView recyclerView;
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage storage;
