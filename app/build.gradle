@@ -51,7 +51,7 @@ android {
     sourceSets{
         main{
             jniLibs.srcDir 'libs'
-            jni.srcDirs = []    //disable automatic ndk-build
+            //jni.srcDirs = []    //disable automatic ndk-build
         }
     }
 
@@ -76,6 +76,7 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 
     implementation project(path: ':supernova-emoji-library')
+    implementation files('src/main/java/com/comp90018/assignment2/libs/BaiduLBS_Android.jar')
 
     // android-flat-button
     compile 'info.hoang8f:fbutton:1.0.5'
