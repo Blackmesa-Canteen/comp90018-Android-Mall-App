@@ -13,7 +13,6 @@ import cn.jiguang.api.JCoreInterface;
  * date & time formatter
  * mainly used for chat message displaying
  *
- * @author Jmessage project authority https://docs.jiguang.cn/jmessage/guideline/jmessage_guide/
  * @author xiaotian li
  */
 public class TimeFormater {
