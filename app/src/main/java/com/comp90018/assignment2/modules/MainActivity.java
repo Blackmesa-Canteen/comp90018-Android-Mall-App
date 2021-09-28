@@ -243,6 +243,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * switch back to home fragment
+     */
+    public void goHomeFragment() {
+        binding.radioGroupMain.check(R.id.button_main_home);
+
+        prevButtonId = R.id.button_main_home;
+        // home position
+        position = 0;
+        // got position, then change fragments
+        BaseFragment newFragment = pickFragment(position);
+
+        // change Fragment
+        changeFragment(prevFragment, newFragment);
+    }
+
     public void switchRedSpotOnMessageBtn(boolean b) {
 
         Drawable newMessageDrawable = ContextCompat.getDrawable(this, R.drawable.button_messages_has_new_selector);

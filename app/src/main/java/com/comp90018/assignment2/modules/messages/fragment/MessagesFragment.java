@@ -60,7 +60,7 @@ public class MessagesFragment extends BaseFragment {
 
     private RvConversationsAdapter adapter;
 
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     @Override
     public View inflateView() {

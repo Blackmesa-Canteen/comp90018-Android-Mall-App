@@ -223,10 +223,8 @@ public class MeFragment extends BaseFragment {
                         JMessageClient.logout();
                     }
 
-                    Intent loginIntent = new Intent(activityContext, LoginActivity.class);
-                    startActivity(loginIntent);
-                    // jump to home if not login.
-                    ((MainActivity) activityContext).getBinding().radioGroupMain.check(R.id.button_main_home);
+                    Toast.makeText(activityContext, "GoodBye", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) activityContext).goHomeFragment();
                     break;
             }
         }
@@ -311,6 +309,8 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        if (firebaseAuth.getCurrentUser()!= null) {
+            loadData();
+        }
     }
 }
