@@ -6,23 +6,31 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityPurchasedPdtListBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
+import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.orders.adapter.PurchasedAdapter;
 import com.comp90018.assignment2.modules.orders.adapter.PurchasedPdtListAdapter;
+import com.comp90018.assignment2.modules.search.adapter.SearchResultRvAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firestore.v1.StructuredQuery;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,13 +41,16 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
 
     private static final String TAG = "[dev]ProductDetail";
     private ActivityPurchasedPdtListBinding binding;
-    private PurchasedPdtListAdapter purchasedPdtListAdapter;
+    //private PurchasedPdtListAdapter purchasedPdtListAdapter;
     private RecyclerView recyclerView;
-
+    private PurchasedAdapter purchasedAdapter;
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
-    private UserDTO currentUserDTO;
+    private TextView textNoResult;
+
+    private PurchasedAdapter adapter;
+
     private List<OrderDTO> orderDTOList;
 
     @Override
@@ -57,7 +68,7 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait");
         progressDialog.show();
         recyclerView = binding.purchasesList;
-        recyclerView.setVisibility(View.VISIBLE);
+
 
         binding.purchasesBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,28 +77,91 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
             }
         });
 
-        db.collection(Constants.ORDERS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    List<OrderDTO> orderDTOList = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        orderDTOList.add(document.toObject(OrderDTO.class));
+        // attach no result alert view
+
+        Intent intent = getIntent();
+        orderDTOList = intent.getParcelableArrayListExtra("orderDTOList");
+
+        if(orderDTOList != null && orderDTOList.size()>0){
+            recyclerView.setVisibility(View.VISIBLE);
+            processData(orderDTOList);
+            progressDialog.dismiss();
+        } else if (orderDTOList != null && orderDTOList.size() == 0){
+            // show empty result alert
+            recyclerView.setVisibility(View.GONE);
+            progressDialog.dismiss();
+        } else {
+            // if the incoming list is null, for debug use
+            recyclerView.setVisibility(View.VISIBLE);
+            db.collection(Constants.ORDERS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        List<OrderDTO> orderDTOList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            orderDTOList.add(document.toObject(OrderDTO.class));
+                        }
+                        processData(orderDTOList);
+                        progressDialog.dismiss();
+                    } else {
+                        Log.d(TAG, "Error getting documents: ", task.getException());
                     }
-                    purchasedPdtListAdapter = new PurchasedPdtListAdapter(PurchasedPdtListActivity.this, orderDTOList);
-                    recyclerView.setAdapter(purchasedPdtListAdapter);
-                    GridLayoutManager gvManager = new GridLayoutManager(PurchasedPdtListActivity.this, 1);
-                    recyclerView.setLayoutManager(gvManager);
-//                    processData(orderDTOList);
-                    // dismiss loading dialog
-                    progressDialog.dismiss();
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-
                 }
+            });
+        }
+    }
+
+    private void processData(List<OrderDTO> orderDTOList) {
+        List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
+
+        for (OrderDTO orderDTO : orderDTOList) {
+            if (orderDTO.getStatus() == Constants.PUBLISHED) {
+                publishedOrderDTOList.add(orderDTO);
             }
-        });
+        }
 
+        adapter = new PurchasedAdapter(this, publishedOrderDTOList);
+        recyclerView.setAdapter(adapter);
 
+        // 1 columns grid
+        GridLayoutManager gvManager = new GridLayoutManager(this, 1);
+        recyclerView.setLayoutManager(gvManager);
+
+        for (int index = 0; index < publishedOrderDTOList.size(); index++) {
+            OrderDTO orderDTO = publishedOrderDTOList.get(index);
+            int finalIndex = index;
+            orderDTO.getSeller_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        UserDTO userDTO = document.toObject(UserDTO.class);
+                        DocumentReference reference = document.getReference();
+                        Log.d(TAG, "get user info: " + userDTO.getEmail());
+                        // add to adapter and refresh it
+                        adapter.addNewUserDtoInMap(reference, userDTO);
+                        adapter.notifyItemChanged(finalIndex);
+                    } else {
+                        Log.w(TAG, "user info db connection failed");
+                    }
+                }
+            });
+            orderDTO.getProduct_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        ProductDTO productDTO = document.toObject(ProductDTO.class);
+                        DocumentReference reference = document.getReference();
+                        Log.d(TAG, "get user info: " + productDTO.getId());
+                        // add to adapter and refresh it
+                        adapter.addNewProductDtoInMap(reference, productDTO);
+                        adapter.notifyItemChanged(finalIndex);
+                    } else {
+                        Log.w(TAG, "user info db connection failed");
+                    }
+                }
+            });
+        }
     }
 }

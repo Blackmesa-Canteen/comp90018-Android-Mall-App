@@ -11,19 +11,28 @@ import com.comp90018.assignment2.dto.OrderDTO;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class PurchasedPdtListViewHolder extends RecyclerView.ViewHolder {
     private Context context;
     // TODO 闲鱼 我 买入或卖出列表 右上角那个"交易成功" 是订单状态还是 发货追踪 还是都不是？
-    private TextView trackingInfo;
-    // my purchased-pdt-list page displays the buyers username and avatar
+    // seller
+    private CircleImageView imgAvatar;
     private TextView sellerUsername;
+    private TextView trackingInfo;
+
+    /// product image and name
+
+
 
     public PurchasedPdtListViewHolder(Context context, View view) {
         super(view);
         this.context = context;
-
-        trackingInfo = (TextView) view.findViewById(R.id.purchased_transaction_state);
+        imgAvatar = (CircleImageView) view.findViewById(R.id.purchased_seller_avatar);
         sellerUsername = (TextView) view.findViewById(R.id.purchased_seller_username);
+        trackingInfo = (TextView) view.findViewById(R.id.purchased_transaction_state);
+
+
 
     }
 

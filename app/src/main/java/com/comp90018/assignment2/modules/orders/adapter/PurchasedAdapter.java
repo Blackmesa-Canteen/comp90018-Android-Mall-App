@@ -59,7 +59,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_purchased_sold_pdt_lst, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_purchased_pdt_list, parent, false);
         return new ItemProductInfoViewHolder(context, view);
     }
 
@@ -94,27 +94,20 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
     private class ItemProductInfoViewHolder extends RecyclerView.ViewHolder {
         /// seller
         private Context context;
-        private LinearLayout SellerInfoLayout;
+
         private CircleImageView imgAvatar;
         private TextView textNickname;
         private TextView transaction_state;
 
         /// product image and name
-        private LinearLayout ProductImageNameLayout;
-        private CardView ProductImageCardView;
         private OvalImageView ProductImage;
         private TextView ProductDescriptionCut;
 
         /// product price
-        private ConstraintLayout PriceLayout; //purchased_price_layout;
-        //private TextView PriceText; //purchased_price_text;
         private TextView ProductPrice; //purchased_pdt_price;
 
         /// contact and detail
-        private ConstraintLayout ContactDetailLayout; // purchased_contact_detail;
-        private LinearLayout ContactLayout; //  purchased_contact_layout;
         private ImageView ContactImage; //purchased_contact_image;
-        //private TextView ContactText; //purchased_contact_text;
 
         private CardView DetailCardView; //cv_pdt_detail_btn_profile;
         private Button DetailButton; //purchased_pdt_detail_btn;
@@ -125,29 +118,20 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             super(inflate);
             this.context = context;
 
-            // seller
-            SellerInfoLayout = (LinearLayout) inflate.findViewById(R.id.purchased_sold_seller_info_layout);
-            imgAvatar = (CircleImageView) inflate.findViewById(R.id.purchased_sold_seller_avatar);
-            textNickname = (TextView) inflate.findViewById(R.id.purchased_sold_seller_username);
-            transaction_state = (TextView) inflate.findViewById(R.id.purchased_sold_transaction_state);
+            imgAvatar = (CircleImageView) inflate.findViewById(R.id.purchased_seller_avatar);
+            textNickname = (TextView) inflate.findViewById(R.id.purchased_seller_username);
+            transaction_state = (TextView) inflate.findViewById(R.id.purchased_transaction_state);
 
-            // product image and name
-            ProductImageNameLayout = (LinearLayout) inflate.findViewById(R.id.purchased_sold_image_name_layout);
-            ProductImageCardView = (CardView) inflate.findViewById(R.id.purchased_sold_pdt_img_cardview);
-            ProductImage = (OvalImageView) inflate.findViewById(R.id.purchased_sold_pdt_img);
-            ProductDescriptionCut = (TextView) inflate.findViewById(R.id.purchased_sold_pdt_name);
+            //product image and name
+            ProductImage = (OvalImageView) inflate.findViewById(R.id.purchased_pdt_img);
+            ProductDescriptionCut = (TextView) inflate.findViewById(R.id.purchased_pdt_name);
 
             // product price
-            PriceLayout = (ConstraintLayout) inflate.findViewById(R.id.purchased_sold_price_layout);
-            ProductPrice = (TextView) inflate.findViewById(R.id.purchased_sold_pdt_price);
+            ProductPrice = (TextView) inflate.findViewById(R.id.purchased_pdt_price);
 
             // contact and detail
-            ContactDetailLayout = (ConstraintLayout) inflate.findViewById(R.id.purchased_sold_contact_detail_layout);
-            ContactLayout = (LinearLayout) inflate.findViewById(R.id.purchased_sold_contact_layout);
-            ContactImage = (ImageView) inflate.findViewById(R.id.purchased_sold_contact_image);
-
-            DetailCardView = (CardView) inflate.findViewById(R.id.cv_pdt_detail_btn_profile);
-            DetailButton = (Button) inflate.findViewById(R.id.purchased_sold_pdt_detail_btn);
+            ContactImage = (ImageView) inflate.findViewById(R.id.purchased_contact_image);
+            DetailButton = (Button) inflate.findViewById(R.id.purchased_pdt_detail_btn);
         }
 
         /**
@@ -160,6 +144,10 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
         public void setData(List<OrderDTO> orderDTOList, Map<DocumentReference, ProductDTO> productDTOMap,Map<DocumentReference, UserDTO> userDTOMap, final int position) {
             OrderDTO orderDTO = orderDTOList.get(position);
             String descriptionCut;
+
+            transaction_state.setText(orderDTOList.get(position).getTracking_info());
+            // TODO 我买到的页面 要显示卖家的姓名 而非 reference
+            textNickname.setText(orderDTOList.get(position).getSeller_ref().toString());
 
 
             // set product card
@@ -278,10 +266,17 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             if (finalUserDTO != null) {
                 ProductImage.setOnClickListener(goToProductActivityListener);
                 ProductDescriptionCut.setOnClickListener(goToProductActivityListener);
-                ProductImageNameLayout.setOnClickListener(goToProductActivityListener);
-                PriceLayout.setOnClickListener(goToProductActivityListener);
-                ContactDetailLayout.setOnClickListener(goToUserPageActivityListener);
             }
+
+            System.out.println("**********");
+            System.out.println(imgAvatar);
+            System.out.println(textNickname);
+            System.out.println(ProductImage);
+            System.out.println(ProductDescriptionCut);
+            System.out.println(ProductPrice);
+            System.out.println(ContactImage);
+            System.out.println(DetailButton);
+            System.out.println("**********");
         }
     }
 }

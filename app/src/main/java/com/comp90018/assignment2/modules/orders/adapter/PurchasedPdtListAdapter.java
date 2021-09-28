@@ -33,8 +33,6 @@ public class PurchasedPdtListAdapter extends RecyclerView.Adapter {
         // only one type of view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_purchased_pdt_list, parent, false);
         return new PurchasedPdtListViewHolder(context, view);
-
-
     }
 
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
