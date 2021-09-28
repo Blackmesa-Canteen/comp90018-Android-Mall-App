@@ -57,7 +57,6 @@ public class ProductDTO implements Parcelable {
 
     private Double lat;
     private Double lng;
-    FirebaseFirestore db;
 
     protected ProductDTO(Parcel in) {
         id = in.readString();
@@ -220,6 +219,5 @@ public class ProductDTO implements Parcelable {
         }
 
         dest.writeString(geo_hash);
-        System.out.println("location_coordinate:" +location_coordinate);
     }
 }
