@@ -2,10 +2,12 @@ package com.comp90018.assignment2.modules.orders.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
+import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +47,9 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
     private final FirebaseStorage storage;
     private final ProgressDialog progressDialog;
 
+    // set it with setter after query callback
+    private UserDTO currentUserDTO = null;
+
     public RvPublishedProductAdapter(int layoutResId, @Nullable List<ProductDTO> data, Context context) {
         super(layoutResId, data);
         this.context = context;
@@ -64,6 +71,22 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
         Button buttonR = (Button)helper.getView(R.id.btn_r);
         Button buttonL = (Button)helper.getView(R.id.btn_l);
         Button buttonS = (Button)helper.getView(R.id.btn_s);
+
+        // attach the whole item view event
+        RelativeLayout itemRoot = (RelativeLayout)helper.getView(R.id.rl_root);
+        // go to product detials
+        itemRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUserDTO != null) {
+                    // go to product details activity
+                    Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
+                    goToPdtDetailsIntent.putExtra("productDTO", productDTO);
+                    goToPdtDetailsIntent.putExtra("userDTO", currentUserDTO);
+                    context.startActivity(goToPdtDetailsIntent);
+                }
+            }
+        });
 
         // handle different product
         switch (productDTO.getStatus()) {
@@ -348,5 +371,9 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
             formattedPriceText = "$" + formattedPriceText;
         }
         helper.setText(R.id.text_item_price, formattedPriceText);
+    }
+
+    public void setCurrentUserDTO(UserDTO currentUserDTO) {
+        this.currentUserDTO = currentUserDTO;
     }
 }

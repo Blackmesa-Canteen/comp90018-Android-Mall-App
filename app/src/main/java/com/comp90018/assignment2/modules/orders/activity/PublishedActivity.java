@@ -86,13 +86,13 @@ public class PublishedActivity extends AppCompatActivity {
         }
 
         String currentUserId = auth.getCurrentUser().getUid();
-        DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUserId);
+        DocumentReference currentUserReference = db.collection(Constants.USERS_COLLECTION).document(currentUserId);
 
         dialog.showLoading("Loading");
         // init: query products belong to current user, put it in the List
         db.collection(Constants.PRODUCT_COLLECTION)
                 .whereIn("status", Arrays.asList(Constants.PUBLISHED, Constants.SOLD_OUT, Constants.UNDERCARRIAGE))
-                .whereEqualTo("owner_ref", userReference)
+                .whereEqualTo("owner_ref", currentUserReference)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -109,6 +109,21 @@ public class PublishedActivity extends AppCompatActivity {
                                     R.layout.item_published_rv_item,
                                     productDTOList,
                                     PublishedActivity.this);
+
+                            // query for current userDTO
+                            // then attach it to the adapter
+                            currentUserReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot result = task.getResult();
+                                        UserDTO currentUserDTO = result.toObject(UserDTO.class);
+                                        adapter.setCurrentUserDTO(currentUserDTO);
+                                    } else {
+                                        Log.w(TAG, "get current user dto failed: " + task.getException());
+                                    }
+                                }
+                            });
 
                             // attach adapter to rv
                             binding.rvPublished.setAdapter(adapter);

@@ -17,8 +17,9 @@
             android:id="@+id/iv_product_first"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/default_image"
-            android:layout_alignParentLeft="true"/>
+            android:scaleType="fitXY"/>
 
         <TextView
             android:id="@+id/text_product_desc_cut"
