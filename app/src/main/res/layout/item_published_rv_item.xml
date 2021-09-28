@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@color/grey6">
+
+        <com.comp90018.assignment2.utils.view.OvalImageView
+            android:id="@+id/iv_product_first"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/default_image"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/text_product_desc_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="desc"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:layout_toRightOf="@id/iv_product_first"
+            android:layout_marginLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:textColor="@color/red"
+            android:text="Loading..."
+            android:textSize="15sp"
+            android:layout_toRightOf="@id/iv_product_first"
+            android:layout_below="@id/text_product_desc_cut"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
