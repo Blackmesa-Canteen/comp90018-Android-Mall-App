@@ -206,7 +206,9 @@ public class HomeFragment extends BaseFragment{
                 progressDialog.show();
             }
 
-            db.collection(Constants.PRODUCT_COLLECTION).get().addOnCompleteListener(task -> {
+            db.collection(Constants.PRODUCT_COLLECTION)
+                    .whereEqualTo("status", Constants.PUBLISHED)
+                    .get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     List<ProductDTO> productDTOList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
