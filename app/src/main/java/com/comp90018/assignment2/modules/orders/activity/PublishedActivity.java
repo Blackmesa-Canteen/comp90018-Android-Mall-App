@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.orders.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +10,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.comp90018.assignment2.App;
+import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityPublishedBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.orders.adapter.RvPublishedProductAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import me.leefeng.promptlibrary.PromptDialog;
@@ -43,6 +47,7 @@ public class PublishedActivity extends AppCompatActivity {
     List<ProductDTO> productDTOList;
 
     private PromptDialog dialog;
+    private RvPublishedProductAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,7 @@ public class PublishedActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        dialog = new PromptDialog(this);
 
         // set up data structure
         productDTOList = new ArrayList<>();
@@ -85,24 +91,31 @@ public class PublishedActivity extends AppCompatActivity {
         dialog.showLoading("Loading");
         // init: query products belong to current user, put it in the List
         db.collection(Constants.PRODUCT_COLLECTION)
-                .whereNotEqualTo("status", Constants.REMOVED)
+                .whereIn("status", Arrays.asList(Constants.PUBLISHED, Constants.SOLD_OUT, Constants.UNDERCARRIAGE))
                 .whereEqualTo("owner_ref", userReference)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            productDTOList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 ProductDTO productDTO = document.toObject(ProductDTO.class);
                                 productDTOList.add(productDTO);
                             }
 
-                            // attach adapter
+                            // init adapter
+                            adapter = new RvPublishedProductAdapter(
+                                    R.layout.item_published_rv_item,
+                                    productDTOList,
+                                    PublishedActivity.this);
 
-
+                            // attach adapter to rv
+                            binding.rvPublished.setAdapter(adapter);
+                            // set layout
+                            binding.rvPublished.setLayoutManager(new LinearLayoutManager(PublishedActivity.this));
                             dialog.dismiss();
 
-                            // TODO: refresh adapter;
                         } else {
                             dialog.dismiss();
                             Log.w(TAG, "Error getting documents: ", task.getException());
@@ -113,14 +126,12 @@ public class PublishedActivity extends AppCompatActivity {
     }
 
     /**
-     * used for notify adapter.
-     * because each action triggered by button will go to a new activity
+     * used for data updating
      *
      */
     @Override
     protected void onResume() {
         super.onResume();
-
-        // TODO notify adapter to update when return to this activity
+        loadData();
     }
 }

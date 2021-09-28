@@ -18,6 +18,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.utils.Constants;
+import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -311,7 +312,7 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
             // query image with the reference, then show avatar
             Glide.with(context)
                     .load(imgReference)
-                    .into((CircleImageView) helper.getView(R.id.iv_product_first));
+                    .into((OvalImageView) helper.getView(R.id.iv_product_first));
         } else {
             Drawable default_img = ContextCompat.getDrawable(context, R.drawable.default_image);
             helper.setImageDrawable(R.id.iv_product_first, default_img);
