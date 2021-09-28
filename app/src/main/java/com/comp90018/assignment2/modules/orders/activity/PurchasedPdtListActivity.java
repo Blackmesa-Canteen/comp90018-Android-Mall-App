@@ -18,8 +18,6 @@ import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.orders.adapter.PurchasedAdapter;
-import com.comp90018.assignment2.modules.orders.adapter.PurchasedPdtListAdapter;
-import com.comp90018.assignment2.modules.search.adapter.SearchResultRvAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +41,6 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
     private ActivityPurchasedPdtListBinding binding;
     //private PurchasedPdtListAdapter purchasedPdtListAdapter;
     private RecyclerView recyclerView;
-    private PurchasedAdapter purchasedAdapter;
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
