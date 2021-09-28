@@ -8,6 +8,11 @@
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/home_fragment.xml" value="0.5" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_home.xml" value="0.33" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_recycler_view_search.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/drawable/btn_danger_selector.xml" value="0.22037037037037038" />
+        <entry key="app/src/main/res/drawable/btn_primary_selector.xml" value="0.34429223744292237" />
+        <entry key="app/src/main/res/drawable/btn_secondary_shape.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/btn_secondary_shape_green.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/button_home_selector.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/drawable/button_messages_has_new_selector.xml" value="0.345662100456621" />
         <entry key="app/src/main/res/drawable/button_messages_selector.xml" value="0.34429223744292237" />
         <entry key="app/src/main/res/drawable/et_bg.xml" value="0.34953703703703703" />
@@ -15,12 +20,14 @@
         <entry key="app/src/main/res/drawable/mail_outline_24dp.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/drawable/notice_spot.xml" value="0.33835616438356164" />
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.34953703703703703" />
+        <entry key="app/src/main/res/drawable/text_main_bottom_selector.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.2087717720456596" />
         <entry key="app/src/main/res/layout/activity_edit_password.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_edit_user_profile.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.23657407407407408" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
+        <entry key="app/src/main/res/layout/activity_ok.xml" value="0.2810185185185185" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.33013698630136984" />
         <entry key="app/src/main/res/layout/activity_published.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.3101851851851852" />

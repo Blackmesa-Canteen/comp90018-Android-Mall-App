@@ -36,8 +36,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
-            android:name=".modules.orders.activity.PublishedActivity"
+            android:name=".utils.activity.OkActivity"
             android:exported="true" />
+        <activity
+            android:name=".modules.orders.activity.PublishedActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"/>
         <activity
             android:name=".modules.users.authentication.activity.EditPasswordActivity"
             android:exported="true" />

@@ -1,6 +1,7 @@
 package com.comp90018.assignment2.modules;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -244,8 +245,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchRedSpotOnMessageBtn(boolean b) {
 
-        Drawable newMessageDrawable = getResources().getDrawable(R.drawable.button_messages_has_new_selector);
-        Drawable originalMessageDrawable = getResources().getDrawable(R.drawable.button_messages_selector);
+        Drawable newMessageDrawable = ContextCompat.getDrawable(this, R.drawable.button_messages_has_new_selector);
+        Drawable originalMessageDrawable = ContextCompat.getDrawable(this, R.drawable.button_messages_selector);
         if (b) {
             messageBtn.setCompoundDrawablesWithIntrinsicBounds(null, newMessageDrawable, null, null);
             Log.d("MainActivity[dev]", "show red pod on message btn.");
