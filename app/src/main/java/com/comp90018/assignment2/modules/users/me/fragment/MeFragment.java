@@ -23,6 +23,7 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.MainActivity;
+import com.comp90018.assignment2.modules.orders.activity.PublishedActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
@@ -176,9 +177,9 @@ public class MeFragment extends BaseFragment {
 //                    startActivity(intent);
 //                    break;
                 case R.id.tv_published:
-
-                    Toast.makeText(activityContext, "商品发布详情", Toast.LENGTH_SHORT).show();
-
+                    // go to published list
+                    Intent goToPublishedIntent = new Intent(activityContext, PublishedActivity.class);
+                    startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
                     Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
@@ -222,10 +223,8 @@ public class MeFragment extends BaseFragment {
                         JMessageClient.logout();
                     }
 
-                    Intent loginIntent = new Intent(activityContext, LoginActivity.class);
-                    startActivity(loginIntent);
-                    // jump to home if not login.
-                    ((MainActivity) activityContext).getBinding().radioGroupMain.check(R.id.button_main_home);
+                    Toast.makeText(activityContext, "GoodBye", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) activityContext).goHomeFragment();
                     break;
             }
         }
@@ -310,6 +309,8 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        if (firebaseAuth.getCurrentUser()!= null) {
+            loadData();
+        }
     }
 }

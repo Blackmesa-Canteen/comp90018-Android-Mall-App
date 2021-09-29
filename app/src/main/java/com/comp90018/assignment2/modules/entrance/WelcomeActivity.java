@@ -49,6 +49,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 .runtime()
                 .permission(
                         Permission.CAMERA,
+                        Permission.ACCESS_COARSE_LOCATION,
                         Permission.ACCESS_FINE_LOCATION,
                         Permission.RECORD_AUDIO,
                         Permission.READ_EXTERNAL_STORAGE,
