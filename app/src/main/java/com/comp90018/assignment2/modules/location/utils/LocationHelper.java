@@ -4,20 +4,28 @@ import static android.content.Context.LOCATION_SERVICE;
 import static android.location.LocationManager.GPS_PROVIDER;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.alibaba.fastjson.JSON;
+import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.modules.location.bean.LocationBean;
 import com.comp90018.assignment2.modules.location.bean.OpenStreetMapResultBean;
 import com.comp90018.assignment2.utils.Constants;
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RequestExecutor;
 import com.yanzhenjie.permission.runtime.Permission;
 
 import java.io.IOException;
@@ -44,13 +52,12 @@ public class LocationHelper {
 
     /**
      * static Tool:
-     *
+     * <p>
      * Based on WGS84 coordinate, get text description
      *
-     * @param latitude WGS84
+     * @param latitude  WGS84
      * @param longitude WGS84
-     *                  @param callback callback: if finished query, locationBean can be called in the call back method.
-     *
+     * @param callback  callback: if finished query, locationBean can be called in the call back method.
      * @author xiaotian li
      */
     public static void getTextAddressWithCoordinate(double latitude, double longitude, OnGotLocationBeanCallback callback) {
@@ -96,39 +103,61 @@ public class LocationHelper {
                 OpenStreetMapResultBean resultBean = JSON.parseObject(responseBody, OpenStreetMapResultBean.class);
 
                 // set text address to result bean
+                // get detailed information
                 if (resultBean != null
                         && resultBean.getFeatures() != null
                         && resultBean.getFeatures().get(0) != null
                         && resultBean.getFeatures().get(0).getProperties() != null
                         && resultBean.getFeatures().get(0).getProperties().getAddress() != null) {
 
-                    String roadName = resultBean.getFeatures().get(0).getProperties().getAddress().getRoad();
-                    String displayName = resultBean.getFeatures().get(0).getProperties().getDisplayName();
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(latitude)
+                            .longitude(longitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress(resultBean.getFeatures().get(0).getProperties().getDisplayName())
+                            .gotDetailedAddressInfo(true)
+                            .road(resultBean.getFeatures().get(0).getProperties().getAddress().getRoad())
+                            .suburb(resultBean.getFeatures().get(0).getProperties().getAddress().getSuburb())
+                            .city(resultBean.getFeatures().get(0).getProperties().getAddress().getCity())
+                            .state(resultBean.getFeatures().get(0).getProperties().getAddress().getState())
+                            .postcode(resultBean.getFeatures().get(0).getProperties().getAddress().getPostcode())
+                            .country(resultBean.getFeatures().get(0).getProperties().getAddress().getCountry())
+                            .countryCode(resultBean.getFeatures().get(0).getProperties().getAddress().getCountryCode())
+                            .build();
 
-                    if (roadName == null || roadName.length() == 0) {
-                        // if road name is null, show displayName
-                        // put result bean to callback
-                        LocationBean locationBean = LocationBean.builder()
-                                .latitude(latitude)
-                                .longitude(longitude)
-                                .coordinateSystemType(Constants.WGS84)
-                                .textAddress(displayName).build();
+                    if (callback != null) {
+                        callback.gotLocationCallback(locationBean);
+                    }
+                } else if (resultBean != null
+                        && resultBean.getFeatures() != null
+                        && resultBean.getFeatures().get(0) != null
+                        && resultBean.getFeatures().get(0).getProperties() != null) {
 
-                        if (callback != null) {
-                            callback.gotLocationCallback(locationBean);
-                        }
-                    } else {
-                        // if has road name, show road name
-                        // put result bean to callback
-                        LocationBean locationBean = LocationBean.builder()
-                                .latitude(latitude)
-                                .longitude(longitude)
-                                .coordinateSystemType(Constants.WGS84)
-                                .textAddress(roadName).build();
+                    // if missing some detailed information
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(latitude)
+                            .longitude(longitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress(resultBean.getFeatures().get(0).getProperties().getDisplayName())
+                            .gotDetailedAddressInfo(false)
+                            .build();
 
-                        if (callback != null) {
-                            callback.gotLocationCallback(locationBean);
-                        }
+                    if (callback != null) {
+                        callback.gotLocationCallback(locationBean);
+                    }
+
+                } else {
+                    // if missing many detailed information
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(latitude)
+                            .longitude(longitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress("Address")
+                            .gotDetailedAddressInfo(false)
+                            .build();
+
+                    if (callback != null) {
+                        callback.gotLocationCallback(locationBean);
                     }
                 }
             }
@@ -146,65 +175,128 @@ public class LocationHelper {
      */
     public void getLiveLocating(OnGotLocationBeanCallback callback) {
         MyLocationListener myLocationListener = new MyLocationListener(context);
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // request permission
-            AndPermission.with(context)
-                    .runtime()
-                    .permission(
-                            Permission.ACCESS_COARSE_LOCATION,
-                            Permission.ACCESS_FINE_LOCATION,
-                            Permission.RECORD_AUDIO,
-                            Permission.READ_EXTERNAL_STORAGE,
-                            Permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .start();
-        }
-        locationManager.requestLocationUpdates(
-                GPS_PROVIDER,
-                5000,
-                10, myLocationListener);
+        // request permission
+        AndPermission.with(context)
+                .runtime()
+                .permission(
+                        Permission.ACCESS_COARSE_LOCATION,
+                        Permission.ACCESS_FINE_LOCATION
+                )
+                .onGranted(new Action<List<String>>() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onAction(List<String> data) {
+                        locationManager.requestLocationUpdates(
+                                GPS_PROVIDER,
+                                5000,
+                                10, myLocationListener);
 
-        // if location changed, update new location
-        myLocationListener.setOnGotLocationBeanCallBack(callback);
+                        // if location changed, update new location
+                        myLocationListener.setOnGotLocationBeanCallBack(callback);
+                    }
+                })
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        Toast.makeText(App.getContext(), "Please grand permission", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .rationale(new Rationale<List<String>>() {
+                    @Override
+                    public void showRationale(Context context, List<String> data, RequestExecutor executor) {
+                        List<String> permissionNames = Permission.transformText(context, data);
+                        String message = "please grand following permissions:\n" + permissionNames;
+
+                        new AlertDialog.Builder(context)
+                                .setCancelable(false)
+                                .setTitle("Reminder")
+                                .setMessage(message)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.execute();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.cancel();
+                                    }
+                                })
+                                .show();
+                    }
+                })
+                .start();
     }
 
     /**
      * get current known location for once.
+     *
      * @param callback
      */
     public void getCurrentKnownLocationBean(OnGotLocationBeanCallback callback) {
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            // request permission
-            AndPermission.with(context)
-                    .runtime()
-                    .permission(
-                            Permission.ACCESS_COARSE_LOCATION,
-                            Permission.ACCESS_FINE_LOCATION,
-                            Permission.RECORD_AUDIO,
-                            Permission.READ_EXTERNAL_STORAGE,
-                            Permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .start();
-        }
-        Location lastKnownLocation = getLastKnownLocation();
+        // request permission
+        AndPermission.with(context)
+                .runtime()
+                .permission(
+                        Permission.ACCESS_COARSE_LOCATION,
+                        Permission.ACCESS_FINE_LOCATION
+                )
+                .onGranted(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        Location lastKnownLocation = getLastKnownLocation();
 
-        double latitude = lastKnownLocation.getLatitude();
-        double longitude = lastKnownLocation.getLongitude();
+                        double latitude = lastKnownLocation.getLatitude();
+                        double longitude = lastKnownLocation.getLongitude();
 
-        Log.d(TAG, "current latitude:" + latitude);
-        Log.d(TAG, "current longitude:" + longitude);
+                        Log.d(TAG, "current latitude:" + latitude);
+                        Log.d(TAG, "current longitude:" + longitude);
 
-        getTextAddressWithCoordinate(latitude, longitude, callback);
+                        getTextAddressWithCoordinate(latitude, longitude, callback);
+                    }
+                })
+                .onDenied(new Action<List<String>>() {
+                    @Override
+                    public void onAction(List<String> data) {
+                        Toast.makeText(App.getContext(), "please grant permission", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .rationale(new Rationale<List<String>>() {
+                    @Override
+                    public void showRationale(Context context, List<String> data, RequestExecutor executor) {
+                        List<String> permissionNames = Permission.transformText(context, data);
+                        String message = "please grand following permissions:\n" + permissionNames;
+
+                        new AlertDialog.Builder(context)
+                                .setCancelable(false)
+                                .setTitle("Reminder")
+                                .setMessage(message)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.execute();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.cancel();
+                                    }
+                                })
+                                .show();
+                    }
+                })
+                .start();
+
+
     }
 
     /**
      * robust getLastKnowLocation method to prevent null result
+     *
      * @return Location
      */
     private Location getLastKnownLocation() {
@@ -214,17 +306,16 @@ public class LocationHelper {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // request permission
-                Log.w(TAG,"No permission");
+                Log.w(TAG, "No permission");
                 AndPermission.with(context)
                         .runtime()
                         .permission(
                                 Permission.ACCESS_COARSE_LOCATION,
-                                Permission.ACCESS_FINE_LOCATION,
-                                Permission.RECORD_AUDIO,
-                                Permission.READ_EXTERNAL_STORAGE,
-                                Permission.WRITE_EXTERNAL_STORAGE
+                                Permission.ACCESS_FINE_LOCATION
                         )
                         .start();
+                Toast.makeText(App.getContext(), "Please grant permission.", Toast.LENGTH_SHORT).show();
+                return null;
             }
             Location l = locationManager.getLastKnownLocation(provider);
             if (l == null) {

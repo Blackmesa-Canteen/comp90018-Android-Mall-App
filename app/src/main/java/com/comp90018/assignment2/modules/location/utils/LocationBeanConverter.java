@@ -8,6 +8,13 @@ import com.comp90018.assignment2.utils.Constants;
 
 import java.util.Map;
 
+/**
+ * Coordinate converter for map displaying
+ *
+ * Can decrypt coordinate in China to increase locating accuracy in China
+ *
+ * @author xiaotian li
+ */
 public class LocationBeanConverter {
 
     private static final String TAG = "LocBConv[dev]";
