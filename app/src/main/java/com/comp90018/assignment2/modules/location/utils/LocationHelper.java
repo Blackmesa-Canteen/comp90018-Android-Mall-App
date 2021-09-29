@@ -47,13 +47,13 @@ public class LocationHelper {
      *
      * Based on WGS84 coordinate, get text description
      *
-     * @param callback callback: if finished query, locationBean can be called in the call back method.
      * @param latitude WGS84
      * @param longitude WGS84
+     *                  @param callback callback: if finished query, locationBean can be called in the call back method.
      *
      * @author xiaotian li
      */
-    public static void getTextAddressWithCoordinate(OnGotLocationBeanCallback callback, double latitude, double longitude) {
+    public static void getTextAddressWithCoordinate(double latitude, double longitude, OnGotLocationBeanCallback callback) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT
                 + Constants.REVERSE_PARSE_PATH
@@ -200,7 +200,7 @@ public class LocationHelper {
         Log.d(TAG, "current latitude:" + latitude);
         Log.d(TAG, "current longitude:" + longitude);
 
-        getTextAddressWithCoordinate(callback, latitude, longitude);
+        getTextAddressWithCoordinate(latitude, longitude, callback);
     }
 
     /**
