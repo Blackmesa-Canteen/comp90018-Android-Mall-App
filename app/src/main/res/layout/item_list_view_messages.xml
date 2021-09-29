@@ -41,7 +41,7 @@
                 android:layout_height="20dp"
                 android:text="Loading nickname..."
                 android:textStyle="bold"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:maxLines="1"
                 android:maxLength="20"
                 android:textColor="@color/black"/>
@@ -50,7 +50,7 @@
                 android:id="@+id/emoji_text_newest_msg_cut"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:maxLines="1"
                 android:maxLength="25"
                 android:gravity="center"
@@ -60,7 +60,7 @@
                 android:id="@+id/text_newest_msg_time"
                 android:layout_width="wrap_content"
                 android:layout_height="12dp"
-                android:textSize="8dp"
+                android:textSize="11sp"
                 android:maxLines="1"
                 android:gravity="bottom"
                 android:text="Aug 8  17:22"/>
