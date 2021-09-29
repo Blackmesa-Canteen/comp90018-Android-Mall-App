@@ -42,81 +42,18 @@ public class LocationHelper {
 
     private LocationManager locationManager;
 
-    public LocationHelper(Context context) {
-        this.context = context;
-        locationManager = (LocationManager)
-                context.getSystemService(LOCATION_SERVICE);
-    }
-
     /**
-     * get live location listener, don't forget to set up call back
-     */
-    public void getLiveLocating(OnGotLocationBeanCallback callback) {
-        MyLocationListener myLocationListener = new MyLocationListener(context);
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            // request permission
-            AndPermission.with(context)
-                    .runtime()
-                    .permission(
-                            Permission.ACCESS_COARSE_LOCATION,
-                            Permission.ACCESS_FINE_LOCATION,
-                            Permission.RECORD_AUDIO,
-                            Permission.READ_EXTERNAL_STORAGE,
-                            Permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .start();
-        }
-        locationManager.requestLocationUpdates(
-                GPS_PROVIDER,
-                5000,
-                10, myLocationListener);
-
-        // if location changed, update new location
-        myLocationListener.setOnGotLocationBeanCallBack(callback);
-    }
-
-    /**
-     * get current known location for once.
-     * @param callback
-     */
-    public void getCurrentKnownLocationBean(OnGotLocationBeanCallback callback) {
-        if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            // request permission
-            AndPermission.with(context)
-                    .runtime()
-                    .permission(
-                            Permission.ACCESS_COARSE_LOCATION,
-                            Permission.ACCESS_FINE_LOCATION,
-                            Permission.RECORD_AUDIO,
-                            Permission.READ_EXTERNAL_STORAGE,
-                            Permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    .start();
-        }
-        Location lastKnownLocation = getLastKnownLocation();
-
-        double latitude = lastKnownLocation.getLatitude();
-        double longitude = lastKnownLocation.getLongitude();
-
-        Log.d(TAG, "current latitude:" + latitude);
-        Log.d(TAG, "current longitude:" + longitude);
-
-        getTextAddressWithCoordinate(callback, latitude, longitude);
-    }
-
-    /**
+     * static Tool:
      *
-     * @param callback callback
+     * Based on WGS84 coordinate, get text description
+     *
+     * @param callback callback: if finished query, locationBean can be called in the call back method.
      * @param latitude WGS84
      * @param longitude WGS84
+     *
+     * @author xiaotian li
      */
-    private void getTextAddressWithCoordinate(OnGotLocationBeanCallback callback, double latitude, double longitude) {
+    public static void getTextAddressWithCoordinate(OnGotLocationBeanCallback callback, double latitude, double longitude) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT
                 + Constants.REVERSE_PARSE_PATH
@@ -198,6 +135,73 @@ public class LocationHelper {
         });
     }
 
+    public LocationHelper(Context context) {
+        this.context = context;
+        locationManager = (LocationManager)
+                context.getSystemService(LOCATION_SERVICE);
+    }
+
+    /**
+     * get live location listener, don't forget to set up call back
+     */
+    public void getLiveLocating(OnGotLocationBeanCallback callback) {
+        MyLocationListener myLocationListener = new MyLocationListener(context);
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // request permission
+            AndPermission.with(context)
+                    .runtime()
+                    .permission(
+                            Permission.ACCESS_COARSE_LOCATION,
+                            Permission.ACCESS_FINE_LOCATION,
+                            Permission.RECORD_AUDIO,
+                            Permission.READ_EXTERNAL_STORAGE,
+                            Permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    .start();
+        }
+        locationManager.requestLocationUpdates(
+                GPS_PROVIDER,
+                5000,
+                10, myLocationListener);
+
+        // if location changed, update new location
+        myLocationListener.setOnGotLocationBeanCallBack(callback);
+    }
+
+    /**
+     * get current known location for once.
+     * @param callback
+     */
+    public void getCurrentKnownLocationBean(OnGotLocationBeanCallback callback) {
+        if (ActivityCompat.checkSelfPermission(context,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            // request permission
+            AndPermission.with(context)
+                    .runtime()
+                    .permission(
+                            Permission.ACCESS_COARSE_LOCATION,
+                            Permission.ACCESS_FINE_LOCATION,
+                            Permission.RECORD_AUDIO,
+                            Permission.READ_EXTERNAL_STORAGE,
+                            Permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    .start();
+        }
+        Location lastKnownLocation = getLastKnownLocation();
+
+        double latitude = lastKnownLocation.getLatitude();
+        double longitude = lastKnownLocation.getLongitude();
+
+        Log.d(TAG, "current latitude:" + latitude);
+        Log.d(TAG, "current longitude:" + longitude);
+
+        getTextAddressWithCoordinate(callback, latitude, longitude);
+    }
 
     /**
      * robust getLastKnowLocation method to prevent null result
