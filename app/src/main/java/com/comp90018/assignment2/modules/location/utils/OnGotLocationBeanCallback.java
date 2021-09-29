@@ -7,6 +7,6 @@ import com.comp90018.assignment2.modules.location.bean.LocationBean;
  *
  * @author xiaotian li
  */
-public interface OnGotLocationCallback {
+public interface OnGotLocationBeanCallback {
     void gotLocationCallback(LocationBean locationBean);
 }

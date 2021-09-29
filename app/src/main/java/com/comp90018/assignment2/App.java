@@ -52,7 +52,7 @@ public class App extends MultiDexApplication {
         /*
          * init Baidu Map service
          */
-        SDKInitializer.initialize(this);
+        SDKInitializer.initialize(getApplicationContext());
         // Use BD09LL coordinate as baidu map coordinate system
         SDKInitializer.setCoordType(CoordType.BD09LL);
     }

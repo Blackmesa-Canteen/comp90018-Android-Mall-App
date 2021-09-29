@@ -4,14 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.location.bean.LocationBean;
+import com.comp90018.assignment2.modules.location.utils.LocationBeanConverter;
 import com.comp90018.assignment2.modules.location.utils.LocationHelper;
-import com.comp90018.assignment2.modules.location.utils.OnGotLocationCallback;
+import com.comp90018.assignment2.modules.location.utils.OnGotLocationBeanCallback;
 import com.comp90018.assignment2.utils.Calculator;
 import com.comp90018.assignment2.utils.Constants;
 
+import java.util.List;
 import java.util.Map;
 
 import me.leefeng.promptlibrary.PromptDialog;
@@ -24,6 +34,7 @@ import me.leefeng.promptlibrary.PromptDialog;
  */
 public class LocationMapActivity extends AppCompatActivity {
 
+    private BaiduMap baiduMap;
     private MapView mapView;
 
     private LocationBean targetLocationBean;
@@ -32,6 +43,8 @@ public class LocationMapActivity extends AppCompatActivity {
 
     private LocationHelper locationHelper;
 
+    private MarkerOptions currentUserMarker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,73 +52,60 @@ public class LocationMapActivity extends AppCompatActivity {
 
         dialog = new PromptDialog(this);
         mapView = (MapView) findViewById(R.id.map_view);
+        baiduMap = mapView.getMap();
         locationHelper = new LocationHelper(this);
 
+        // get input coordinate
+        targetLocationBean = (LocationBean) getIntent().getSerializableExtra(Constants.DATA_A);
+
         // get current user location
-        locationHelper.getCurrentLocation(new OnGotLocationCallback() {
+        locationHelper.getLiveLocating(new OnGotLocationBeanCallback() {
             @Override
             public void gotLocationCallback(LocationBean locationBean) {
                 // convert point
-                convertLocationToBdMapLocation(locationBean);
+                LocationBeanConverter.convertLocationToBdMapLocation(locationBean);
 
-                // point point to the map
+                LatLng center = new LatLng(locationBean.getLatitude(), locationBean.getLongitude());
+                // current user point to the map
+                currentUserMarker = new MarkerOptions()
+                        .position(center)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red));
 
+                // add this marker to map
+                baiduMap.addOverlay(currentUserMarker);
+
+                if (targetLocationBean == null) {
+                    // debug: no targetLocation, zoom to current user location
+                    MapStatus mapStatus = new MapStatus.Builder()
+                            .target(center)
+                            .zoom(18)
+                            .build();
+                    MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+                    baiduMap.setMapStatus(mMapStatusUpdate);
+                }
 
             }
         });
 
-        // get input coordinate
-        targetLocationBean = (LocationBean) getIntent().getSerializableExtra(Constants.DATA_A);
-        // convert location for map showing
-        convertLocationToBdMapLocation(targetLocationBean);
-    }
-
-    private void convertLocationToBdMapLocation(LocationBean targetLocationBean) {
-        double lat = 0, lon = 0;
         if (targetLocationBean != null) {
-            if (targetLocationBean.getCoordinateSystemType() == Constants.WGS84) {
-                // change WGS84 default coordinate to GCJ02
-                // try to maintain high accuracy in China.
-                Map<String, Double> gcj02Coordinate = Calculator.transform(targetLocationBean.getLatitude(), targetLocationBean.getLongitude());
+            // convert location for map showing
+            LocationBeanConverter.convertLocationToBdMapLocation(targetLocationBean);
+            LatLng center = new LatLng(targetLocationBean.getLatitude(), targetLocationBean.getLongitude());
+            // current user point to the map
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(center)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue));
 
-                double gcjLat = 0, gcjLon = 0;
+            // add this marker to map
+            baiduMap.addOverlay(markerOptions);
 
-                if (gcj02Coordinate.get("lat") != null && gcj02Coordinate.get("lon") != null) {
-                    gcjLat = gcj02Coordinate.get("lat");
-                    gcjLon = gcj02Coordinate.get("lon");
-
-                    // change GCJ02 to BD09LL for map showing
-                    Map<String, Double> bd09llCoordinate = Calculator.marsTobaidu(gcjLat, gcjLon);
-                    if (bd09llCoordinate.get("lat") != null && bd09llCoordinate.get("lon") != null) {
-                        lat = bd09llCoordinate.get("lat");
-                        lon = bd09llCoordinate.get("lon");
-
-                        // convert bean
-                        targetLocationBean.setCoordinateSystemType(Constants.BD09LL);
-                        targetLocationBean.setLatitude(lat);
-                        targetLocationBean.setLongitude(lon);
-                    } else {
-                        dialog.showWarn("Can't find target location");
-                    }
-                } else {
-                    // show warn
-                    dialog.showWarn("Can't find target location");
-                }
-
-            } else if (targetLocationBean.getCoordinateSystemType() == Constants.GCJ02) {
-                Map<String, Double> bd09llCoordinate = Calculator.marsTobaidu(targetLocationBean.getLatitude(), targetLocationBean.getLongitude());
-                if (bd09llCoordinate.get("lat") != null && bd09llCoordinate.get("lon") != null) {
-                    lat = bd09llCoordinate.get("lat");
-                    lon = bd09llCoordinate.get("lon");
-
-                    // convert bean
-                    targetLocationBean.setCoordinateSystemType(Constants.BD09LL);
-                    targetLocationBean.setLatitude(lat);
-                    targetLocationBean.setLongitude(lon);
-                } else {
-                    dialog.showWarn("Can't find target location");
-                }
-            }
+            // zoom here
+            MapStatus mapStatus = new MapStatus.Builder()
+                    .target(center)
+                    .zoom(18)
+                    .build();
+            MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+            baiduMap.setMapStatus(mMapStatusUpdate);
         }
     }
 

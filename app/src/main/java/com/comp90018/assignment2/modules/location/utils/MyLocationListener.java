@@ -36,7 +36,7 @@ public class MyLocationListener implements LocationListener {
 
     private static String TAG = "Location[dev]";
 
-    private OnGotLocationCallback onGotLocationCallback;
+    private OnGotLocationBeanCallback onGotLocationBeanCallback;
 
     private OkHttpClient okHttpClient;
 
@@ -61,6 +61,10 @@ public class MyLocationListener implements LocationListener {
         // get text address from coordinates
         String textAddress = null;
 
+        getTextAddressWithCoordinate(locLatitude, locLongitude);
+    }
+
+    private void getTextAddressWithCoordinate(double locLatitude, double locLongitude) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT
                 + Constants.REVERSE_PARSE_PATH
@@ -91,8 +95,8 @@ public class MyLocationListener implements LocationListener {
                         .coordinateSystemType(Constants.WGS84)
                         .textAddress("Target Address").build();
 
-                if (onGotLocationCallback != null) {
-                    onGotLocationCallback.gotLocationCallback(locationBean);
+                if (onGotLocationBeanCallback != null) {
+                    onGotLocationBeanCallback.gotLocationCallback(locationBean);
                 }
             }
 
@@ -121,8 +125,8 @@ public class MyLocationListener implements LocationListener {
                                 .coordinateSystemType(Constants.WGS84)
                                 .textAddress(displayName).build();
 
-                        if (onGotLocationCallback != null) {
-                            onGotLocationCallback.gotLocationCallback(locationBean);
+                        if (onGotLocationBeanCallback != null) {
+                            onGotLocationBeanCallback.gotLocationCallback(locationBean);
                         }
                     } else {
                         // if has road name, show road name
@@ -133,8 +137,8 @@ public class MyLocationListener implements LocationListener {
                                 .coordinateSystemType(Constants.WGS84)
                                 .textAddress(roadName).build();
 
-                        if (onGotLocationCallback != null) {
-                            onGotLocationCallback.gotLocationCallback(locationBean);
+                        if (onGotLocationBeanCallback != null) {
+                            onGotLocationBeanCallback.gotLocationCallback(locationBean);
                         }
                     }
                 }
@@ -157,9 +161,9 @@ public class MyLocationListener implements LocationListener {
     /**
      * set call back
      *
-     * @param onGotLocationCallback
+     * @param onGotLocationBeanCallback
      */
-    public void setOnGotLocationCallBack(OnGotLocationCallback onGotLocationCallback) {
-        this.onGotLocationCallback = onGotLocationCallback;
+    public void setOnGotLocationBeanCallBack(OnGotLocationBeanCallback onGotLocationBeanCallback) {
+        this.onGotLocationBeanCallback = onGotLocationBeanCallback;
     }
 }

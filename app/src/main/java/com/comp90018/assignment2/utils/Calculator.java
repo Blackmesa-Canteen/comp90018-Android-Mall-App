@@ -176,4 +176,14 @@ public class Calculator {
 
         return mars_point;
     }
+
+    /**
+     * read WGS-84 coordinate, check whether is in China or not
+     * @param wgLat lat
+     * @param wgLon lon
+     * @return is in China?
+     */
+    public static boolean isOutChina(double wgLat, double wgLon) {
+        return outOfChina(wgLon, wgLat);
+    }
 }

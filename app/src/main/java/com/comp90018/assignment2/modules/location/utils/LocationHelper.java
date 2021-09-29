@@ -1,5 +1,6 @@
 package com.comp90018.assignment2.modules.location.utils;
 
+import static android.content.Context.LOCATION_SERVICE;
 import static android.location.LocationManager.GPS_PROVIDER;
 
 import android.Manifest;
@@ -20,6 +21,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -43,13 +45,13 @@ public class LocationHelper {
     public LocationHelper(Context context) {
         this.context = context;
         locationManager = (LocationManager)
-                context.getSystemService(Context.LOCATION_SERVICE);
+                context.getSystemService(LOCATION_SERVICE);
     }
 
     /**
      * get live location listener, don't forget to set up call back
      */
-    public void getLiveLocating(OnGotLocationCallback callback) {
+    public void getLiveLocating(OnGotLocationBeanCallback callback) {
         MyLocationListener myLocationListener = new MyLocationListener(context);
         if (ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -72,14 +74,14 @@ public class LocationHelper {
                 5000,
                 10, myLocationListener);
 
-        myLocationListener.setOnGotLocationCallBack(callback);
+        myLocationListener.setOnGotLocationBeanCallBack(callback);
     }
 
     /**
      * get current known location for once.
      * @param callback
      */
-    public void getCurrentLocation(OnGotLocationCallback callback) {
+    public void getCurrentKnownLocationBean(OnGotLocationBeanCallback callback) {
         if (ActivityCompat.checkSelfPermission(context,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -96,14 +98,18 @@ public class LocationHelper {
                     )
                     .start();
         }
-        Location lastKnownLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+        Location lastKnownLocation = getLastKnownLocation();
 
         double latitude = lastKnownLocation.getLatitude();
         double longitude = lastKnownLocation.getLongitude();
 
-        Log.d(TAG, "current latitude:"+latitude);
-        Log.d(TAG, "current longitude:"+longitude);
+        Log.d(TAG, "current latitude:" + latitude);
+        Log.d(TAG, "current longitude:" + longitude);
 
+        getTextAddressWithCoordinate(callback, latitude, longitude);
+    }
+
+    private void getTextAddressWithCoordinate(OnGotLocationBeanCallback callback, double latitude, double longitude) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT
                 + Constants.REVERSE_PARSE_PATH
@@ -183,6 +189,42 @@ public class LocationHelper {
                 }
             }
         });
+    }
 
+
+    /**
+     * robust getLastKnowLocation method to prevent null result
+     * @return Location
+     */
+    private Location getLastKnownLocation() {
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // request permission
+                Log.w(TAG,"No permission");
+                AndPermission.with(context)
+                        .runtime()
+                        .permission(
+                                Permission.ACCESS_COARSE_LOCATION,
+                                Permission.ACCESS_FINE_LOCATION,
+                                Permission.RECORD_AUDIO,
+                                Permission.READ_EXTERNAL_STORAGE,
+                                Permission.WRITE_EXTERNAL_STORAGE
+                        )
+                        .start();
+            }
+            Location l = locationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+
+        return bestLocation;
     }
 }

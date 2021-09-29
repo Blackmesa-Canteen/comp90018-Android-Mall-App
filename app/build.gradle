@@ -50,8 +50,8 @@ android {
 
     sourceSets{
         main{
-            jniLibs.srcDir 'libs'
-            //jni.srcDirs = []    //disable automatic ndk-build
+            jniLibs.srcDir 'src/main/java/com/comp90018/assignment2/libs'
+            jni.srcDirs = []    //disable automatic ndk-build
         }
     }
 
