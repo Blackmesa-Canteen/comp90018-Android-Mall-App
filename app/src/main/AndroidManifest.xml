@@ -40,11 +40,6 @@
         <activity
             android:name=".modules.location.activity.LocationMapActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".utils.activity.OkActivity"
@@ -94,6 +89,11 @@
             android:theme="@style/Theme.AppName.NoActionBar">
 
             <!-- entrance is here!! -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".modules.MainActivity"
