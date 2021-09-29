@@ -77,7 +77,7 @@ public class Calculator {
     }
 
     /**
-     * Baidu coordinates (bd09II) to Mars coordinates (GCJ02)
+     * Baidu coordinates (BD09LL) to Mars coordinates (GCJ02)
      * @Param lat  baidu map latitude
      * @Param lon  baidu map longitude
      */
@@ -96,7 +96,7 @@ public class Calculator {
     }
 
     /**
-     * Mars coordinates (GCJ02) to Baidu coordinates (bd09II)
+     * Mars coordinates (GCJ02) to Baidu coordinates (BD09LL)
      * @Param gcjLat  Mars coordinates lat
      * @Param gcjLon  Mars coordinates lon
      */
@@ -147,7 +147,7 @@ public class Calculator {
     }
 
     /**
-     * @Discription: Earth coordinate system (WGS-84) to Mars coordinate system (GCJ)
+     * @Discription: Earth coordinate system (WGS-84) to Mars coordinate system (GCJ02)
      * @Param wgLat  earth lat
      * @Param wgLon  earth lon
      */

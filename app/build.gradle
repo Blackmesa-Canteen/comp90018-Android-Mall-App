@@ -60,6 +60,12 @@ android {
 
 dependencies {
 
+    // json parser
+    implementation 'com.alibaba:fastjson:1.1.72.android'
+
+    // http request
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
     // video player
     implementation 'com.ycjiang:VideoPlayModule-Lite:2.3.61'
 

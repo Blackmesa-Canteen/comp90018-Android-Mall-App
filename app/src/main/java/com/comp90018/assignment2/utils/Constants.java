@@ -76,4 +76,14 @@ public class Constants {
     public final static String IMG_TYPE = "IMG";
     public final static String VIDEO_TYPE = "VIDEO";
 
+    /**
+     * Coordinate type
+     */
+    public final static int GCJ02 = 0;
+    public final static int BD09LL = 1;
+    public final static int WGS84 = 2;
+
+    // nominatim map API
+    public final static String OPEN_STREET_MAP_APT_ROOT = "https://nominatim.openstreetmap.org";
+    public final static String REVERSE_PARSE_PATH = "/reverse?format=geojson";
 }
