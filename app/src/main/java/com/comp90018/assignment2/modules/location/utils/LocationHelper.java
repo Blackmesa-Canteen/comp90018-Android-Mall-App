@@ -74,6 +74,7 @@ public class LocationHelper {
                 5000,
                 10, myLocationListener);
 
+        // if location changed, update new location
         myLocationListener.setOnGotLocationBeanCallBack(callback);
     }
 
@@ -109,6 +110,12 @@ public class LocationHelper {
         getTextAddressWithCoordinate(callback, latitude, longitude);
     }
 
+    /**
+     *
+     * @param callback callback
+     * @param latitude WGS84
+     * @param longitude WGS84
+     */
     private void getTextAddressWithCoordinate(OnGotLocationBeanCallback callback, double latitude, double longitude) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT

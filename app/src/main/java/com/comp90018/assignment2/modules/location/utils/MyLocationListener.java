@@ -64,6 +64,11 @@ public class MyLocationListener implements LocationListener {
         getTextAddressWithCoordinate(locLatitude, locLongitude);
     }
 
+    /**
+     * get text from coordinate
+     * @param locLatitude WGS84
+     * @param locLongitude WGS84
+     */
     private void getTextAddressWithCoordinate(double locLatitude, double locLongitude) {
         // set up query URL
         String queryURL = Constants.OPEN_STREET_MAP_APT_ROOT
