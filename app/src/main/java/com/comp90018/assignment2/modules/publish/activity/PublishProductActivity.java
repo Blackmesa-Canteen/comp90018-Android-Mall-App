@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +27,12 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.publish.adapter.PictureCollectionAdapter;
+import com.comp90018.assignment2.modules.users.authentication.activity.RegisterActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,6 +47,8 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -60,13 +67,14 @@ public class PublishProductActivity extends AppCompatActivity{
     FirebaseFirestore db;
     private Spinner categorySpinner;
     private Spinner subcategorySpinner;
-    private List<CategoryDTO> categories = new ArrayList <>();
+    private List<CategoryDTO> categories = new ArrayList<>();
     private Map<CategoryDTO, List<SubCategoryDTO>> categoryBundles = new HashMap<>();
     private CategoryDTO selectedCategory;
     private SubCategoryDTO selectedSubCategory;
     private List<LocalMedia> currentSelectLists;
     private ImageView pf_add;
     private RecyclerView pf_collection;
+    private List<String> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +139,8 @@ public class PublishProductActivity extends AppCompatActivity{
                 subcategorySpinner = (Spinner) findViewById(R.id.subcategory);
                 ArrayAdapter<CategoryDTO> dataAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, categories);
                 categorySpinner.setAdapter(dataAdapter);
-
                 categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    // TODO-6: fix category bugs
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                         selectedCategory = (CategoryDTO) parent.getSelectedItem();
@@ -158,14 +166,14 @@ public class PublishProductActivity extends AppCompatActivity{
             }
         });
 
-        // setup submit
+
         binding.btnPublish.setOnClickListener(v -> {
             String price = binding.price.getText().toString();
             String brand = binding.brand.getText().toString();
             String description = binding.description.getText().toString();
             String quality = binding.quality.getSelectedItem().toString();
 
-            if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0) {
+            if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0 || selectedCategory == null || selectedSubCategory == null) {
                 new AlertDialog.Builder(PublishProductActivity.this).setMessage("Please enter all information.").setPositiveButton("ok", null).show();
                 return;
             }
@@ -208,48 +216,40 @@ public class PublishProductActivity extends AppCompatActivity{
             }
 
             // update images
-            ArrayList<String> images = new ArrayList<>();
-            if (currentSelectLists.size() >= 1) {
-                progressDialog.setTitle("Updating product pictures...");
-                progressDialog.setMessage("Please wait");
-                progressDialog.setCancelable(true);
-                progressDialog.show();
-                for (LocalMedia picture: currentSelectLists) {
-                    Log.d(TAG, "img path: " + picture.getRealPath());
-                    File imageFile = new File(picture.getRealPath());
-                    Uri fileUri = Uri.fromFile(imageFile);
-                    StorageReference storageRef = firebaseStorage.getReference();
-                    StorageReference newPublishProductReference = storageRef.child("public/products/" + "description" + fileUri.getLastPathSegment());//images.add(newPublishProductReference);
-                    UploadTask uploadTask = newPublishProductReference.putFile(fileUri);
-                    // Register observers to listen for when the download is done or if it fails
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
-                            // get image url for storage
-                            String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
-                            Log.d(TAG, "## Stored path is " + imageUrl);
-                            // update avatar
-                            images.add(imageUrl);
-                        }
-                    }).addOnFailureListener(e -> {
-                        progressDialog.dismiss();
-                        Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    });
-                }
-            } else {
+            if (currentSelectLists == null || currentSelectLists.get(0) == null) {
                 new AlertDialog.Builder(PublishProductActivity.this).setMessage("One picture required").setPositiveButton("ok", null).show();
                 return;
-            }
-
-            progressDialog.setTitle("Publishing");
+            } else
+            progressDialog.setTitle("Updating product pictures...");
             progressDialog.setMessage("Please wait");
             progressDialog.setCancelable(true);
-            // TODO-1: ADD geo
+            progressDialog.show();
+            for (LocalMedia picture: currentSelectLists) {
+                Log.d(TAG, "img path: " + picture.getRealPath());
+                File imageFile = new File(picture.getRealPath());
+                Uri fileUri = Uri.fromFile(imageFile);
+                StorageReference storageRef = firebaseStorage.getReference();
+                StorageReference newPublishProductReference = storageRef.child("public/products/" + description + "_" + fileUri.getLastPathSegment());
+                // Register observers to listen for when the download is done or if it fails
+                newPublishProductReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+                    // get image url for storage
+                    String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
+                    Log.d(TAG, "## Stored path is " + imageUrl);
+                    System.out.println(imageUrl);
+                    // update image
+                    images.add(imageUrl);
+                    Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                    return;
+                });
+            }
+            // TODO-1: fix image size() == 0; find a way to update images one task together
+            System.out.println("xxx" + images.size());
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
             DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
+            // TODO-2: ADD geo
             ProductDTO newProductDTO = ProductDTO.builder()
                     .owner_ref(userReference)
                     .price(Double.parseDouble(price))
@@ -258,17 +258,22 @@ public class PublishProductActivity extends AppCompatActivity{
                     .description(description)
                     .publish_time(Timestamp.now())
                     .image_address(images)
-                    .category_ref(db.document("categories/" +selectedCategory.getCategory_id()))
-                    .sub_category_ref(db.document("sub_categories/" +selectedSubCategory.getSubcategory_id()))
+                    .category_ref(db.document("categories/" + selectedCategory.getCategory_id()))
+                    .sub_category_ref(db.document("sub_categories/" + selectedSubCategory.getSubcategory_id()))
                     .view_number(0)
                     .status(0)
                     .favorite_number(0)
+                    .star_number(0.0)
+                    .currency(0)
+                    .status(0)
                     .geo_hash(null)
                     .lat(null)
                     .lng(null)
                     .location_text(null)
+                    .location_coordinate(null)
                     .build();
             publish(newProductDTO);
+            progressDialog.dismiss();
         });
     }
 
@@ -292,8 +297,28 @@ public class PublishProductActivity extends AppCompatActivity{
         }
     }
     private void publish(ProductDTO productDTO){
-       db.collection(Constants.PRODUCT_COLLECTION).add(productDTO);
-        // TODO-2: after publish successfully, go to published page
-        // TODO-3: after publish successfully add sound
+        ProgressDialog publishProgressDialog = new ProgressDialog(PublishProductActivity.this);
+        publishProgressDialog.setTitle("Publish...");
+        publishProgressDialog.setMessage("Please wait");
+        db.collection(Constants.PRODUCT_COLLECTION)
+               .add(productDTO)
+               .addOnSuccessListener(documentReference -> {
+                   Log.d(TAG, "Product created with ID: "+ documentReference.getId());
+                       publishProgressDialog.dismiss();
+
+                       //TODO-3: set documentReference ID as ID
+                   // TODO-4: after publish successfully, go to published page
+                   // TODO-5: after publish successfully add sound
+                   // finish the activity
+                      finish();
+               }).addOnFailureListener(e -> {
+                      publishProgressDialog.dismiss();
+                      Log.w(TAG, "Create product:failed", e);
+                      new AlertDialog.Builder(PublishProductActivity.this)
+                              .setTitle("Sorry")
+                              .setMessage("Database network issue, please try again later")
+                              .setPositiveButton("Ok", null).show();
+
+               });
     }
 }
