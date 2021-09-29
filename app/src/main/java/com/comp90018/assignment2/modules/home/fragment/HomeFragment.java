@@ -265,11 +265,10 @@ public class HomeFragment extends BaseFragment{
     public class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
-            String myLongitude = "Longitude: " + loc.getLongitude();
-            String myLatitude = "Latitude: " + loc.getLatitude();
-            //user_geohash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(45, 144));
+            //String myLongitude = "Longitude: " + loc.getLongitude();
+            //String myLatitude = "Latitude: " + loc.getLatitude();
 
-            final GeoLocation center = new GeoLocation(45, 144);
+            final GeoLocation center = new GeoLocation(loc.getLatitude(), loc.getLongitude());
             final double radiusInM = 50 * 1000;
 
             // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
