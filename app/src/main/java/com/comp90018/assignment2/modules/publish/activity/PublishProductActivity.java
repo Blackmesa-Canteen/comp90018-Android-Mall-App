@@ -1,32 +1,46 @@
 package com.comp90018.assignment2.modules.publish.activity;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityPublishProductBinding;
 import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.publish.fragment.PictureGalleryFragment;
+import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.luck.picture.lib.entity.LocalMedia;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +55,7 @@ public class PublishProductActivity extends AppCompatActivity{
     FirebaseFirestore db;
     private ActivityPublishProductBinding binding;
     private PictureGalleryFragment pictureGalleryFragment;
+    private FirebaseStorage firebaseStorage;
     private FirebaseAuth firebaseAuth;
     private Spinner categorySpinner;
     private Spinner subcategorySpinner;
@@ -60,9 +75,10 @@ public class PublishProductActivity extends AppCompatActivity{
         setContentView(view);
 
         // load
-        loadPictureGalleryFragment();
+        List<LocalMedia> currentSelectLists = loadPictureGalleryFragment();
+
         firebaseAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
 
         // show process dialog
         ProgressDialog progressDialog = new ProgressDialog(PublishProductActivity.this);
@@ -110,9 +126,9 @@ public class PublishProductActivity extends AppCompatActivity{
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
+
                     }
                 });
-
             } else {
                 Log.d(TAG, "Error getting documents: ", task.getException());
             }
@@ -120,11 +136,9 @@ public class PublishProductActivity extends AppCompatActivity{
 
         // setup submit
         binding.btnPublish.setOnClickListener(v -> {
-            // TODO: upload pictures
             String price = binding.price.getText().toString();
             String brand = binding.brand.getText().toString();
             String description = binding.description.getText().toString();
-
             String quality = binding.quality.getSelectedItem().toString();
 
             if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0) {
@@ -169,16 +183,46 @@ public class PublishProductActivity extends AppCompatActivity{
                     throw new IllegalStateException("Unexpected value: " + quality);
             }
 
-            // TODO: add one picture required
+            ArrayList<String> images = new ArrayList<>();
+            if (currentSelectLists.size() >=1) {
+                progressDialog.setTitle("Updating product pictures...");
+                progressDialog.setMessage("Please wait");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+                for (LocalMedia picture: currentSelectLists) {
+                    Log.d(TAG, "img path: " + picture.getRealPath());
+                    File imageFile = new File(picture.getRealPath());
+                    Uri fileUri = Uri.fromFile(imageFile);
+                    StorageReference storageRef = firebaseStorage.getReference();
+                    StorageReference newPublishProductReference = storageRef.child("public/products/" + "description" + fileUri.getLastPathSegment());//images.add(newPublishProductReference);
+                    UploadTask uploadTask = newPublishProductReference.putFile(fileUri);
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(PublishProductActivity.this, "Avatar updated Successfully", Toast.LENGTH_SHORT).show();
+                            // get image url for storage
+                            String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
+                            Log.d(TAG, "## Stored path is " + imageUrl);
+                            // update avatar
+                            images.add(imageUrl);
+                        }
+                    }).addOnFailureListener(e -> {
+                        progressDialog.dismiss();
+                        Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    });
+                }
+            } else {
+                new AlertDialog.Builder(PublishProductActivity.this).setMessage("One picture required").setPositiveButton("ok", null).show();
+                return;
+            }
+
             progressDialog.setTitle("Publishing");
             progressDialog.setMessage("Please wait");
             progressDialog.setCancelable(true);
-
-            ArrayList<String> images = new ArrayList<>();
-            images.add("image address 1");
-            images.add("image address 2");
-
-            // TODO: ADD geo
+            // TODO-1: ADD geo
             FirebaseUser currentUser = firebaseAuth.getCurrentUser();
             DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
             ProductDTO newProductDTO = ProductDTO.builder()
@@ -193,27 +237,27 @@ public class PublishProductActivity extends AppCompatActivity{
                     .sub_category_ref(null)
                     .view_number(0)
                     .status(0)
+                    .favorite_number(0)
                     .geo_hash(null)
                     .lat(null)
                     .lng(null)
                     .location_text(null)
-                    .status(0)
-                    .favorite_number(0)
                     .build();
-//            publish(newProductDTO);
+            publish(newProductDTO);
         });
     }
 
-    public void loadPictureGalleryFragment() {
+    public List<LocalMedia> loadPictureGalleryFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         pictureGalleryFragment =  new PictureGalleryFragment();
         fragmentManager.beginTransaction()
                 .add(R.id.picture_gallery, pictureGalleryFragment)
                 .commit();
+        return pictureGalleryFragment.getSelectLists();
     }
     public void publish(ProductDTO productDTO){
-        // TODO: after publish successfully, go to target product detail page
        db.collection(Constants.PRODUCT_COLLECTION).add(productDTO);
+        // TODO-2: after publish successfully, go to published page
     }
 
 }
