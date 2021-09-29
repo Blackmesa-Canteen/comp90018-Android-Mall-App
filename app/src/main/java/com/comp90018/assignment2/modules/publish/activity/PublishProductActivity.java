@@ -1,33 +1,33 @@
 package com.comp90018.assignment2.modules.publish.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
+import com.comp90018.assignment2.config.GlideEngine;
 import com.comp90018.assignment2.databinding.ActivityPublishProductBinding;
 import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
-import com.comp90018.assignment2.modules.publish.fragment.PictureGalleryFragment;
-import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
+import com.comp90018.assignment2.modules.publish.adapter.PictureCollectionAdapter;
 import com.comp90018.assignment2.utils.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,6 +37,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 
@@ -50,17 +53,20 @@ import java.util.Map;
  * @author Ziyuan Xu
  */
 public class PublishProductActivity extends AppCompatActivity{
-
     private final static String TAG = "PublishProductActivity";
-    FirebaseFirestore db;
     private ActivityPublishProductBinding binding;
-    private PictureGalleryFragment pictureGalleryFragment;
     private FirebaseStorage firebaseStorage;
     private FirebaseAuth firebaseAuth;
+    FirebaseFirestore db;
     private Spinner categorySpinner;
     private Spinner subcategorySpinner;
     private List<CategoryDTO> categories = new ArrayList <>();
     private Map<CategoryDTO, List<SubCategoryDTO>> categoryBundles = new HashMap<>();
+    private CategoryDTO selectedCategory;
+    private SubCategoryDTO selectedSubCategory;
+    private List<LocalMedia> currentSelectLists;
+    private ImageView pf_add;
+    private RecyclerView pf_collection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +79,22 @@ public class PublishProductActivity extends AppCompatActivity{
 
         // attach to layout file
         setContentView(view);
-
-        // load
-        List<LocalMedia> currentSelectLists = loadPictureGalleryFragment();
+        pf_collection = view.findViewById(R.id.pf_collection);
+        pf_add = view.findViewById(R.id.pf_add);
+        pf_add.setOnClickListener(v -> PictureSelector.create(PublishProductActivity.this)
+                .openGallery(PictureMimeType.ofImage())
+                .imageEngine(GlideEngine.createGlideEngine())
+                .maxSelectNum(4)
+                .minSelectNum(1)
+                .imageSpanCount(4)
+                .selectionMode(PictureConfig.MULTIPLE)
+                .isPreviewImage(true)
+                .isCompress(true)
+                .forResult(Constants.REQUEST_CODE_A));
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // show process dialog
         ProgressDialog progressDialog = new ProgressDialog(PublishProductActivity.this);
@@ -119,14 +135,22 @@ public class PublishProductActivity extends AppCompatActivity{
                 categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                        CategoryDTO selectedCategory = (CategoryDTO) parent.getSelectedItem();
+                        selectedCategory = (CategoryDTO) parent.getSelectedItem();
                         List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
                         ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
                         subcategorySpinner.setAdapter(subCategoryAdapter);
+                        subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                                selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+                            }
+                        });
                     }
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
-
                     }
                 });
             } else {
@@ -183,8 +207,9 @@ public class PublishProductActivity extends AppCompatActivity{
                     throw new IllegalStateException("Unexpected value: " + quality);
             }
 
+            // update images
             ArrayList<String> images = new ArrayList<>();
-            if (currentSelectLists.size() >=1) {
+            if (currentSelectLists.size() >= 1) {
                 progressDialog.setTitle("Updating product pictures...");
                 progressDialog.setMessage("Please wait");
                 progressDialog.setCancelable(true);
@@ -201,7 +226,7 @@ public class PublishProductActivity extends AppCompatActivity{
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(PublishProductActivity.this, "Avatar updated Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
                             // get image url for storage
                             String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
                             Log.d(TAG, "## Stored path is " + imageUrl);
@@ -233,8 +258,8 @@ public class PublishProductActivity extends AppCompatActivity{
                     .description(description)
                     .publish_time(Timestamp.now())
                     .image_address(images)
-                    .category_ref(null)
-                    .sub_category_ref(null)
+                    .category_ref(db.document("categories/" +selectedCategory.getCategory_id()))
+                    .sub_category_ref(db.document("sub_categories/" +selectedSubCategory.getSubcategory_id()))
                     .view_number(0)
                     .status(0)
                     .favorite_number(0)
@@ -247,17 +272,28 @@ public class PublishProductActivity extends AppCompatActivity{
         });
     }
 
-    public List<LocalMedia> loadPictureGalleryFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        pictureGalleryFragment =  new PictureGalleryFragment();
-        fragmentManager.beginTransaction()
-                .add(R.id.picture_gallery, pictureGalleryFragment)
-                .commit();
-        return pictureGalleryFragment.getSelectLists();
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case Constants.REQUEST_CODE_A:
+                currentSelectLists = PictureSelector.obtainMultipleResult(data);
+                PictureCollectionAdapter pictureCollectionAdapter = new PictureCollectionAdapter(this,
+                        currentSelectLists);
+                pf_collection.setAdapter(pictureCollectionAdapter);
+                GridLayoutManager manager = new GridLayoutManager(this, 2);
+                pf_collection.setLayoutManager(manager);
+                break;
+            default:
+                break;
+        }
     }
-    public void publish(ProductDTO productDTO){
+    private void publish(ProductDTO productDTO){
        db.collection(Constants.PRODUCT_COLLECTION).add(productDTO);
         // TODO-2: after publish successfully, go to published page
+        // TODO-3: after publish successfully add sound
     }
-
 }

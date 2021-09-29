@@ -59,7 +59,6 @@ public class PictureCollectionAdapter extends RecyclerView.Adapter<RecyclerView.
             this.mContext = mContext;
             pg_image = itemView.findViewById(R.id.pg_image);
         }
-        // TODO: cancel some pictures
         public void setData(List<LocalMedia> collection, final int position) {
             Glide.with(mContext).load(collection.get(position).getPath()).into(pg_image);
         }
