@@ -258,19 +258,26 @@
 
                 <ImageView
                     android:id="@+id/pf_add"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_marginTop="43dp"
-                    android:gravity="center_vertical"
                     android:src="@drawable/add_product"
                     android:layout_marginLeft="20dp" />
 
+                <ImageView
+                    android:id="@+id/upload"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="43dp"
+                    android:src="@drawable/upload"
+                    android:layout_marginLeft="10dp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/pf_collection"
-                    android:layout_marginLeft="35dp"
+                    android:layout_marginLeft="15dp"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
-                    android:layout_width="220dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"/>
             </LinearLayout>
             <Button

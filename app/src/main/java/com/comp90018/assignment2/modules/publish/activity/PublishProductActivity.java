@@ -74,7 +74,7 @@ public class PublishProductActivity extends AppCompatActivity{
     private List<LocalMedia> currentSelectLists;
     private ImageView pf_add;
     private RecyclerView pf_collection;
-    private List<String> images = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class PublishProductActivity extends AppCompatActivity{
                 ArrayAdapter<CategoryDTO> dataAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, categories);
                 categorySpinner.setAdapter(dataAdapter);
                 categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    // TODO-6: fix category bugs
+                    // TODO: fix category bugs
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                         selectedCategory = (CategoryDTO) parent.getSelectedItem();
@@ -166,8 +166,41 @@ public class PublishProductActivity extends AppCompatActivity{
             }
         });
 
+        binding.upload.setOnClickListener(v1 -> {
+            if (currentSelectLists == null || currentSelectLists.get(0) == null) {
+                new AlertDialog.Builder(PublishProductActivity.this).setMessage("select at least one picture to upload").setPositiveButton("ok", null).show();
+                return;
+            } else {
+                progressDialog.setTitle("Updating product pictures...");
+                progressDialog.setMessage("Please wait");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+                images.clear();
+                for (LocalMedia picture: currentSelectLists) {
+                    Log.d(TAG, "img path: " + picture.getRealPath());
+                    File imageFile = new File(picture.getRealPath());
+                    Uri fileUri = Uri.fromFile(imageFile);
+                    StorageReference storageRef = firebaseStorage.getReference();
+                    StorageReference newPublishProductReference = storageRef.child("public/products/" + fileUri.getLastPathSegment());
+                    // Register observers to listen for when the download is done or if it fails
+                    newPublishProductReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+                        // get image url for storage
+                        String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
+                        Log.d(TAG, "## Stored path is " + imageUrl);
+                        // update image
+                        images.add(imageUrl);
+                        progressDialog.dismiss();
+                        Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                        return;
+                    });
+                }
+            }
+        });
 
-        binding.btnPublish.setOnClickListener(v -> {
+        binding.btnPublish.setOnClickListener(v2 -> {
             String price = binding.price.getText().toString();
             String brand = binding.brand.getText().toString();
             String description = binding.description.getText().toString();
@@ -216,64 +249,35 @@ public class PublishProductActivity extends AppCompatActivity{
             }
 
             // update images
-            if (currentSelectLists == null || currentSelectLists.get(0) == null) {
+            if (images.size() == 0 || images.get(1) == null) {
                 new AlertDialog.Builder(PublishProductActivity.this).setMessage("One picture required").setPositiveButton("ok", null).show();
                 return;
-            } else
-            progressDialog.setTitle("Updating product pictures...");
-            progressDialog.setMessage("Please wait");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-            for (LocalMedia picture: currentSelectLists) {
-                Log.d(TAG, "img path: " + picture.getRealPath());
-                File imageFile = new File(picture.getRealPath());
-                Uri fileUri = Uri.fromFile(imageFile);
-                StorageReference storageRef = firebaseStorage.getReference();
-                StorageReference newPublishProductReference = storageRef.child("public/products/" + description + "_" + fileUri.getLastPathSegment());
-                // Register observers to listen for when the download is done or if it fails
-                newPublishProductReference.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
-                    // get image url for storage
-                    String imageUrl = Constants.STORAGE_ROOT_PATH + taskSnapshot.getStorage().getPath();
-                    Log.d(TAG, "## Stored path is " + imageUrl);
-                    System.out.println(imageUrl);
-                    // update image
-                    images.add(imageUrl);
-                    Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                    return;
-                });
+            } else {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
+                // TODO(add geo): get geo info - if not: set default geo info
+                ProductDTO newProductDTO = ProductDTO.builder()
+                        .owner_ref(userReference)
+                        .price(Double.parseDouble(price))
+                        .brand(brand)
+                        .quality(qualityCode)
+                        .description(description)
+                        .publish_time(Timestamp.now())
+                        .image_address(images)
+                        .category_ref(db.document("categories/" + selectedCategory.getCategory_id()))
+                        .sub_category_ref(db.document("sub_categories/" + selectedSubCategory.getSubcategory_id()))
+                        .view_number(0)
+                        .status(0)
+                        .favorite_number(0)
+                        .currency(0)
+                        .status(0)
+                        .geo_hash(null)
+                        .lat(null)
+                        .lng(null)
+                        .location_text(null)
+                        .build();
+                publish(newProductDTO);
             }
-            // TODO-1: fix image size() == 0; find a way to update images one task together
-            System.out.println("xxx" + images.size());
-            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
-            // TODO-2: ADD geo
-            ProductDTO newProductDTO = ProductDTO.builder()
-                    .owner_ref(userReference)
-                    .price(Double.parseDouble(price))
-                    .brand(brand)
-                    .quality(qualityCode)
-                    .description(description)
-                    .publish_time(Timestamp.now())
-                    .image_address(images)
-                    .category_ref(db.document("categories/" + selectedCategory.getCategory_id()))
-                    .sub_category_ref(db.document("sub_categories/" + selectedSubCategory.getSubcategory_id()))
-                    .view_number(0)
-                    .status(0)
-                    .favorite_number(0)
-                    .star_number(0.0)
-                    .currency(0)
-                    .status(0)
-                    .geo_hash(null)
-                    .lat(null)
-                    .lng(null)
-                    .location_text(null)
-                    .location_coordinate(null)
-                    .build();
-            publish(newProductDTO);
-            progressDialog.dismiss();
         });
     }
 
@@ -304,12 +308,13 @@ public class PublishProductActivity extends AppCompatActivity{
                .add(productDTO)
                .addOnSuccessListener(documentReference -> {
                    Log.d(TAG, "Product created with ID: "+ documentReference.getId());
-                       publishProgressDialog.dismiss();
-
-                       //TODO-3: set documentReference ID as ID
-                   // TODO-4: after publish successfully, go to published page
-                   // TODO-5: after publish successfully add sound
-                   // finish the activity
+                       db.collection(Constants.PRODUCT_COLLECTION)
+                               .document(documentReference.getId())
+                               .update("id", documentReference.getId());
+                               // TODO: after publish successfully, go to published page
+                               // TODO: after publish successfully add sound
+                      // finish the activity
+                      publishProgressDialog.dismiss();
                       finish();
                }).addOnFailureListener(e -> {
                       publishProgressDialog.dismiss();
@@ -318,7 +323,6 @@ public class PublishProductActivity extends AppCompatActivity{
                               .setTitle("Sorry")
                               .setMessage("Database network issue, please try again later")
                               .setPositiveButton("Ok", null).show();
-
                });
     }
 }

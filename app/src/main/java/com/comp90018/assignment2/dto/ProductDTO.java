@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -40,7 +41,7 @@ public class ProductDTO implements Parcelable {
     private Integer currency;
     private String description;
     private Integer favorite_number;
-    private List<String> image_address;
+    private ArrayList<String> image_address;
     @Deprecated
     private GeoPoint location_coordinate;
     private String location_text;

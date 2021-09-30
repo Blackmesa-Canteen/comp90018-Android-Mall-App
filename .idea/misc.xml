@@ -31,8 +31,8 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/activity_ok.xml" value="0.2810185185185185" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.33013698630136984" />
+        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="1.3043691513808893" />
         <entry key="app/src/main/res/layout/activity_published.xml" value="0.3347222222222222" />
-        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.5080198199643201" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.23657407407407408" />
         <entry key="app/src/main/res/layout/activity_video_player.xml" value="0.23657407407407408" />
@@ -59,8 +59,8 @@
         <entry key="app/src/main/res/layout/item_home.xml" value="0.360054347826087" />
         <entry key="app/src/main/res/layout/item_images.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_list_view_messages.xml" value="0.33611111111111114" />
-        <entry key="app/src/main/res/layout/item_published_rv_item.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_picture_gallery.xml" value="0.19072164948453607" />
+        <entry key="app/src/main/res/layout/item_published_rv_item.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_recycler_view_search.xml" value="0.3315068493150685" />
         <entry key="app/src/main/res/layout/item_subcategories_item.xml" value="0.360054347826087" />
         <entry key="app/src/main/res/layout/jmui_dialog_record_voice.xml" value="0.3351851851851852" />
@@ -70,7 +70,7 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_14_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
