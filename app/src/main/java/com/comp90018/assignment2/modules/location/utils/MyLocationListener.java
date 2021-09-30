@@ -42,7 +42,7 @@ public class MyLocationListener implements LocationListener {
 
     private OkHttpClient okHttpClient;
 
-    private final static Handler mHandler = new Handler(Looper.getMainLooper());;
+    private final static Handler mHandler = new Handler(Looper.getMainLooper());
 
     public MyLocationListener(Context context) {
         this.context = context;
