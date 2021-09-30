@@ -112,39 +112,62 @@ public class MyLocationListener implements LocationListener {
                 OpenStreetMapResultBean resultBean = JSON.parseObject(responseBody, OpenStreetMapResultBean.class);
 
                 // set text address to result bean
+                // set text address to result bean
+                // get detailed information
                 if (resultBean != null
                         && resultBean.getFeatures() != null
                         && resultBean.getFeatures().get(0) != null
                         && resultBean.getFeatures().get(0).getProperties() != null
                         && resultBean.getFeatures().get(0).getProperties().getAddress() != null) {
 
-                    String roadName = resultBean.getFeatures().get(0).getProperties().getAddress().getRoad();
-                    String displayName = resultBean.getFeatures().get(0).getProperties().getDisplayName();
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(locLatitude)
+                            .longitude(locLongitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress(resultBean.getFeatures().get(0).getProperties().getDisplayName())
+                            .gotDetailedAddressInfo(true)
+                            .road(resultBean.getFeatures().get(0).getProperties().getAddress().getRoad())
+                            .suburb(resultBean.getFeatures().get(0).getProperties().getAddress().getSuburb())
+                            .city(resultBean.getFeatures().get(0).getProperties().getAddress().getCity())
+                            .state(resultBean.getFeatures().get(0).getProperties().getAddress().getState())
+                            .postcode(resultBean.getFeatures().get(0).getProperties().getAddress().getPostcode())
+                            .country(resultBean.getFeatures().get(0).getProperties().getAddress().getCountry())
+                            .countryCode(resultBean.getFeatures().get(0).getProperties().getAddress().getCountryCode())
+                            .build();
 
-                    if (roadName == null || roadName.length() == 0) {
-                        // if road name is null, show displayName
-                        // put result bean to callback
-                        LocationBean locationBean = LocationBean.builder()
-                                .latitude(locLatitude)
-                                .longitude(locLongitude)
-                                .coordinateSystemType(Constants.WGS84)
-                                .textAddress(displayName).build();
+                    if (onGotLocationBeanCallback != null) {
+                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                    }
+                } else if (resultBean != null
+                        && resultBean.getFeatures() != null
+                        && resultBean.getFeatures().get(0) != null
+                        && resultBean.getFeatures().get(0).getProperties() != null){
 
-                        if (onGotLocationBeanCallback != null) {
-                            onGotLocationBeanCallback.gotLocationCallback(locationBean);
-                        }
-                    } else {
-                        // if has road name, show road name
-                        // put result bean to callback
-                        LocationBean locationBean = LocationBean.builder()
-                                .latitude(locLatitude)
-                                .longitude(locLongitude)
-                                .coordinateSystemType(Constants.WGS84)
-                                .textAddress(roadName).build();
+                    // if missing some detailed information
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(locLatitude)
+                            .longitude(locLongitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress(resultBean.getFeatures().get(0).getProperties().getDisplayName())
+                            .gotDetailedAddressInfo(false)
+                            .build();
 
-                        if (onGotLocationBeanCallback != null) {
-                            onGotLocationBeanCallback.gotLocationCallback(locationBean);
-                        }
+                    if (onGotLocationBeanCallback != null) {
+                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                    }
+
+                } else {
+                    // if missing many detailed information
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(locLatitude)
+                            .longitude(locLongitude)
+                            .coordinateSystemType(Constants.WGS84)
+                            .textAddress("Address")
+                            .gotDetailedAddressInfo(false)
+                            .build();
+
+                    if (onGotLocationBeanCallback != null) {
+                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
                     }
                 }
             }
