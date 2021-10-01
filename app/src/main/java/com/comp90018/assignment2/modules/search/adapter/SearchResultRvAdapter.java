@@ -216,7 +216,7 @@ public class SearchResultRvAdapter extends RecyclerView.Adapter {
                     formattedPriceText = String.valueOf(numThousands) + "k";
                 }
                 // currency info
-                if (productDTO.getCurrency() == Constants.AUS_DOLLAR) {
+                if (productDTO.getCurrency().equals(Constants.AUS_DOLLAR)) {
                     formattedPriceText = "$" + formattedPriceText;
                 } else {
                     formattedPriceText = "$" + formattedPriceText;

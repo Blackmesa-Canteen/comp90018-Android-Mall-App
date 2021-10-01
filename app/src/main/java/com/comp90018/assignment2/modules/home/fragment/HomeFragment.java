@@ -189,15 +189,6 @@ public class HomeFragment extends BaseFragment{
     @SuppressLint("MissingPermission")
     @Override
     public void loadData() {
-        /*
-        if(refresh ==  false) {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Loading");
-            progressDialog.setMessage("Please wait");
-            // show loading dialog
-            progressDialog.show();
-        }*/
-
         db = FirebaseFirestore.getInstance();
         // 从数据库获取全部商品信息
         if(INTRA_CITY == Boolean.FALSE) {
@@ -274,11 +265,10 @@ public class HomeFragment extends BaseFragment{
     public class MyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location loc) {
-            String myLongitude = "Longitude: " + loc.getLongitude();
-            String myLatitude = "Latitude: " + loc.getLatitude();
-            //user_geohash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(45, 144));
+            //String myLongitude = "Longitude: " + loc.getLongitude();
+            //String myLatitude = "Latitude: " + loc.getLatitude();
 
-            final GeoLocation center = new GeoLocation(45, 144);
+            final GeoLocation center = new GeoLocation(loc.getLatitude(), loc.getLongitude());
             final double radiusInM = 50 * 1000;
 
             // Each item in 'bounds' represents a startAt/endAt pair. We have to issue

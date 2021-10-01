@@ -178,9 +178,9 @@ public class MeFragment extends BaseFragment {
 //                    startActivity(intent);
 //                    break;
                 case R.id.tv_published:
-
-                    Toast.makeText(activityContext, "商品发布详情", Toast.LENGTH_SHORT).show();
-
+                    // go to published list
+                    Intent goToPublishedIntent = new Intent(activityContext, PublishedActivity.class);
+                    startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
                     intent = new Intent(activityContext, SoldPdtListActivity.class);
@@ -226,10 +226,8 @@ public class MeFragment extends BaseFragment {
                         JMessageClient.logout();
                     }
 
-                    Intent loginIntent = new Intent(activityContext, LoginActivity.class);
-                    startActivity(loginIntent);
-                    // jump to home if not login.
-                    ((MainActivity) activityContext).getBinding().radioGroupMain.check(R.id.button_main_home);
+                    Toast.makeText(activityContext, "GoodBye", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) activityContext).goHomeFragment();
                     break;
             }
         }
@@ -314,6 +312,8 @@ public class MeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadData();
+        if (firebaseAuth.getCurrentUser()!= null) {
+            loadData();
+        }
     }
 }

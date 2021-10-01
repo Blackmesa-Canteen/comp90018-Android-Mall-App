@@ -22,6 +22,8 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -270,10 +272,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             }
 
             // This field is used to get geohash of products
+
             /*
-            location_coordinate = productDTO.getLocation_coordinate();
-            lat = location_coordinate.getLatitude();
-            lon = location_coordinate.getLongitude();
+            lat = productDTO.getLat();
+            lon = productDTO.getLng();
             //System.out.println("location_coordinate: "+location_coordinate+" # "+lat+ " # " +lon);
             String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lon));
             // Add the hash and the lat/lng to the document. We will use the hash

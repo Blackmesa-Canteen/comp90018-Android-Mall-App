@@ -39,7 +39,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="#ff020202"
-                android:textSize="15dp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_detail"
@@ -51,7 +51,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="#ffc2c0c0"
-                android:textSize="12dp" />
+                android:textSize="12sp" />
 
             <ImageView
 
