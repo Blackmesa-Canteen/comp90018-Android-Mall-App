@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -74,8 +76,8 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
 
         <meta-data
-            android:name="com.baidu.lbsapi.AzV72hBP1PhDKbVv07gYZL7WdUsWgplD"
-            android:value="AK" />
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="AzV72hBP1PhDKbVv07gYZL7WdUsWgplD" />
 
         <activity
             android:name=".modules.entrance.WelcomeActivity"
@@ -104,12 +106,11 @@
             <intent-filter>
                 <action android:name="cn.jiguang.user.service.action" />
             </intent-filter>
-        </service> <!-- suppress AndroidDomInspection -->
+        </service>
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"
-            tools:ignore="MissingClass" />
+            android:process=":remote" />
     </application>
 
 </manifest>

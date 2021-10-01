@@ -15,6 +15,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityRegisterBinding;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.utils.Constants;
+import com.comp90018.assignment2.utils.Encrypter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -217,8 +218,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 newUserDto.setFavorite_refs(new ArrayList<>());
                                                 newUserDto.setFollower_refs(new ArrayList<>());
                                                 newUserDto.setFollowing_refs(new ArrayList<>());
-                                                // database don't need not store password info
-                                                newUserDto.setPassword("Deprecated!");
+                                                newUserDto.setPassword(Encrypter.encrypt(loginPassword));
 
                                                 // write db
                                                 db.collection(Constants.USERS_COLLECTION)

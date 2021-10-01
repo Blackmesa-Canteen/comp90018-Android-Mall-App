@@ -37,9 +37,10 @@
                 android:layout_marginTop="7dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text=""
-                android:textColor="#ff020202"
-                android:textSize="15sp" />
+                android:text="Click here to see map >"
+                android:textColor="@color/blue"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_detail"
@@ -49,17 +50,15 @@
                 android:layout_marginTop="29dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text=""
-                android:textColor="#ffc2c0c0"
+                android:text="Address text"
+                android:textColor="@color/grey1"
                 android:textSize="12sp" />
 
-            <ImageView
-
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/map_view"
                 android:layout_width="match_parent"
                 android:layout_height="78dp"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/address_map_bg" />
-
+                android:layout_alignParentBottom="true"/>
 
         </RelativeLayout>
 
