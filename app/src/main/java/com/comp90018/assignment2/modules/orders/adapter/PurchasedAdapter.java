@@ -145,10 +145,9 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             OrderDTO orderDTO = orderDTOList.get(position);
             String descriptionCut;
 
-            transaction_state.setText(orderDTOList.get(position).getTracking_info());
+            //transaction_state.setText(orderDTOList.get(position).getTracking_info());
             // TODO 我买到的页面 要显示卖家的姓名 而非 reference
             textNickname.setText(orderDTOList.get(position).getSeller_ref().toString());
-
 
             // set product card
             DocumentReference productDocReference = orderDTO.getProduct_ref();
@@ -267,16 +266,42 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 ProductImage.setOnClickListener(goToProductActivityListener);
                 ProductDescriptionCut.setOnClickListener(goToProductActivityListener);
             }
-            /*
-            System.out.println("**********");
-            System.out.println(imgAvatar);
-            System.out.println(textNickname);
-            System.out.println(ProductImage);
-            System.out.println(ProductDescriptionCut);
-            System.out.println(ProductPrice);
-            System.out.println(ContactImage);
-            System.out.println(DetailButton);
-            System.out.println("**********");*/
+
+
+            switch (orderDTO.getStatus()) {
+                case Constants.WAITING_DELIVERY:
+                    // TODO:
+                    transaction_state.setText("Waiting Delivery");
+                    break;
+                case Constants.DELIVERING:
+                    // TODO:
+                    transaction_state.setText("Delivering");
+                    break;
+                case Constants.SUCCESSFUL_NOT_COMMENT:
+                    // TODO:
+                    transaction_state.setText("Successful Not Comment");
+                    break;
+                case Constants.SUCCESSFUL_COMMENT:
+                    // TODO:
+                    transaction_state.setText("Successful Comment");
+                    break;
+                case Constants.CANCELED:
+                    // TODO:
+                    transaction_state.setText("Cancelled");
+                    break;
+                case Constants.ON_REFUND:
+                    // TODO:
+                    transaction_state.setText("On Refund");
+                    break;
+                case Constants.ON_REFUND_DELIVERING:
+                    // TODO:
+                    transaction_state.setText("On Refund Delivering");
+                    break;
+                case Constants.REFUNDED:
+                    // TODO:
+                    transaction_state.setText("Refunded");
+                    break;
+            }
         }
     }
 }
