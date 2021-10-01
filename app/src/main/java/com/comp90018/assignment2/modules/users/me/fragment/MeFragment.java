@@ -23,6 +23,7 @@ import com.comp90018.assignment2.base.BaseFragment;
 import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.MainActivity;
+import com.comp90018.assignment2.modules.orders.activity.PublishedActivity;
 import com.comp90018.assignment2.modules.orders.activity.PurchasedPdtListActivity;
 import com.comp90018.assignment2.modules.orders.activity.SoldPdtListActivity;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;

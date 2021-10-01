@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SoldPdtListActivity extends AppCompatActivity {
-    private static final String TAG = "[dev]ProductDetail";
+    private static final String TAG = "Sold[dev]";
     private ActivitySoldPdtListBinding binding;
 
     private RecyclerView recyclerView;

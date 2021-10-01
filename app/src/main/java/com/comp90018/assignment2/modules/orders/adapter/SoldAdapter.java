@@ -266,7 +266,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
                 ProductImage.setOnClickListener(goToProductActivityListener);
                 ProductDescriptionCut.setOnClickListener(goToProductActivityListener);
             }
-
+            /*
             System.out.println("**********");
             System.out.println(imgAvatar);
             System.out.println(textNickname);
@@ -275,7 +275,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
             System.out.println(ProductPrice);
             System.out.println(ContactImage);
             System.out.println(DetailButton);
-            System.out.println("**********");
+            System.out.println("**********");*/
         }
     }
 }

@@ -37,7 +37,7 @@ import java.util.List;
 
 public class PurchasedPdtListActivity extends AppCompatActivity {
 
-    private static final String TAG = "[dev]ProductDetail";
+    private static final String TAG = "Purchased[dev]";
     private ActivityPurchasedPdtListBinding binding;
     private RecyclerView recyclerView;
     private FirebaseAuth firebaseAuth;
