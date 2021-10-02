@@ -22,7 +22,9 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.dto.OrderDTO;
+import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
+import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
@@ -134,6 +136,8 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             ContactImage = (ImageView) inflate.findViewById(R.id.purchased_contact_image);
             DetailButton = (Button) inflate.findViewById(R.id.purchased_pdt_detail_btn);
         }
+
+
 
         /**
          * attach data to views
@@ -265,6 +269,18 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                     intent.putExtra("orderDTO", orderDTO);
                     context.startActivity(intent);
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
+                }
+            });
+
+            ContactImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent goToChatActivityIntent = new Intent(context, ChatActivity.class);
+                    goToChatActivityIntent.putExtra("targetUserDTO", finalUserDTO);
+                    goToChatActivityIntent.putExtra(Constants.DATA_A, finalUserDTO.getId());
+                    goToChatActivityIntent.putExtra(Constants.TYPE, Constants.SINGLE_CHAT);
+                    context.startActivity(goToChatActivityIntent);
+
                 }
             });
 
