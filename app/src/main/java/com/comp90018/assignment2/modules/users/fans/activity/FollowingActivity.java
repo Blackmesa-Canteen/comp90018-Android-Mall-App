@@ -6,6 +6,11 @@ import android.os.Bundle;
 
 import com.comp90018.assignment2.R;
 
+/**
+ * following
+ *
+ * @author xiaotian li
+ */
 public class FollowingActivity extends AppCompatActivity {
 
     @Override
