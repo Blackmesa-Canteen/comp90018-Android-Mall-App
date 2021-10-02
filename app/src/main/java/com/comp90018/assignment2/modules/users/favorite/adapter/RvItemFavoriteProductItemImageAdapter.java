@@ -25,14 +25,12 @@ public class RvItemFavoriteProductItemImageAdapter extends BaseQuickAdapter<Stri
 
     private final static String TAG = "imgAdapter[dev]";
     private Context context;
-    private final FirebaseFirestore db;
     private final FirebaseStorage storage;
 
     public RvItemFavoriteProductItemImageAdapter(int layoutResId, @Nullable List<String> data, Context context) {
         super(layoutResId, data);
         this.context = context;
 
-        db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
     }
 

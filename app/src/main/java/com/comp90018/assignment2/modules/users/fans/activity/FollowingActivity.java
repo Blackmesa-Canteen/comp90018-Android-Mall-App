@@ -68,6 +68,11 @@ public class FollowingActivity extends AppCompatActivity {
         // get CurrentUserDTO from bundle
         currentUserDto = getIntent().getParcelableExtra(Constants.DATA_A);
 
+        if (currentUserDto == null) {
+            Log.w(TAG, "failed to load dto from bundle");
+            finish();
+        }
+
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -94,7 +99,7 @@ public class FollowingActivity extends AppCompatActivity {
         // query followings
         List<DocumentReference> following_refs = currentUserDto.getFollowing_refs();
 
-        if (following_refs.size() == 0) {
+        if (following_refs == null || following_refs.size() == 0) {
             binding.textNothing.setVisibility(View.VISIBLE);
             binding.rvFollowing.setVisibility(View.GONE);
         } else {

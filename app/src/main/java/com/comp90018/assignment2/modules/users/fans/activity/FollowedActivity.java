@@ -71,6 +71,11 @@ public class FollowedActivity extends AppCompatActivity {
         // get CurrentUserDTO from bundle
         currentUserDto = getIntent().getParcelableExtra(Constants.DATA_A);
 
+        if (currentUserDto == null) {
+            Log.w(TAG, "failed to load dto from bundle");
+            finish();
+        }
+
         // set up back logic
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +99,7 @@ public class FollowedActivity extends AppCompatActivity {
         // query followers
         List<DocumentReference> follower_refs = currentUserDto.getFollower_refs();
 
-        if (follower_refs.size() == 0) {
+        if (follower_refs == null || follower_refs.size() == 0) {
             binding.textNothing.setVisibility(View.VISIBLE);
             binding.rvFollowed.setVisibility(View.GONE);
         } else {
