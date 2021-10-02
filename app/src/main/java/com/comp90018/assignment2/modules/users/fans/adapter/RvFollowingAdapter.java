@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.leefeng.promptlibrary.PromptDialog;
 
 /**
@@ -59,7 +60,7 @@ public class RvFollowingAdapter extends BaseQuickAdapter<UserDTO, BaseViewHolder
         // query image with the reference, then show avatar
         Glide.with(context)
                 .load(imgReference)
-                .into((OvalImageView) helper.getView(R.id.iv_avatar));
+                .into((CircleImageView) helper.getView(R.id.iv_avatar));
 
         // nick name
         helper.setText(R.id.text_nickname, userDTO.getNickname());
