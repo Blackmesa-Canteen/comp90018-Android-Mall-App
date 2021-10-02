@@ -243,6 +243,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             // attach listeners
             ProductDTO finalProductDTO = productDTO;
             UserDTO finalUserDTO = userDTO;
+
             View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -261,6 +262,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                     Intent intent = new Intent(context, OrderDetailActivity.class);
                     intent.putExtra("productDTO", finalProductDTO);
                     intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("orderDTO", orderDTO);
                     context.startActivity(intent);
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
                 }
