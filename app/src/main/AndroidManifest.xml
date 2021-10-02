@@ -38,9 +38,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
+            android:name=".modules.users.fans.activity.FollowedActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.users.fans.activity.FollowingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.users.favorite.activity.FavoriteProductActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.location.activity.LocationMapActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".utils.activity.OkActivity"
             android:exported="true" />
