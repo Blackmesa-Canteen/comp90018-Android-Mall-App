@@ -1,10 +1,11 @@
 package com.comp90018.assignment2.modules.orders.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import me.leefeng.promptlibrary.PromptDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,14 +23,18 @@ import com.comp90018.assignment2.databinding.ItemSoldPdtListBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.orders.adapter.PurchasedAdapter;
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -49,8 +54,9 @@ public class PurchasedActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private FirebaseFirestore db;
     private TextView textNoResult;
-
+    private UserDTO currentUserDTO;
     private PurchasedAdapter adapter;
+    private PromptDialog dialog;
 
     private List<OrderDTO> orderDTOList;
 
@@ -78,6 +84,7 @@ public class PurchasedActivity extends AppCompatActivity {
                 finish();
             }
         });
+
 
         // attach no result alert view
 
@@ -111,6 +118,7 @@ public class PurchasedActivity extends AppCompatActivity {
                 }
             });
         }
+
         /*
         item_binding.purchasedPdtDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +188,8 @@ public class PurchasedActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
         }
     }
 }
