@@ -32,7 +32,9 @@ import java.util.List;
 import me.leefeng.promptlibrary.PromptDialog;
 
 /**
- * followed
+ * followed activity
+ *
+ * need to input Current User DTO with DATA_A
  *
  * @author xiaotian li
  */
@@ -66,6 +68,9 @@ public class FollowedActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        // get CurrentUserDTO from bundle
+        currentUserDto = getIntent().getParcelableExtra(Constants.DATA_A);
+
         // set up back logic
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,52 +91,33 @@ public class FollowedActivity extends AppCompatActivity {
             finish();
         }
 
-        String uid = auth.getCurrentUser().getUid();
-        db.collection(Constants.USERS_COLLECTION)
-                .document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        // query followers
+        List<DocumentReference> follower_refs = currentUserDto.getFollower_refs();
+
+        if (follower_refs.size() == 0) {
+            binding.textNothing.setVisibility(View.VISIBLE);
+            binding.rvFollowed.setVisibility(View.GONE);
+        } else {
+            for (DocumentReference ref : follower_refs) {
+                // query follower one by one, and add to the adapter one by one
+                ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            currentUserDto = documentSnapshot.toObject(UserDTO.class);
+                            UserDTO userDTO = task.getResult().toObject(UserDTO.class);
 
-                            // query followers
-                            List<DocumentReference> follower_refs = currentUserDto.getFollower_refs();
-
-                            if (follower_refs.size() == 0) {
-                                binding.textNothing.setVisibility(View.VISIBLE);
-                                binding.rvFollowed.setVisibility(View.GONE);
-                            } else {
-                                for (DocumentReference ref : follower_refs) {
-
-                                    // query follower one by one, and add to the adapter one by one
-                                    ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                UserDTO userDTO = task.getResult().toObject(UserDTO.class);
-
-                                                // add this one to adapter
-                                                followedUserDtoList.add(userDTO);
-                                                int currentSize = followedUserDtoList.size();
-                                                adapter.notifyItemInserted(currentSize - 1);
-                                            } else {
-                                                Log.w(TAG, "db query failed, " + task.getException());
-                                            }
-                                        }
-                                    });
-
-
-                                }
+                            if (userDTO != null) {
+                                // add this one to adapter
+                                followedUserDtoList.add(userDTO);
+                                int currentSize = followedUserDtoList.size();
+                                adapter.notifyItemInserted(currentSize - 1);
                             }
-
                         } else {
-                            dialog.showWarn("network issue, please try again");
                             Log.w(TAG, "db query failed, " + task.getException());
                         }
                     }
                 });
+            }
+        }
     }
 }
