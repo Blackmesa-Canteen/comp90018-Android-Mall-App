@@ -1,12 +1,10 @@
 package com.comp90018.assignment2.modules.publish.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,7 +31,9 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 
+import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.location.utils.LocationHelper;
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.modules.publish.adapter.PictureCollectionAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.firebase.geofire.GeoFireUtils;
@@ -79,13 +79,13 @@ public class PublishProductActivity extends AppCompatActivity {
     private ImageView pf_add;
     private RecyclerView pf_collection;
     private ArrayList<String> images = new ArrayList<>();
-    private Double lng;
-    private Double lat;
-    private String hash;
-    private String location_text;
+    private Double lat = -37.840935;
+    private Double lng = 144.946457;
+    private String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
+    private String location_text = "Melbourne";
+    private UserDTO userDTO = null;
 
     @SuppressLint("MissingPermission")
-    // TODO: MissingPermission? exception
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +110,7 @@ public class PublishProductActivity extends AppCompatActivity {
                 .selectionMode(PictureConfig.MULTIPLE)
                 .isPreviewImage(true)
                 .isCompress(true)
+                .withAspectRatio(1,1)
                 .forResult(Constants.REQUEST_CODE_A));
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -325,9 +326,19 @@ public class PublishProductActivity extends AppCompatActivity {
                                .document(documentReference.getId())
                                .update("id", documentReference.getId());
                       // finish the activity
-                      publishProgressDialog.dismiss();
-                      finish();
-                   // TODO(goto): after publish successfully, go to product detailed page
+                       publishProgressDialog.dismiss();
+                       productDTO.getOwner_ref().get().addOnCompleteListener(task -> {
+                           if (task.isSuccessful()) {
+                               userDTO = task.getResult().toObject(UserDTO.class);
+                               finish();
+                               Intent publishProductIntent = new Intent(PublishProductActivity.this, ProductDetailActivity.class);
+                               publishProductIntent.putExtra("productDTO", productDTO);
+                               publishProductIntent.putExtra("userDTO", userDTO);
+                               startActivity(publishProductIntent);
+                           } else {
+                               Log.w(TAG, "user info db connection failed");
+                           }
+                       });
                }).addOnFailureListener(e -> {
                       publishProgressDialog.dismiss();
                       Log.w(TAG, "Create product:failed", e);
@@ -346,6 +357,5 @@ public class PublishProductActivity extends AppCompatActivity {
             LocationHelper.getTextAddressWithCoordinate(
                     lat, lng, locationBean -> location_text = locationBean.getTextAddress()
             );
-            // TODO: 处理失败情况，设置默认值
         }}
 }

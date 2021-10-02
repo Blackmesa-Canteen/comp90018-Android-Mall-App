@@ -232,7 +232,6 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="15.67dp"
                     android:src="@drawable/category_publish" />
-
                 <Spinner
                     android:id="@+id/subcategory"
                     android:layout_width="fill_parent"
@@ -255,7 +254,6 @@
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp"
                 android:padding="10dp">
-
                 <ImageView
                     android:id="@+id/pf_add"
                     android:layout_width="60dp"
@@ -263,18 +261,16 @@
                     android:layout_marginTop="43dp"
                     android:src="@drawable/add_product"
                     android:layout_marginLeft="20dp" />
-
                 <ImageView
                     android:id="@+id/upload"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="43dp"
                     android:src="@drawable/upload"
-                    android:layout_marginLeft="10dp" />
-
+                    android:layout_marginLeft="10dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/pf_collection"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginLeft="20dp"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
                     android:layout_width="200dp"
@@ -285,12 +281,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dip"
-                android:layout_marginTop="18dip"
+                android:layout_marginTop="8dip"
                 android:layout_marginRight="30dip"
                 android:background="@drawable/btn_primary_selector"
                 android:text="Publish"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
         </LinearLayout>
 
     </LinearLayout>
