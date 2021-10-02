@@ -33,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SoldPdtListActivity extends AppCompatActivity {
+public class SoldActivity extends AppCompatActivity {
     private static final String TAG = "Sold[dev]";
     private ActivitySoldPdtListBinding binding;
 
@@ -54,7 +54,7 @@ public class SoldPdtListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        ProgressDialog progressDialog = new ProgressDialog(SoldPdtListActivity.this);
+        ProgressDialog progressDialog = new ProgressDialog(SoldActivity.this);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait");
         progressDialog.show();

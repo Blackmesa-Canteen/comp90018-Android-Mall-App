@@ -24,9 +24,8 @@ import com.comp90018.assignment2.dto.UserDTO;
 
 import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.modules.orders.activity.PublishedActivity;
-import com.comp90018.assignment2.modules.orders.activity.PurchasedPdtListActivity;
-import com.comp90018.assignment2.modules.orders.activity.SoldPdtListActivity;
-import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
+import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
+import com.comp90018.assignment2.modules.orders.activity.SoldActivity;
 
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -184,11 +183,11 @@ public class MeFragment extends BaseFragment {
                     startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
-                    intent = new Intent(activityContext, SoldPdtListActivity.class);
+                    intent = new Intent(activityContext, SoldActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.tv_purchased:
-                    intent = new Intent(activityContext, PurchasedPdtListActivity.class);
+                    intent = new Intent(activityContext, PurchasedActivity.class);
                     startActivity(intent);
                     break;
 //                点击publish，sold，purchased 分别跳转相应界面

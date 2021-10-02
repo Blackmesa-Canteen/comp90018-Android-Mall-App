@@ -38,10 +38,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
-            android:name=".modules.orders.activity.SoldPdtListActivity"
+            android:name=".modules.orders.activity.SoldActivity"
             android:exported="true" />
         <activity
-            android:name=".modules.orders.activity.PurchasedPdtListActivity"
+            android:name=".modules.orders.activity.PurchasedActivity"
             android:exported="true" />
         <activity
             android:name=".modules.users.authentication.activity.EditPasswordActivity"

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityPurchasedPdtListBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
@@ -28,14 +27,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firestore.v1.StructuredQuery;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchasedPdtListActivity extends AppCompatActivity {
+public class PurchasedActivity extends AppCompatActivity {
 
     private static final String TAG = "Purchased[dev]";
     private ActivityPurchasedPdtListBinding binding;
@@ -59,7 +57,7 @@ public class PurchasedPdtListActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        ProgressDialog progressDialog = new ProgressDialog(PurchasedPdtListActivity.this);
+        ProgressDialog progressDialog = new ProgressDialog(PurchasedActivity.this);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait");
         progressDialog.show();
