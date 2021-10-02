@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -261,12 +262,21 @@ public class SoldAdapter extends RecyclerView.Adapter{
                 }
             };
 
+            View.OnClickListener showPopup = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            };
+
             // wait for userDTO loaded, then attach listener
             if (finalUserDTO != null) {
                 ProductImage.setOnClickListener(goToProductActivityListener);
                 ProductDescriptionCut.setOnClickListener(goToProductActivityListener);
             }
             // handle product status
+
+
 
             switch (orderDTO.getStatus()) {
                 case Constants.WAITING_DELIVERY:

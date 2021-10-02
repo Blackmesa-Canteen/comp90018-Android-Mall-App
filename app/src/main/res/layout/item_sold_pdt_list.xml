@@ -167,11 +167,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/pdt_blue_btn_normal"
+                    android:onClick="showPopup"
                     android:text="Detail"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:onClick="showDetail"/>
+                    android:textSize="18sp" />
             </androidx.cardview.widget.CardView>
 
 

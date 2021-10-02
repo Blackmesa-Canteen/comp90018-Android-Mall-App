@@ -9,9 +9,15 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
+import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivitySoldPdtListBinding;
+import com.comp90018.assignment2.databinding.ItemSoldPdtListBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
@@ -35,20 +41,23 @@ import java.util.List;
 
 public class SoldActivity extends AppCompatActivity {
     private static final String TAG = "Sold[dev]";
-    private ActivitySoldPdtListBinding binding;
-
+    private ActivitySoldPdtListBinding list_binding;
+    private ItemSoldPdtListBinding item_binding;
     private RecyclerView recyclerView;
     private FirebaseAuth firebaseAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
     private List<OrderDTO> orderDTOList;
     private SoldAdapter adapter;
+    private Button DetailButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySoldPdtListBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        list_binding = ActivitySoldPdtListBinding.inflate(getLayoutInflater());
+        item_binding = ItemSoldPdtListBinding.inflate(getLayoutInflater());
+
+        setContentView(list_binding.getRoot());
 
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -59,10 +68,10 @@ public class SoldActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait");
         progressDialog.show();
 
-        recyclerView = binding.soldList;
+        recyclerView = list_binding.soldList;
         recyclerView.setVisibility(View.VISIBLE);
 
-        binding.soldBackBtn.setOnClickListener(new View.OnClickListener() {
+        list_binding.soldBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -100,6 +109,22 @@ public class SoldActivity extends AppCompatActivity {
                 }
             });
         }
+
+        item_binding.soldPdtDetailBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //PopupMenu popup = new PopupMenu(SoldActivity.this, v);
+            }
+        });
+    }
+
+    public void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.menu_sold_popup, popup.getMenu());
+        System.out.println("Clicked");
+        Toast.makeText(item_binding.getRoot().getContext(), "clicked", Toast.LENGTH_SHORT).show();
+        popup.show();
     }
 
     private void processData(List<OrderDTO> orderDTOList) {
