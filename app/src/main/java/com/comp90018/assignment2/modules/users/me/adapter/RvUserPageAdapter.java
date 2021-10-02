@@ -12,6 +12,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -57,7 +58,8 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private FirebaseFirestore db;
 
 
-    private UserDTO currentUserDTO = null;
+
+    private UserDTO userDTO = null;
 
     public RvUserPageAdapter(@Nullable List<ProductDTO> productDTOList, Context context) {
         storage = FirebaseStorage.getInstance();
@@ -89,29 +91,6 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-
-
-//    protected void convert(@NonNull RecyclerView.ViewHolder helper, ProductDTO productDTO) {
-//
-//
-//        // attach the whole item view event
-//        LinearLayout item = (LinearLayout) helper.(R.id.item);
-//        // go to product details
-//        item.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (currentUserDTO != null) {
-//                    // go to product details activity
-//                    Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
-//                    goToPdtDetailsIntent.putExtra("productDTO", productDTO);
-//                    goToPdtDetailsIntent.putExtra("userDTO", currentUserDTO);
-//                    context.startActivity(goToPdtDetailsIntent);
-//                }
-//            }
-//        });
-//    }
-
-
         private class ItemProductInfoViewHolder extends RecyclerView.ViewHolder {
 
             private Context context;
@@ -137,20 +116,28 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 textProductPrice = (TextView) inflate.findViewById(R.id.item_price);
                 textLikes = (TextView) inflate.findViewById(R.id.item_likes);
 
-//                inflate.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(context, "关于", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
 
-
+                //click item and jump to the productdetail
+                inflate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (userDTO != null) {
+                            // go to product details activity
+                            Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
+                            goToPdtDetailsIntent.putExtra("productDTO", productDTOList.get(getLayoutPosition()));
+                            goToPdtDetailsIntent.putExtra("userDTO", userDTO);
+                            context.startActivity(goToPdtDetailsIntent);
+                        }
+                    }
+                });
 
 
             }
 
+
             public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
                 ProductDTO productDTO = productDTOList.get(position);
+//                StorageReference userReference = storage.getReferenceFromUrl(String.valueOf(userDTOMap));
                 // set product img
                 // if default img
                 if (productDTO.getImage_address() == null
@@ -179,8 +166,7 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
 
                 textProductDescriptionCut.setText(descriptionCut);
-                //System.out.println("textProductDescriptionCut: "+textProductDescriptionCut);
-                // set labels: brand and quality
+
                 ArrayList<String> labelStrings = new ArrayList<>();
 
                 String brandNameCut;
@@ -249,54 +235,16 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 formattedLikesText = formattedLikesText + " likes";
                 textLikes.setText(formattedLikesText);
 
-                // set user card
-                DocumentReference userDocReference = productDTO.getOwner_ref();
-
-                UserDTO userDTO = null;
-                if (userDTOMap.containsKey(userDocReference)) {
-                    // get dto
-                    userDTO = userDTOMap.get(userDocReference);
-
-
-                }
 
 
 
-                // toast listeners
-                UserDTO finalUserDTO = userDTO;
-                View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, ProductDetailActivity.class);
-                        intent.putExtra("productDTO", productDTO);
-                        intent.putExtra("userDTO", finalUserDTO);
-                        context.startActivity(intent);
-                        Log.d(TAG, "to detail activity: "+ descriptionCut);
-                    }
-                };
+            };
 
-                View.OnClickListener goToUserPageActivityListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
-                    }
-                };
-
-                // wait for userDTO loaded, then attach listener
-                if (finalUserDTO != null) {
-                    imgProductImage.setOnClickListener(goToProductActivityListener);
-                    textProductDescriptionCut.setOnClickListener(goToProductActivityListener);
-                    llLabels.setOnClickListener(goToProductActivityListener);
-                    llPricingInfo.setOnClickListener(goToProductActivityListener);
-
-                }
-            }
         }
 
 
-        public void setCurrentUserDTO(UserDTO currentUserDTO) {
-            this.currentUserDTO = currentUserDTO;
+        public void setUserDTO(UserDTO userDTO) {
+            this.userDTO = userDTO;
         };
 
 }

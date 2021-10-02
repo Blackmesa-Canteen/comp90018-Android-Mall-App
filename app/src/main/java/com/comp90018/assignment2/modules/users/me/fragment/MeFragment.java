@@ -69,6 +69,8 @@ public class MeFragment extends BaseFragment {
     private TextView tv_following_number;
 
     private Button tv_logout;
+    UserDTO userDTO = null;
+    UserDTO finalUserDTO = userDTO;
 
 
     private TextView tv_nick_name;
@@ -173,9 +175,8 @@ public class MeFragment extends BaseFragment {
 //                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
 //
 //                    break;
-
-                    intent = new Intent(activityContext, UserPageActivity.class);
-                    startActivity(intent);
+                    Intent goToUserPage = new Intent(activityContext, UserPageActivity.class);
+                    startActivity(goToUserPage);
                     break;
                 case R.id.tv_published:
                     // go to published list
@@ -183,18 +184,18 @@ public class MeFragment extends BaseFragment {
                     startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
-                    intent = new Intent(activityContext,SoldPdtLstActivity.class);
-                    startActivity(intent);
-                    break;
-//                    Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
+//                    intent = new Intent(activityContext,SoldPdtLstActivity.class);
+//                    startActivity(intent);
 //                    break;
+                    Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
+                    break;
                 case R.id.tv_purchased:
-                    intent = new Intent(activityContext,PurchasedPdtLstActivity.class);
-                    startActivity(intent);
-                    break;
-
-//                    Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
+//                    intent = new Intent(activityContext,PurchasedPdtLstActivity.class);
+//                    startActivity(intent);
 //                    break;
+
+                    Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
+                    break;
 //                点击publish，sold，purchased 分别跳转相应界面
                 case R.id.tv_favorate:
                     Toast.makeText(activityContext, "收藏商品", Toast.LENGTH_SHORT).show();
