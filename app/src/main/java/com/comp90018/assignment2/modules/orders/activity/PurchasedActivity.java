@@ -111,14 +111,15 @@ public class PurchasedActivity extends AppCompatActivity {
                 }
             });
         }
+        /*
         item_binding.purchasedPdtDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(PurchasedActivity.this, v);
             }
-        });
+        });*/
     }
-
+/*
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -127,7 +128,7 @@ public class PurchasedActivity extends AppCompatActivity {
         Toast.makeText(item_binding.getRoot().getContext(), "clicked", Toast.LENGTH_SHORT).show();
         popup.show();
     }
-
+*/
     private void processData(List<OrderDTO> orderDTOList) {
         List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
 

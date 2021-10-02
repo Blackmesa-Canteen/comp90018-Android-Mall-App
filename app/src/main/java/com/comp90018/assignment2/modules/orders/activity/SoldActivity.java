@@ -109,15 +109,15 @@ public class SoldActivity extends AppCompatActivity {
                 }
             });
         }
-
+        /*
         item_binding.soldPdtDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //PopupMenu popup = new PopupMenu(SoldActivity.this, v);
             }
-        });
+        });*/
     }
-
+/*
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -126,7 +126,7 @@ public class SoldActivity extends AppCompatActivity {
         Toast.makeText(item_binding.getRoot().getContext(), "clicked", Toast.LENGTH_SHORT).show();
         popup.show();
     }
-
+*/
     private void processData(List<OrderDTO> orderDTOList) {
         List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
         for (OrderDTO orderDTO : orderDTOList) {
