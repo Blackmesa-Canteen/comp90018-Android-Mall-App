@@ -43,6 +43,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -266,7 +267,6 @@ public class PublishProductActivity extends AppCompatActivity {
             } else {
                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                 DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
-                // TODO: location_coordinate?
                 ProductDTO newProductDTO = ProductDTO.builder()
                         .owner_ref(userReference)
                         .price(Double.parseDouble(price))
@@ -286,7 +286,7 @@ public class PublishProductActivity extends AppCompatActivity {
                         .lat(lat)
                         .lng(lng)
                         .star_number(0.0)
-                        .location_coordinate(null)
+                        .location_coordinate(new GeoPoint(lat, lng))
                         .location_text(location_text)
                         .build();
                 publish(newProductDTO);
@@ -346,6 +346,6 @@ public class PublishProductActivity extends AppCompatActivity {
             LocationHelper.getTextAddressWithCoordinate(
                     lat, lng, locationBean -> location_text = locationBean.getTextAddress()
             );
-            // TODO(goto): 处理失败情况，设置默认值
+            // TODO: 处理失败情况，设置默认值
         }}
 }
