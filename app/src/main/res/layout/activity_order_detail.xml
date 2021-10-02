@@ -140,38 +140,9 @@
             android:layout_marginLeft="10dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/order_detail_pdt_price"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="right|center_vertical"
-                android:text="¥ 3324.34" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:gravity="right"
-                    android:text="Qty："
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/order_detail_pdt_quantity"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/order_detail_pdt_quantity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_gravity="right"
-                    android:gravity="right|center_vertical"
-                    android:text="32324"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -188,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginRight="5dp"
-            android:text="Total: "
+            android:text="Price: "
             android:textColor="@color/colorBlack_Three"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -199,7 +170,7 @@
             android:id="@+id/order_detail_total_price"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:text="$Quantity*Price.00"
+            android:text="Price"
             android:textColor="@color/red_btn_normal"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -245,12 +216,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/order_detail_receiver_phone"
+                android:id="@+id/order_detail_receiver_email"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="8618209902319"
+                android:text="aa@qq.com"
                 android:textColor="@color/colorBlack_Three"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -282,46 +253,6 @@
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:text="Order Info "
-                android:textColor="@color/colorBlack_Three"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_pdt_detail_btn_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="20dp"
-                app:cardCornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <Button
-                    android:id="@+id/order_detail_connect_seller_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="15dp"
-                    android:background="@color/white"
-                    android:outlineProvider="none"
-                    android:text="Contact Seller"
-                    android:textAllCaps="false"
-                    android:textSize="18sp" />
-            </androidx.cardview.widget.CardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
