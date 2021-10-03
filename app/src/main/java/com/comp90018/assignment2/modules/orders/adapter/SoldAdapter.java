@@ -209,10 +209,15 @@ public class SoldAdapter extends RecyclerView.Adapter{
 
             // set user card
             DocumentReference userDocReference = orderDTO.getBuyer_ref();
+            DocumentReference sellerDocReference = orderDTO.getSeller_ref();
             UserDTO userDTO = null;
+            UserDTO buyerDTO = null;
+            UserDTO sellerDTO = null;
             if (userDTOMap.containsKey(userDocReference)) {
                 // get dto
                 userDTO = userDTOMap.get(userDocReference);
+                buyerDTO = userDTOMap.get(userDocReference);
+                sellerDTO = userDTOMap.get(sellerDocReference);
                 // set avatar
                 // only show the first img
                 // storage Reference of firebase
@@ -255,13 +260,16 @@ public class SoldAdapter extends RecyclerView.Adapter{
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
                 }
             };
-
+            UserDTO finalBuyerDTO = buyerDTO;
+            UserDTO finalSellerDTO = sellerDTO;
             DetailButton.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, OrderDetailActivity.class);
                     intent.putExtra("productDTO", finalProductDTO);
                     intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("buyerDTO", finalBuyerDTO);
+                    intent.putExtra("sellerDTO", finalSellerDTO);
                     intent.putExtra("orderDTO", orderDTO);
                     context.startActivity(intent);
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
