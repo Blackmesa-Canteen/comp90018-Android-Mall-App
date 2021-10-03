@@ -177,19 +177,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         Timestamp time = orderDTO.getCreated_time();
         binding.orderDetailTransactionDate.setText(time.toDate().toString());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         binding.orderDetailBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +184,25 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
+        binding.orderDetailOrderStatus.setText("Retrieve Order Status");
+        binding.orderDetailDeliveryStatus.setText("Retrieve delivery Status");
+        binding.orderDetailDeliveryTrackingId.setText("Retrieve Tracking id, CAN be Null");
+        binding.orderDetailPdtName.setText("retrieve pdt name");
+        //binding.orderDetailPdtPrice.setText("$ + retrieve pdt price");
+        //binding.orderDetailPdtQuantity.setText("retrieve quantity");
 
+        binding.orderDetailTotalPrice.setText("calculate product of price and quantity");
+        binding.orderDetailReceiverName.setText("retrieve receiver's name");
+        //binding.orderDetailReceiverPhone.setText("retrieve receiver's phone number");
+        binding.orderDetailReceiverAddr.setText("retrieve receiver's address(buyer's addrss/????)");
+
+        /*
+        binding.orderDetailConnectSellerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String a = "go to connect seller page";
+            }
+        });*/
 
     }
 }

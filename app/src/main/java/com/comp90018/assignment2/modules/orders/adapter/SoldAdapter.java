@@ -24,6 +24,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
+import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
@@ -254,6 +255,18 @@ public class SoldAdapter extends RecyclerView.Adapter{
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
                 }
             };
+
+            DetailButton.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, OrderDetailActivity.class);
+                    intent.putExtra("productDTO", finalProductDTO);
+                    intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("orderDTO", orderDTO);
+                    context.startActivity(intent);
+                    //Log.d(TAG, "to detail activity: "+ descriptionCut);
+                }
+            });
 
             ContactImage.setOnClickListener(new View.OnClickListener() {
                 @Override
