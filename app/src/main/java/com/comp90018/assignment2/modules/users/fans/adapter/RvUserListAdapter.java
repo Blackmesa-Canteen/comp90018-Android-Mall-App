@@ -1,6 +1,5 @@
 package com.comp90018.assignment2.modules.users.fans.adapter;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -14,11 +13,8 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
-import com.comp90018.assignment2.utils.view.OvalImageView;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -26,24 +22,21 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * @author xiaotian li
- */
-public class RvFollowedAdapter extends BaseQuickAdapter<UserDTO, BaseViewHolder> {
+public class RvUserListAdapter extends BaseQuickAdapter<UserDTO, BaseViewHolder> {
 
     private final Context context;
-    private final static String TAG = "RvFollAda[dev]";
+    private final static String TAG = "RvUserLiAda[dev]";
     private final FirebaseStorage storage;
 
-    public RvFollowedAdapter(int layoutResId, @Nullable List<UserDTO> data, Context context) {
+    public RvUserListAdapter(int layoutResId, @Nullable List<UserDTO> data, Context context) {
         super(layoutResId, data);
         this.context = context;
+
         storage = FirebaseStorage.getInstance();
     }
 
     @Override
     protected void convert(@NonNull BaseViewHolder helper, UserDTO userDTO) {
-
         // set up user info
         // load avatar
         StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());

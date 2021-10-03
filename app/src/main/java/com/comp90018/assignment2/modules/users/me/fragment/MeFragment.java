@@ -31,6 +31,7 @@ import com.comp90018.assignment2.modules.users.fans.activity.FollowingActivity;
 import com.comp90018.assignment2.modules.users.favorite.activity.FavoriteProductActivity;
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -180,22 +181,31 @@ public class MeFragment extends BaseFragment {
                 case R.id.ib_profile_arrow:  //点击profile或者箭头跳转用户个人信息
 
                 case R.id.tv_profile:
-                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
-
-                    break;
-
-//                    intent = new Intent(activityContext, profileActivity.class);
-//                    startActivity(intent);
+//                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
+//
 //                    break;
+                    if (currentUserDto != null) {
+                        Intent goToUserPage = new Intent(activityContext, UserPageActivity.class);
+                        goToUserPage.putExtra("userDTO", currentUserDto);
+                        startActivity(goToUserPage);
+                    }
+                    break;
                 case R.id.tv_published:
                     // go to published list
                     Intent goToPublishedIntent = new Intent(activityContext, PublishedActivity.class);
                     startActivity(goToPublishedIntent);
                     break;
                 case R.id.tv_sold:
+//                    intent = new Intent(activityContext,SoldPdtLstActivity.class);
+//                    startActivity(intent);
+//                    break;
                     Toast.makeText(activityContext, "已卖出商品", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.tv_purchased:
+//                    intent = new Intent(activityContext,PurchasedPdtLstActivity.class);
+//                    startActivity(intent);
+//                    break;
+
                     Toast.makeText(activityContext, "已买到商品", Toast.LENGTH_SHORT).show();
                     break;
 //                点击publish，sold，purchased 分别跳转相应界面
