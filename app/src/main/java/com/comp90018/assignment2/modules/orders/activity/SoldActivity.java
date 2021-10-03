@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -130,7 +130,11 @@ public class SoldActivity extends AppCompatActivity {
     private void processData(List<OrderDTO> orderDTOList) {
         List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
         for (OrderDTO orderDTO : orderDTOList) {
-            if (orderDTO.getStatus() == Constants.PUBLISHED) {
+            DocumentReference sellerDocReference = orderDTO.getSeller_ref();
+            DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());
+            String id1 = sellerDocReference.getId();
+            String id2 = currentUserReference.getId();
+            if (id1.equals(id2)) {
                 publishedOrderDTOList.add(orderDTO);
             }
         }
