@@ -28,6 +28,8 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityChatBinding;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.location.activity.LocationMapActivity;
+import com.comp90018.assignment2.modules.location.bean.LocationBean;
 import com.comp90018.assignment2.modules.messages.adapter.RvChatAdapter;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
 import com.comp90018.assignment2.modules.messages.fragment.KeyboardMoreFragment;
@@ -50,6 +52,7 @@ import java.util.Objects;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.DownloadCompletionCallback;
 import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.MessageContent;
 import cn.jpush.im.android.api.content.PromptContent;
 import cn.jpush.im.android.api.content.TextContent;
@@ -393,6 +396,33 @@ public class ChatActivity extends AppCompatActivity {
                         voiceMessageUtil.playVoice(chatMessageBeanList, position);
                     }
                 }
+
+                // if location or Address
+                if (chatMessageBeanList.get(position).getItemType() == ChatMessageBean.ADDRESS_SEND
+                        || chatMessageBeanList.get(position).getItemType() == ChatMessageBean.ADDRESS_RECEIVE) {
+                    // get content
+                    LocationContent locationContent =
+                            (LocationContent) chatMessageBeanList
+                                    .get(position)
+                                    .getMessage()
+                                    .getContent();
+
+                    // give location bean to the map activity
+                    double latitude = locationContent.getLatitude().doubleValue();
+                    double longitude = locationContent.getLongitude().doubleValue();
+                    String addressText = locationContent.getAddress();
+
+                    // construct dto
+                    LocationBean locationBean = LocationBean.builder()
+                            .latitude(latitude)
+                            .longitude(longitude)
+                            .textAddress(addressText)
+                            .build();
+
+                    Intent goToMapIntent = new Intent(ChatActivity.this, LocationMapActivity.class);
+                    goToMapIntent.putExtra(Constants.DATA_A, locationBean);
+                    startActivity(goToMapIntent);
+                }
             }
         });
 
@@ -466,6 +496,7 @@ public class ChatActivity extends AppCompatActivity {
         binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                emojIcon.hidePopup();
                 finish();
             }
         });

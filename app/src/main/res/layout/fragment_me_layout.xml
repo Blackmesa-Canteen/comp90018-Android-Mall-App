@@ -273,35 +273,35 @@
             android:layout_height="1dp"
             android:layout_marginLeft="45dp"
             android:background="#eee" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:padding="10dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:padding="10dp">-->
 
-            <ImageView
+<!--            <ImageView-->
 
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
 
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/express" />
+<!--                android:layout_marginLeft="10dp"-->
+<!--                android:src="@drawable/express" />-->
 
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
-                android:layout_width="250dp"
-                android:layout_height="match_parent"
-                android:text="Delivery Address" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_address"-->
+<!--                android:layout_marginLeft="30dp"-->
+<!--                android:textSize="18sp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="Delivery Address" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="45dp"
-            android:background="#eee" />
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginLeft="45dp"-->
+<!--            android:background="#eee" />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"

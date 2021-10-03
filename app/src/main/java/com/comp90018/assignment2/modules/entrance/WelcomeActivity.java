@@ -3,7 +3,9 @@ package com.comp90018.assignment2.modules.entrance;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,12 +46,14 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         promptDialog = new PromptDialog(this);
+        promptDialog.setViewAnimDuration(2000);
 
         // request permission
         AndPermission.with(WelcomeActivity.this)
                 .runtime()
                 .permission(
                         Permission.CAMERA,
+                        Permission.ACCESS_COARSE_LOCATION,
                         Permission.ACCESS_FINE_LOCATION,
                         Permission.RECORD_AUDIO,
                         Permission.READ_EXTERNAL_STORAGE,
@@ -84,6 +89,39 @@ public class WelcomeActivity extends AppCompatActivity {
                                 }
                             }, 1000);
                         }
+                    }
+                })
+                .rationale(new Rationale<List<String>>() {
+                    @Override
+                    public void showRationale(Context context, List<String> data, RequestExecutor executor) {
+                        List<String> permissionNames = Permission.transformText(context, data);
+                        String message = "please grand following permissions:\n" + permissionNames;
+
+                        new AlertDialog.Builder(context)
+                                .setCancelable(false)
+                                .setTitle("Reminder")
+                                .setMessage(message)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.execute();
+                                    }
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        executor.cancel();
+                                        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // run() is in main thread
+                                                // start main page
+                                                finish();
+                                            }
+                                        }, 1000);
+                                    }
+                                })
+                                .show();
                     }
                 })
                 .start();
