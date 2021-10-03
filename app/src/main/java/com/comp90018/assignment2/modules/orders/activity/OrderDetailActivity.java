@@ -15,7 +15,11 @@ import android.util.Log;
 import android.view.View;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.Timestamp;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
@@ -59,13 +63,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         dialog = new PromptDialog(this);
-
-
-
-
-
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
 
         // retrieve bundle data from intent li xiaotian
         Intent intent = getIntent();
@@ -170,6 +172,16 @@ public class OrderDetailActivity extends AppCompatActivity {
                     }
                 });
         binding.orderDetailId.setText(orderDTO.getId());
+        Button copy_btn = binding.orderDetailCopyOrderIdBtn;
+        copy_btn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("EditText", binding.orderDetailId.getText().toString());
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(binding.getRoot().getContext(), "Copied", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         String format =  "yyyy-MM-dd HH:mm:ss";
