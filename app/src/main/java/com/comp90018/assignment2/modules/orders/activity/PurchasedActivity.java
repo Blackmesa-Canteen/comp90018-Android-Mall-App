@@ -1,5 +1,7 @@
 package com.comp90018.assignment2.modules.orders.activity;
 
+import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.databinding.ActivityPurchasedPdtListBinding;
 import com.comp90018.assignment2.databinding.ItemPurchasedPdtListBinding;
@@ -26,6 +29,7 @@ import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.orders.adapter.PurchasedAdapter;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
+import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -38,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -57,7 +62,8 @@ public class PurchasedActivity extends AppCompatActivity {
     private UserDTO currentUserDTO;
     private PurchasedAdapter adapter;
     private PromptDialog dialog;
-
+    private UserDTO currentUserDto = null;
+    private UserDTO buyerDTO = null;
     private List<OrderDTO> orderDTOList;
 
     @Override
@@ -141,7 +147,11 @@ public class PurchasedActivity extends AppCompatActivity {
         List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
 
         for (OrderDTO orderDTO : orderDTOList) {
-            if (orderDTO.getStatus() == Constants.PUBLISHED) {
+            DocumentReference buyerDocReference = orderDTO.getBuyer_ref();
+            DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());
+            String id1 = buyerDocReference.getId();
+            String id2 = currentUserReference.getId();
+            if (id1.equals(id2)) {
                 publishedOrderDTOList.add(orderDTO);
             }
         }
