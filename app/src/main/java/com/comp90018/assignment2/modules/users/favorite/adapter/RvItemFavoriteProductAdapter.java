@@ -20,6 +20,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.modules.users.favorite.activity.FavoriteProductActivity;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -107,7 +108,6 @@ public class RvItemFavoriteProductAdapter extends BaseQuickAdapter<ProductDTO, B
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     UserDTO userDTO = task.getResult().toObject(UserDTO.class);
-                    // TODO : may cause exception?
                     helper.setText(R.id.text_nickname, userDTO.getNickname());
                     // load avatar
                     StorageReference imgReference = storage.getReferenceFromUrl(userDTO.getAvatar_address());
@@ -120,8 +120,9 @@ public class RvItemFavoriteProductAdapter extends BaseQuickAdapter<ProductDTO, B
                     helper.getView(R.id.ll_user_title).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // TODO go to user details page
-                            Toast.makeText(context, "go to user detail", Toast.LENGTH_SHORT).show();
+                            Intent goToUserPageIntent = new Intent(context, UserPageActivity.class);
+                            goToUserPageIntent.putExtra("userDTO", userDTO);
+                            context.startActivity(goToUserPageIntent);
                         }
                     });
 

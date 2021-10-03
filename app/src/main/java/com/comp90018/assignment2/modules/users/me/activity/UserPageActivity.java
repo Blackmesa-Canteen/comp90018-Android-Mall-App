@@ -1,6 +1,7 @@
 package com.comp90018.assignment2.modules.users.me.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,11 +24,14 @@ import com.comp90018.assignment2.modules.users.me.adapter.RvUserPageAdapter;
 
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +39,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * UserPage Activity
@@ -44,8 +50,6 @@ import java.util.List;
  * @author Zhonghui Jiang
  * @author Xiaotian Li
  */
-
-
 public class UserPageActivity extends AppCompatActivity {
 
     private final static String TAG = "UserPage[dev]";
@@ -65,11 +69,14 @@ public class UserPageActivity extends AppCompatActivity {
     private final static int GET_FOLLOWER_LIST = 1;
     private final static int GET_FOLLOWING_LIST = 2;
 
+    private PromptDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_user_page);
+        dialog = new PromptDialog(this);
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -82,38 +89,38 @@ public class UserPageActivity extends AppCompatActivity {
                 finish();
             }
         });
-        binding.tvFollowerNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(UserPageActivity.this, "被关注数量", Toast.LENGTH_SHORT).show();
-            }
-        });
-        binding.tvFollowingNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(UserPageActivity.this, "关注数量", Toast.LENGTH_SHORT).show();
-            }
-        });
-        binding.tvFavoriteNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(UserPageActivity.this, "收藏数量", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
         productDTOList = new ArrayList<>();
-
-        loadData();
-
-    }
-
-
-    private void loadData() {
 
         Intent intent = getIntent();
         //get the userDTO from the product ref
         targetUserDTO = (UserDTO) intent.getParcelableExtra("userDTO");
+
+        // attach update listener
+        final DocumentReference docRef = db
+                .collection(Constants.USERS_COLLECTION)
+                .document(targetUserDTO.getId());
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "Listen failed.", error);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    targetUserDTO = snapshot.toObject(UserDTO.class);
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+
+        loadData();
+    }
+
+
+    private void loadData() {
 
         if (targetUserDTO == null) {
             Toast.makeText(App.getContext(), "User is not exist!", Toast.LENGTH_SHORT).show();
@@ -276,6 +283,7 @@ public class UserPageActivity extends AppCompatActivity {
             binding.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dialog.showLoading("Please wait...");
                     if (currentUserDTO != null) {
                         // handle follow logic
                         DocumentReference currentUserRef =
@@ -292,7 +300,13 @@ public class UserPageActivity extends AppCompatActivity {
                             currentUserDTO.getFollowing_refs().remove(targetUserRef);
                             currentUserRef.set(currentUserDTO);
                             targetUserDTO.getFollower_refs().remove(currentUserRef);
-                            targetUserRef.set(targetUserDTO);
+                            targetUserRef.set(targetUserDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    loadData();
+                                    dialog.dismiss();
+                                }
+                            });
 
                             binding.button.setText("Follow");
                         } else {
@@ -301,7 +315,13 @@ public class UserPageActivity extends AppCompatActivity {
                             currentUserDTO.getFollowing_refs().add(targetUserRef);
                             currentUserRef.set(currentUserDTO);
                             targetUserDTO.getFollower_refs().add(currentUserRef);
-                            targetUserRef.set(targetUserDTO);
+                            targetUserRef.set(targetUserDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    loadData();
+                                    dialog.dismiss();
+                                }
+                            });
 
                             binding.button.setText("Unfollow");
                         }
@@ -315,7 +335,8 @@ public class UserPageActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadData();
+        if (targetUserDTO != null) {
+            loadData();
+        }
     }
-
 }

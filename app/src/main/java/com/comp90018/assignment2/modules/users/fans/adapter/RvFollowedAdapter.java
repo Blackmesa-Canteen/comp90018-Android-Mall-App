@@ -2,6 +2,7 @@ package com.comp90018.assignment2.modules.users.fans.adapter;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,8 +63,9 @@ public class RvFollowedAdapter extends BaseQuickAdapter<UserDTO, BaseViewHolder>
         rlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: go to user details
-                Toast.makeText(context, "Go to user details", Toast.LENGTH_SHORT).show();
+                Intent goToUserPageIntent = new Intent(context, UserPageActivity.class);
+                goToUserPageIntent.putExtra("userDTO", userDTO);
+                context.startActivity(goToUserPageIntent);
             }
         });
     }

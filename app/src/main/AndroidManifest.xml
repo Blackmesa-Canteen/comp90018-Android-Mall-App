@@ -92,7 +92,6 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
             android:name=".modules.users.me.activity.UserPageActivity"
-            android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
 
         <meta-data
