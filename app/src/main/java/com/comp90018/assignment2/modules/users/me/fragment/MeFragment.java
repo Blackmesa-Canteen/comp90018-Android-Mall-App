@@ -184,8 +184,11 @@ public class MeFragment extends BaseFragment {
 //                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
 //
 //                    break;
-                    Intent goToUserPage = new Intent(activityContext, UserPageActivity.class);
-                    startActivity(goToUserPage);
+                    if (currentUserDto != null) {
+                        Intent goToUserPage = new Intent(activityContext, UserPageActivity.class);
+                        goToUserPage.putExtra("userDTO", currentUserDto);
+                        startActivity(goToUserPage);
+                    }
                     break;
                 case R.id.tv_published:
                     // go to published list

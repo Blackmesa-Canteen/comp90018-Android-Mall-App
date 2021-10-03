@@ -35,19 +35,6 @@
         android:layout_toRightOf="@id/iv_avatar"
         android:layout_marginLeft="5dp"/>
 
-    <Button
-        android:id="@+id/btn_user_page"
-        android:layout_width="20dp"
-        android:layout_height="30dp"
-        android:background="@drawable/btn_primary_selector"
-        android:text="Details"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/text_nickname"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="22dp"/>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

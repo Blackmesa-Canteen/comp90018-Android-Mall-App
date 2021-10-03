@@ -58,7 +58,6 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private FirebaseFirestore db;
 
 
-
     private UserDTO userDTO = null;
 
     public RvUserPageAdapter(@Nullable List<ProductDTO> productDTOList, Context context) {
@@ -69,8 +68,6 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         layoutInflater = LayoutInflater.from(context);
         db = FirebaseFirestore.getInstance();
     }
-
-
 
 
     @Override
@@ -91,160 +88,162 @@ public class RvUserPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     }
 
 
-        private class ItemProductInfoViewHolder extends RecyclerView.ViewHolder {
+    private class ItemProductInfoViewHolder extends RecyclerView.ViewHolder {
 
-            private Context context;
+        private Context context;
 
-            private OvalImageView imgProductImage;
-            private TextView textProductDescriptionCut;
-            private LinearLayout llLabels; // contains imgProductImage and textProductDescriptionCut
-            private LabelsView labels;
-            private LinearLayout llPricingInfo; // contains price and like
-            private TextView textProductPrice;
-            private TextView textLikes;
-
-
-            public ItemProductInfoViewHolder(Context context, View inflate) {
-                super(inflate);
-                this.context = context;
-                // bind views
-                imgProductImage = (OvalImageView) inflate.findViewById(R.id.item_image);
-                textProductDescriptionCut = (TextView) inflate.findViewById(R.id.item_description);
-                llLabels = (LinearLayout) inflate.findViewById(R.id.item_labels);
-                labels = (LabelsView) inflate.findViewById(R.id.item_label);
-                llPricingInfo = (LinearLayout) inflate.findViewById(R.id.item_price_label);
-                textProductPrice = (TextView) inflate.findViewById(R.id.item_price);
-                textLikes = (TextView) inflate.findViewById(R.id.item_likes);
+        private OvalImageView imgProductImage;
+        private TextView textProductDescriptionCut;
+        private LinearLayout llLabels; // contains imgProductImage and textProductDescriptionCut
+        private LabelsView labels;
+        private LinearLayout llPricingInfo; // contains price and like
+        private TextView textProductPrice;
+        private TextView textLikes;
 
 
-                //click item and jump to the productdetail
-                inflate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (userDTO != null) {
-                            // go to product details activity
-                            Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
-                            goToPdtDetailsIntent.putExtra("productDTO", productDTOList.get(getLayoutPosition()));
-                            goToPdtDetailsIntent.putExtra("userDTO", userDTO);
-                            context.startActivity(goToPdtDetailsIntent);
-                        }
+        public ItemProductInfoViewHolder(Context context, View inflate) {
+            super(inflate);
+            this.context = context;
+            // bind views
+            imgProductImage = (OvalImageView) inflate.findViewById(R.id.item_image);
+            textProductDescriptionCut = (TextView) inflate.findViewById(R.id.item_description);
+            llLabels = (LinearLayout) inflate.findViewById(R.id.item_labels);
+            labels = (LabelsView) inflate.findViewById(R.id.item_label);
+            llPricingInfo = (LinearLayout) inflate.findViewById(R.id.item_price_label);
+            textProductPrice = (TextView) inflate.findViewById(R.id.item_price);
+            textLikes = (TextView) inflate.findViewById(R.id.item_likes);
+
+
+            //click item and jump to the productdetail
+            inflate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (userDTO != null) {
+                        // go to product details activity
+                        Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
+                        goToPdtDetailsIntent.putExtra("productDTO", productDTOList.get(getLayoutPosition()));
+                        goToPdtDetailsIntent.putExtra("userDTO", userDTO);
+                        context.startActivity(goToPdtDetailsIntent);
                     }
-                });
-
-
-            }
-
-
-            public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
-                ProductDTO productDTO = productDTOList.get(position);
-//                StorageReference userReference = storage.getReferenceFromUrl(String.valueOf(userDTOMap));
-                // set product img
-                // if default img
-                if (productDTO.getImage_address() == null
-                        || productDTO.getImage_address().get(0) == null
-                        || productDTO.getImage_address().get(0).equals("")
-                        || productDTO.getImage_address().get(0).equals("default")
-                        || productDTO.getImage_address().get(0).equals("gs://comp90018-mobile-caa7c.appspot.com/public/default.png")) {
-                    imgProductImage.setImageResource(R.drawable.default_image);
-                } else {
-                    // only show the first img
-                    // storage Reference of firebase
-                    StorageReference imgReference = storage.getReferenceFromUrl(productDTO.getImage_address().get(0));
-
-                    // query image with the reference
-                    Glide.with(context)
-                            .load(imgReference)
-                            .into(imgProductImage);
                 }
+            });
 
-                // set product description
-                String descriptionCut;
-                if (productDTO.getDescription().length() > 33) {
-                    descriptionCut = productDTO.getDescription().substring(0, 33) + "...";
-                } else {
-                    descriptionCut = productDTO.getDescription();
-                }
-
-                textProductDescriptionCut.setText(descriptionCut);
-
-                ArrayList<String> labelStrings = new ArrayList<>();
-
-                String brandNameCut;
-                if (productDTO.getBrand().length() > 10) {
-                    brandNameCut = productDTO.getBrand().substring(0, 10) + "...";
-                } else {
-                    brandNameCut = productDTO.getBrand();
-                }
-
-                String qualityText;
-                int qualityStatus = productDTO.getQuality();
-                if (qualityStatus == Constants.HEAVILY_USED) {
-                    qualityText = "Heavily Used";
-
-                } else if (qualityStatus == Constants.WELL_USED) {
-                    qualityText = "Well Used";
-
-                } else if (qualityStatus == Constants.AVERAGE_CONDITION) {
-                    qualityText = "average";
-
-                } else if (qualityStatus == Constants.SLIGHTLY_USED) {
-                    qualityText = "Slightly Used";
-
-                } else if (qualityStatus == Constants.EXCELLENT) {
-                    qualityText = "EXCELLENT";
-
-                } else {
-                    qualityText = "average";
-                }
-
-                labelStrings.add(brandNameCut);
-                labelStrings.add(qualityText);
-                labels.setLabels(labelStrings);
-
-                // set Price
-                double price = productDTO.getPrice();
-                String formattedPriceText;
-
-                // Use BigDecimal to round, reserving one decimal place
-                price = new BigDecimal(price).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-                if (price < 1000) {
-                    formattedPriceText = String.valueOf(price);
-                } else {
-                    // e.g 8750 to 8.8k
-                    int numThousands = new BigDecimal((int) (price / 1000)).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
-                    formattedPriceText = String.valueOf(numThousands) + "k";
-                }
-                // currency info
-                if (productDTO.getCurrency().equals(Constants.AUS_DOLLAR)) {
-                    formattedPriceText = "$" + formattedPriceText;
-                } else {
-                    formattedPriceText = "$" + formattedPriceText;
-                }
-                textProductPrice.setText(formattedPriceText);
-
-                // set likes
-                int likes = productDTO.getFavorite_number();
-                String formattedLikesText;
-                if (likes < 1000) {
-                    formattedLikesText = String.valueOf(likes);
-                } else {
-                    // e.g 8750 to 8.8k
-                    int numThousands = new BigDecimal((int) (likes / 1000)).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
-                    formattedLikesText = String.valueOf(numThousands) + "k";
-                }
-                formattedLikesText = formattedLikesText + " likes";
-                textLikes.setText(formattedLikesText);
-
-
-
-
-            };
 
         }
 
 
-        public void setUserDTO(UserDTO userDTO) {
-            this.userDTO = userDTO;
-        };
+        public void setData(List<ProductDTO> productDTOList, Map<DocumentReference, UserDTO> userDTOMap, final int position) {
+            ProductDTO productDTO = productDTOList.get(position);
+//                StorageReference userReference = storage.getReferenceFromUrl(String.valueOf(userDTOMap));
+            // set product img
+            // if default img
+            if (productDTO.getImage_address() == null
+                    || productDTO.getImage_address().get(0) == null
+                    || productDTO.getImage_address().get(0).equals("")
+                    || productDTO.getImage_address().get(0).equals("default")
+                    || productDTO.getImage_address().get(0).equals("gs://comp90018-mobile-caa7c.appspot.com/public/default.png")) {
+                imgProductImage.setImageResource(R.drawable.default_image);
+            } else {
+                // only show the first img
+                // storage Reference of firebase
+                StorageReference imgReference = storage.getReferenceFromUrl(productDTO.getImage_address().get(0));
+
+                // query image with the reference
+                Glide.with(context)
+                        .load(imgReference)
+                        .into(imgProductImage);
+            }
+
+            // set product description
+            String descriptionCut;
+            if (productDTO.getDescription().length() > 33) {
+                descriptionCut = productDTO.getDescription().substring(0, 33) + "...";
+            } else {
+                descriptionCut = productDTO.getDescription();
+            }
+
+            textProductDescriptionCut.setText(descriptionCut);
+
+            ArrayList<String> labelStrings = new ArrayList<>();
+
+            String brandNameCut;
+            if (productDTO.getBrand().length() > 10) {
+                brandNameCut = productDTO.getBrand().substring(0, 10) + "...";
+            } else {
+                brandNameCut = productDTO.getBrand();
+            }
+
+            String qualityText;
+            int qualityStatus = productDTO.getQuality();
+            if (qualityStatus == Constants.HEAVILY_USED) {
+                qualityText = "Heavily Used";
+
+            } else if (qualityStatus == Constants.WELL_USED) {
+                qualityText = "Well Used";
+
+            } else if (qualityStatus == Constants.AVERAGE_CONDITION) {
+                qualityText = "average";
+
+            } else if (qualityStatus == Constants.SLIGHTLY_USED) {
+                qualityText = "Slightly Used";
+
+            } else if (qualityStatus == Constants.EXCELLENT) {
+                qualityText = "EXCELLENT";
+
+            } else {
+                qualityText = "average";
+            }
+
+            labelStrings.add(brandNameCut);
+            labelStrings.add(qualityText);
+            labels.setLabels(labelStrings);
+
+            // set Price
+            double price = productDTO.getPrice();
+            String formattedPriceText;
+
+            // Use BigDecimal to round, reserving one decimal place
+            price = new BigDecimal(price).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
+            if (price < 1000) {
+                formattedPriceText = String.valueOf(price);
+            } else {
+                // e.g 8750 to 8.8k
+                int numThousands = new BigDecimal((int) (price / 1000)).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
+                formattedPriceText = String.valueOf(numThousands) + "k";
+            }
+            // currency info
+            if (productDTO.getCurrency().equals(Constants.AUS_DOLLAR)) {
+                formattedPriceText = "$" + formattedPriceText;
+            } else {
+                formattedPriceText = "$" + formattedPriceText;
+            }
+            textProductPrice.setText(formattedPriceText);
+
+            // set likes
+            int likes = productDTO.getFavorite_number();
+            String formattedLikesText;
+            if (likes < 1000) {
+                formattedLikesText = String.valueOf(likes);
+            } else {
+                // e.g 8750 to 8.8k
+                int numThousands = new BigDecimal((int) (likes / 1000)).setScale(1, BigDecimal.ROUND_HALF_UP).intValue();
+                formattedLikesText = String.valueOf(numThousands) + "k";
+            }
+            formattedLikesText = formattedLikesText + " likes";
+            textLikes.setText(formattedLikesText);
+
+
+        }
+
+        ;
+
+    }
+
+
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
+    }
+
+    ;
 
 }

@@ -177,13 +177,11 @@
             <Button
                 android:id="@+id/button"
                 android:layout_width="240dp"
-                android:layout_height="35dp"
+                android:layout_height="45dp"
                 android:layout_marginStart="135dp"
                 android:layout_marginTop="115dp"
-                android:background="@color/colorPrimaryDark"
                 android:text="Edit Profile"
-                android:textColor="@color/white"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints" />
