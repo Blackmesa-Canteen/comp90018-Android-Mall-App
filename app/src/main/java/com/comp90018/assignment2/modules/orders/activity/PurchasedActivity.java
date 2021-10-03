@@ -172,6 +172,22 @@ public class PurchasedActivity extends AppCompatActivity {
                     }
                 }
             });
+            orderDTO.getBuyer_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        UserDTO userDTO = document.toObject(UserDTO.class);
+                        DocumentReference reference = document.getReference();
+                        Log.d(TAG, "get user info: " + userDTO.getEmail());
+                        // add to adapter and refresh it
+                        adapter.addNewUserDtoInMap(reference, userDTO);
+                        adapter.notifyItemChanged(finalIndex);
+                    } else {
+                        Log.w(TAG, "user info db connection failed");
+                    }
+                }
+            });
             orderDTO.getProduct_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
