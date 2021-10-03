@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
@@ -318,8 +319,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             View.OnClickListener goToUserPageActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
+                    Intent goToUserPage = new Intent(context, UserPageActivity.class);
+                    goToUserPage.putExtra("userDTO", finalUserDTO);
+                    context.startActivity(goToUserPage);
+
                 }
             };
 

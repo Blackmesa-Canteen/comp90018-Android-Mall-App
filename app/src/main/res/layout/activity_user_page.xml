@@ -56,13 +56,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
-                android:layout_marginEnd="108dp"
+                android:layout_marginEnd="40dp"
                 android:layout_marginBottom="112dp"
                 android:text="Following"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
 
@@ -70,13 +71,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="64dp"
                 android:layout_marginBottom="112dp"
                 android:text="Followers"
                 android:textSize="17sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_following"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -92,35 +94,12 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_followers"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
-                android:layout_marginEnd="16dp"
-                android:text="Favorite"
-                android:textSize="17sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_favorite_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="40dp"
-                android:text="8"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tv_favorite"
-                app:layout_constraintStart_toStartOf="@+id/tv_favorite"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_userID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="15dp"
                 android:layout_marginBottom="16dp"
                 android:text="ID:asdsdkhgjdf"
                 android:textSize="15sp"
@@ -152,25 +131,14 @@
                 app:layout_constraintStart_toStartOf="@+id/tv_following"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <View
                 android:id="@+id/divider4"
                 android:layout_width="1dp"
                 android:layout_height="55dp"
-                android:layout_marginStart="196dp"
+                android:layout_marginStart="248dp"
                 android:layout_marginTop="40dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/divider6"
-                android:layout_width="1dp"
-                android:layout_height="55dp"
-                android:layout_marginStart="297dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="18dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toStartOf="@+id/tv_favorite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -196,7 +164,7 @@
         android:id="@+id/relativeLayout2"
         android:layout_width="0dp"
         android:layout_height="36dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="230dp"
         android:background="#eee"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -215,20 +183,28 @@
     </RelativeLayout>
 
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_user_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="265dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_user_page"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="237dp"
-            android:layout_marginEnd="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:textColor="@color/black"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="193dp"
+        android:text="Hello, I'm new here!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

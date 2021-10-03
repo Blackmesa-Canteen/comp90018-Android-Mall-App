@@ -175,10 +175,20 @@ public class UserPageActivity extends AppCompatActivity {
         String nickname = targetUserDTO.getNickname();
         String loginId = "Login ID: " + targetUserDTO.getEmail();
 
+
+        String description = targetUserDTO.getDescription();
+        if (description.equals("")){
+            binding.tvDescription.setText("Hello, I'm new here!");
+        }
+        else {
+            binding.tvDescription.setText(description);
+        }
+
         binding.tvFollowerNumber.setText(String.valueOf(followerSize));
         binding.tvFollowingNumber.setText(String.valueOf(followingSize));
         binding.tvNickName.setText(nickname);
         binding.tvUserID.setText(loginId);
+
 
         StorageReference imgReference = storage.getReferenceFromUrl(targetUserDTO.getAvatar_address());
         // query image with the reference
