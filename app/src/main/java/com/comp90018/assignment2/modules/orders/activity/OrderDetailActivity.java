@@ -36,6 +36,7 @@ import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -76,8 +77,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         // retrieve bundle data from intent li xiaotian
         Intent intent = getIntent();
         ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
-        UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
+        UserDTO sellerDTO = (UserDTO) intent.getParcelableExtra("sellerDTO");
         OrderDTO orderDTO = (OrderDTO) intent.getParcelableExtra("orderDTO");
+        UserDTO buyerDTO = (UserDTO) intent.getParcelableExtra("buyerDTO");
+        UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
         switch (orderDTO.getStatus()) {
             case Constants.WAITING_DELIVERY:
                 binding.orderDetailOrderStatus.setText("Waiting delivery");
@@ -152,30 +155,10 @@ public class OrderDetailActivity extends AppCompatActivity {
             formattedPriceText = "$" + formattedPriceText;
         }
         binding.orderDetailTotalPrice.setText(formattedPriceText);
-        binding.orderDetailReceiverName.setText(userDTO.getNickname());
-        binding.orderDetailReceiverEmail.setText(userDTO.getEmail());
-        binding.orderDetailReceiverAddr.setText(userDTO.getLocation_text().toString());
-
-
-        db.collection(USERS_COLLECTION)
-                .document(firebaseAuth.getCurrentUser().getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot result = task.getResult();
-                            currentUserDTO = result.toObject(UserDTO.class);
-                            // show current user's avatar
-                            binding.orderDetailSellerUsername.setText(currentUserDTO.getNickname());
-
-                        } else {
-                            Log.e(TAG, "Get current user dto error");
-                        }
-                    }
-                });
-
-
+        binding.orderDetailReceiverName.setText(buyerDTO.getNickname());
+        binding.orderDetailReceiverEmail.setText(buyerDTO.getEmail());
+        binding.orderDetailReceiverAddr.setText(buyerDTO.getLocation_text().toString());
+        binding.orderDetailSellerUsername.setText(sellerDTO.getNickname());
 
 
 
@@ -212,7 +195,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         //binding.orderDetailPdtPrice.setText("$ + retrieve pdt price");
         //binding.orderDetailPdtQuantity.setText("retrieve quantity");
 
-        binding.orderDetailTotalPrice.setText("calculate product of price and quantity");
+        //binding.orderDetailTotalPrice.setText("calculate product of price and quantity");
         //binding.orderDetailReceiverName.setText("retrieve receiver's name"); // already binded
         //binding.orderDetailReceiverPhone.setText("retrieve receiver's phone number");
 
