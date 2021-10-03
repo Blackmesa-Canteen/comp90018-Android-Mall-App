@@ -211,10 +211,15 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
 
             // set user card
             DocumentReference userDocReference = orderDTO.getSeller_ref();
+            DocumentReference buyerDocReference = orderDTO.getBuyer_ref();
             UserDTO userDTO = null;
+            UserDTO buyerDTO = null;
+            UserDTO sellerDTO = null;
             if (userDTOMap.containsKey(userDocReference)) {
                 // get dto
                 userDTO = userDTOMap.get(userDocReference);
+                buyerDTO = userDTOMap.get(buyerDocReference);
+                sellerDTO = userDTOMap.get(userDocReference);
                 // set avatar
                 // only show the first img
                 // storage Reference of firebase
@@ -247,7 +252,8 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             // attach listeners
             ProductDTO finalProductDTO = productDTO;
             UserDTO finalUserDTO = userDTO;
-
+            UserDTO finalBuyerDTO = buyerDTO;
+            UserDTO finalSellerDTO = sellerDTO;
             View.OnClickListener goToProductActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -265,8 +271,10 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 public void onClick(View v) {
                     Intent intent = new Intent(context, OrderDetailActivity.class);
                     intent.putExtra("productDTO", finalProductDTO);
-                    intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("buyerDTO", finalBuyerDTO);
+                    intent.putExtra("sellerDTO", finalSellerDTO);
                     intent.putExtra("orderDTO", orderDTO);
+                    intent.putExtra("userDTO", finalUserDTO);
                     context.startActivity(intent);
                     //Log.d(TAG, "to detail activity: "+ descriptionCut);
                 }
