@@ -67,9 +67,9 @@ public class MessagesFragment extends BaseFragment {
 
         View view = View.inflate(activityContext, R.layout.fragment_messages, null);
         imgAvatar = (CircleImageView) view.findViewById(R.id.img_avatar);
-        rlmParent = (RelativeLayout) view.findViewById(R.id.rlm_parent);
-        textNewNotificationTime = (TextView) view.findViewById(R.id.text_new_notification_time);
-        textNewNotification = (TextView) view.findViewById(R.id.text_new_notification);
+//        rlmParent = (RelativeLayout) view.findViewById(R.id.rlm_parent);
+//        textNewNotificationTime = (TextView) view.findViewById(R.id.text_new_notification_time);
+//        textNewNotification = (TextView) view.findViewById(R.id.text_new_notification);
         rvFragmentMessaging = (RecyclerView) view.findViewById(R.id.rv_fragment_messaging);
 
         // init db
