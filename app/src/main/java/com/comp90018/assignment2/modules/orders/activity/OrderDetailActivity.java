@@ -1,5 +1,7 @@
 package com.comp90018.assignment2.modules.orders.activity;
 
+import static com.comp90018.assignment2.utils.Constants.ORDERS_COLLECTION;
+import static com.comp90018.assignment2.utils.Constants.PRODUCT_COLLECTION;
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 
 import androidx.annotation.NonNull;
@@ -38,6 +40,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.luck.picture.lib.tools.ToastUtils;
@@ -54,6 +57,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     private UserDTO currentUserDTO;
+    private OrderDTO currentOrderDTO;
     private Context context;
     private PromptDialog dialog;
     @Override
@@ -100,7 +104,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                 binding.orderDetailOrderStatus.setText("Refunded");
                 break;
         }
-        binding.orderDetailDeliveryStatus.setText(orderDTO.getTracking_info().toString());
+        binding.orderDetailDeliveryStatus.setText("Delivery Status: "+orderDTO.getTracking_info().toString());
         binding.orderDetailDeliveryTrackingId.setText(orderDTO.getTracking_id().toString());
 
 
@@ -162,7 +166,6 @@ public class OrderDetailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot result = task.getResult();
                             currentUserDTO = result.toObject(UserDTO.class);
-
                             // show current user's avatar
                             binding.orderDetailSellerUsername.setText(currentUserDTO.getNickname());
 
@@ -171,6 +174,11 @@ public class OrderDetailActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+
+
+
+
         binding.orderDetailId.setText(orderDTO.getId());
         Button copy_btn = binding.orderDetailCopyOrderIdBtn;
         copy_btn.setOnClickListener(new View.OnClickListener(){
@@ -196,17 +204,21 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
 
-        binding.orderDetailOrderStatus.setText("Retrieve Order Status");
-        binding.orderDetailDeliveryStatus.setText("Retrieve delivery Status");
-        binding.orderDetailDeliveryTrackingId.setText("Retrieve Tracking id, CAN be Null");
-        binding.orderDetailPdtName.setText("retrieve pdt name");
+        // binding.orderDetailOrderStatus.setText("Retrieve Order Status"); // already binded
+        //binding.orderDetailDeliveryStatus.setText("Retrieve delivery Status"); // already binded
+        //binding.orderDetailDeliveryTrackingId.setText("Retrieve Tracking id, CAN be Null"); // already binded
+
+        binding.orderDetailPdtName.setText(productDTO.getDescription());
         //binding.orderDetailPdtPrice.setText("$ + retrieve pdt price");
         //binding.orderDetailPdtQuantity.setText("retrieve quantity");
 
         binding.orderDetailTotalPrice.setText("calculate product of price and quantity");
-        binding.orderDetailReceiverName.setText("retrieve receiver's name");
+        //binding.orderDetailReceiverName.setText("retrieve receiver's name"); // already binded
         //binding.orderDetailReceiverPhone.setText("retrieve receiver's phone number");
-        binding.orderDetailReceiverAddr.setText("retrieve receiver's address(buyer's addrss/????)");
+
+        binding.orderDetailReceiverAddr.setText(orderDTO.getAddress());
+
+
 
         /*
         binding.orderDetailConnectSellerBtn.setOnClickListener(new View.OnClickListener() {
