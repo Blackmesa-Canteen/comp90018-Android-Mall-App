@@ -251,9 +251,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                         dialog.showInfo("This is your own product!");
                         return;
                     }
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Click Want this", Toast.LENGTH_SHORT);
-                    toast.show();
+
+                    // can't buy sold out item
+                    if (productDTO.getStatus() == Constants.PUBLISHED) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Click Want this", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        dialog.showWarn("This item is not on sale.");
+                    }
+
                 }
             }
         });

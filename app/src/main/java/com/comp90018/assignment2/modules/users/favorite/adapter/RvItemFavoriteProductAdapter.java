@@ -72,7 +72,9 @@ public class RvItemFavoriteProductAdapter extends BaseQuickAdapter<ProductDTO, B
                         context
                 );
         view.setAdapter(adapter);
-        view.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        view.setLayoutManager(layoutManager);
 
         // handle button logic
         Button cancelBtn = (Button) helper.getView(R.id.cancel_button);
@@ -128,10 +130,14 @@ public class RvItemFavoriteProductAdapter extends BaseQuickAdapter<ProductDTO, B
                         @Override
                         public void onClick(View v) {
                             // go to product details activity
-                            Intent goToPdtDetailIntent = new Intent(context, ProductDetailActivity.class);
-                            goToPdtDetailIntent.putExtra("productDTO", productDTO);
-                            goToPdtDetailIntent.putExtra("userDTO", userDTO);
-                            context.startActivity(goToPdtDetailIntent);
+                            if (productDTO.getStatus() == Constants.PUBLISHED) {
+                                Intent goToPdtDetailIntent = new Intent(context, ProductDetailActivity.class);
+                                goToPdtDetailIntent.putExtra("productDTO", productDTO);
+                                goToPdtDetailIntent.putExtra("userDTO", userDTO);
+                                context.startActivity(goToPdtDetailIntent);
+                            } else {
+                                Toast.makeText(context, "This item is sold out.", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     };
                     helper.getView(R.id.text_product_desc).setOnClickListener(goToPdtDetailEvent);
