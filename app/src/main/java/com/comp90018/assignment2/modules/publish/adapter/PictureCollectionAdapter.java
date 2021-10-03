@@ -60,7 +60,8 @@ public class PictureCollectionAdapter extends RecyclerView.Adapter<RecyclerView.
             pg_image = itemView.findViewById(R.id.pg_image);
         }
         public void setData(List<LocalMedia> collection, final int position) {
-            Glide.with(mContext).load(collection.get(position).getCompressPath()).into(pg_image);
+            Glide.with(mContext).load(collection.get(position).getPath())
+                    .override(80, 80).centerCrop().into(pg_image);
         }
     }
 }

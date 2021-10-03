@@ -31,7 +31,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/activity_ok.xml" value="0.2810185185185185" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.33013698630136984" />
-        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.34536603395860493" />
         <entry key="app/src/main/res/layout/activity_published.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.23657407407407408" />
@@ -59,7 +59,7 @@
         <entry key="app/src/main/res/layout/item_home.xml" value="0.360054347826087" />
         <entry key="app/src/main/res/layout/item_images.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_list_view_messages.xml" value="0.33611111111111114" />
-        <entry key="app/src/main/res/layout/item_picture_gallery.xml" value="0.1000401913959725" />
+        <entry key="app/src/main/res/layout/item_picture_gallery.xml" value="0.19072164948453607" />
         <entry key="app/src/main/res/layout/item_published_rv_item.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_recycler_view_search.xml" value="0.3315068493150685" />
         <entry key="app/src/main/res/layout/item_subcategories_item.xml" value="0.360054347826087" />

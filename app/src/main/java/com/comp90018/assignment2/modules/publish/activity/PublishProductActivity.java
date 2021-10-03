@@ -153,7 +153,7 @@ public class PublishProductActivity extends AppCompatActivity {
                 ArrayAdapter<CategoryDTO> dataAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, categories);
                 categorySpinner.setAdapter(dataAdapter);
                 categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    // TODO: fix category bugs
+
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                         selectedCategory = (CategoryDTO) parent.getSelectedItem();
