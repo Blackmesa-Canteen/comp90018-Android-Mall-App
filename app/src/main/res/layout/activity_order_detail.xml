@@ -320,6 +320,7 @@
         android:layout_gravity="bottom">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/refund_layout"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:layout_marginBottom="20dp"
@@ -329,6 +330,7 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <Button
+                android:id="@+id/order_refund_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/yellow_light"
