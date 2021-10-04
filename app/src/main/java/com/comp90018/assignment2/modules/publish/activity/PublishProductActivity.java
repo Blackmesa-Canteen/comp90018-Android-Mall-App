@@ -79,11 +79,11 @@ public class PublishProductActivity extends AppCompatActivity {
     private ImageView pf_add;
     private RecyclerView pf_collection;
     private ArrayList<String> images = new ArrayList<>();
-    private Double lat = -37.840935;
-    private Double lng = 144.946457;
+    private UserDTO userDTO = null;
+    private double lat = -37.840935;
+    private double lng = 144.946457;
     private String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
     private String location_text = "Melbourne";
-    private UserDTO userDTO = null;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -224,7 +224,7 @@ public class PublishProductActivity extends AppCompatActivity {
                 return;
             }
 
-            String priceRegex = "(\\-?\\d+\\.?\\d{0,2})";
+            String priceRegex = "(-?\\d+\\.?\\d{0,2})";
             if (!price.matches(priceRegex)) {
                 new AlertDialog.Builder(PublishProductActivity.this).setMessage("Please input correct price.").setPositiveButton("ok", null).show();
                 return;
