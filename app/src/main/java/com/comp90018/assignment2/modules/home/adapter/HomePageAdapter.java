@@ -137,6 +137,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             // set product img
             // if default img
             if (productDTO.getImage_address() == null
+                    || productDTO.getImage_address().size() == 0
                     || productDTO.getImage_address().get(0) == null
                     || productDTO.getImage_address().get(0).equals("")
                     || productDTO.getImage_address().get(0).equals("default")

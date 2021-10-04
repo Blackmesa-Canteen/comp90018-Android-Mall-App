@@ -50,4 +50,8 @@ public class CategoryDTO implements Parcelable {
         dest.writeString(name);
         dest.writeString(category_id);
     }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
