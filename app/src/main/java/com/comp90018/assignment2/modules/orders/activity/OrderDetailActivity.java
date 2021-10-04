@@ -69,6 +69,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         dialog = new PromptDialog(this);
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
+        binding.orderRefundBtn.setVisibility(View.GONE);
         setContentView(binding.getRoot());
 
 
@@ -81,6 +82,15 @@ public class OrderDetailActivity extends AppCompatActivity {
         OrderDTO orderDTO = (OrderDTO) intent.getParcelableExtra("orderDTO");
         UserDTO buyerDTO = (UserDTO) intent.getParcelableExtra("buyerDTO");
         UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
+        DocumentReference sellerDocReference = orderDTO.getBuyer_ref();
+        DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());
+        String id1 = sellerDocReference.getId();
+        String id2 = currentUserReference.getId();
+        if (id1.equals(id2)) {
+            binding.refundLayout.setVisibility(View.GONE);
+        }
+
+
         switch (orderDTO.getStatus()) {
             case Constants.WAITING_DELIVERY:
                 binding.orderDetailOrderStatus.setText("Waiting delivery");
