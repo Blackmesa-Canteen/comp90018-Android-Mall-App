@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -92,6 +93,8 @@ public class LocationMapActivity extends AppCompatActivity {
                 // convert point
                 LocationBeanConverter.convertLocationToBdMapLocation(locationBean);
 
+                Log.d("MapActivity[dev]", locationBean.toString());
+
                 LatLng center = new LatLng(locationBean.getLatitude(), locationBean.getLongitude());
                 // current user point to the map
                 Bundle mBundle = new Bundle();
@@ -103,8 +106,10 @@ public class LocationMapActivity extends AppCompatActivity {
 
                 // add this marker to map
                 Overlay marker = baiduMap.addOverlay(currentUserMarker);
-                marker.setExtraInfo(mBundle);
-                currentOverLays.add(marker);
+                if (marker != null) {
+                    marker.setExtraInfo(mBundle);
+                    currentOverLays.add(marker);
+                }
 
                 if (targetLocationBean == null) {
                     // debug: no targetLocation, zoom to current user location
@@ -124,7 +129,7 @@ public class LocationMapActivity extends AppCompatActivity {
             LatLng center = new LatLng(targetLocationBean.getLatitude(), targetLocationBean.getLongitude());
             // set up marker
             Bundle mBundle = new Bundle();
-            mBundle.putString("desc", "This is target location.");
+            mBundle.putString("desc", "This is target location: " + targetLocationBean.getTextAddress());
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(center)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue))
@@ -132,7 +137,9 @@ public class LocationMapActivity extends AppCompatActivity {
 
             // add this marker to map
             Overlay marker = baiduMap.addOverlay(markerOptions);
-            marker.setExtraInfo(mBundle);
+            if (marker != null) {
+                marker.setExtraInfo(mBundle);
+            }
 
             // zoom here
             MapStatus mapStatus = new MapStatus.Builder()

@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -49,6 +51,8 @@ public class LocationHelper {
     private final Context context;
 
     private LocationManager locationManager;
+
+    private final static Handler mHandler = new Handler(Looper.getMainLooper());
 
     /**
      * static Tool:
@@ -92,7 +96,15 @@ public class LocationHelper {
                         .textAddress("Target Address").build();
 
                 if (callback != null) {
-                    callback.gotLocationCallback(locationBean);
+                    // update UI in main thread
+                    synchronized (mHandler) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.gotLocationCallback(locationBean);
+                            }
+                        });
+                    }
                 }
             }
 
@@ -126,7 +138,15 @@ public class LocationHelper {
                             .build();
 
                     if (callback != null) {
-                        callback.gotLocationCallback(locationBean);
+                        // update UI in main thread
+                        synchronized (mHandler) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
                 } else if (resultBean != null
                         && resultBean.getFeatures() != null
@@ -143,7 +163,15 @@ public class LocationHelper {
                             .build();
 
                     if (callback != null) {
-                        callback.gotLocationCallback(locationBean);
+                        // update UI in main thread
+                        synchronized (mHandler) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
 
                 } else {
@@ -157,7 +185,15 @@ public class LocationHelper {
                             .build();
 
                     if (callback != null) {
-                        callback.gotLocationCallback(locationBean);
+                        // update UI in main thread
+                        synchronized (mHandler) {
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
                 }
             }

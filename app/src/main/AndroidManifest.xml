@@ -38,9 +38,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
+            android:name=".modules.users.fans.activity.UserListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.users.fans.activity.FollowedActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.users.fans.activity.FollowingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.users.favorite.activity.FavoriteProductActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.location.activity.LocationMapActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".utils.activity.OkActivity"
             android:exported="true" />
@@ -83,6 +94,10 @@
             android:name=".modules.publish.activity.PublishProductActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
+            android:name=".modules.users.me.activity.UserPageActivity"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="AzV72hBP1PhDKbVv07gYZL7WdUsWgplD" />

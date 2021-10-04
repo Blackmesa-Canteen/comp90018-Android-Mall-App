@@ -4,6 +4,8 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,6 +41,8 @@ public class MyLocationListener implements LocationListener {
     private OnGotLocationBeanCallback onGotLocationBeanCallback;
 
     private OkHttpClient okHttpClient;
+
+    private final static Handler mHandler = new Handler(Looper.getMainLooper());
 
     public MyLocationListener(Context context) {
         this.context = context;
@@ -101,7 +105,16 @@ public class MyLocationListener implements LocationListener {
                         .textAddress("Target Address").build();
 
                 if (onGotLocationBeanCallback != null) {
-                    onGotLocationBeanCallback.gotLocationCallback(locationBean);
+
+                    // update UI in main thread
+                    synchronized (mHandler) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                            }
+                        });
+                    }
                 }
             }
 
@@ -136,7 +149,15 @@ public class MyLocationListener implements LocationListener {
                             .build();
 
                     if (onGotLocationBeanCallback != null) {
-                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                        synchronized (mHandler) {
+                            // update UI in main thread
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
                 } else if (resultBean != null
                         && resultBean.getFeatures() != null
@@ -153,7 +174,15 @@ public class MyLocationListener implements LocationListener {
                             .build();
 
                     if (onGotLocationBeanCallback != null) {
-                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                        synchronized (mHandler) {
+                            // update UI in main thread
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
 
                 } else {
@@ -167,7 +196,15 @@ public class MyLocationListener implements LocationListener {
                             .build();
 
                     if (onGotLocationBeanCallback != null) {
-                        onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                        synchronized (mHandler) {
+                            // update UI in main thread
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onGotLocationBeanCallback.gotLocationCallback(locationBean);
+                                }
+                            });
+                        }
                     }
                 }
             }

@@ -71,6 +71,7 @@ public class PublishedActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
         dialog = new PromptDialog(this);
+        dialog.setViewAnimDuration(500);
 
         // set up data structure
         productDTOList = new ArrayList<>();

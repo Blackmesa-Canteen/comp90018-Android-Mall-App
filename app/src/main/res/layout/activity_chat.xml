@@ -180,7 +180,7 @@
             android:layout_toRightOf="@id/iv_more"
             android:background="@drawable/et_bg"
             android:gravity="center"
-            android:text="Press to speak"
+            android:text="Hold to speak"
             android:textColor="@color/blue_dark"
             android:visibility="invisible" />
 

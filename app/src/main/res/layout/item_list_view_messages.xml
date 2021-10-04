@@ -54,7 +54,7 @@
                 android:maxLines="1"
                 android:maxLength="25"
                 android:gravity="center"
-                android:text="Loading..."/>
+                android:text=""/>
 
             <TextView
                 android:id="@+id/text_newest_msg_time"
