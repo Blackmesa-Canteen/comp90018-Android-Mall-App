@@ -15,7 +15,7 @@
             android:id="@+id/translate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
@@ -48,6 +48,7 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="15.67dp"
                     android:src="@drawable/price_publish" />
+
                 <com.comp90018.assignment2.utils.view.ClearWriteEditText
                     android:id="@+id/price"
                     android:layout_width="match_parent"
@@ -56,8 +57,8 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:maxLength="80"
                     android:hint="Price"
+                    android:maxLength="80"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#2C2C2C"
@@ -239,6 +240,7 @@
                     android:maxLength="80"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <View
                     android:id="@+id/line6"
                     android:layout_width="match_parent"
@@ -249,10 +251,9 @@
             </RelativeLayout>
             <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="10dp"
-                android:columnCount="2"
-                android:padding="10dp">
+                android:layout_height="180dp"
+                android:layout_marginTop="20dp"
+                android:columnCount="2">
                 <ImageView
                     android:id="@+id/pf_add"
                     android:layout_width="60dp"
@@ -285,6 +286,5 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"/>
         </LinearLayout>
-
     </LinearLayout>
 </RelativeLayout>
