@@ -6,12 +6,14 @@ import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +72,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         dialog = new PromptDialog(this);
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
         binding.orderRefundBtn.setVisibility(View.GONE);
+        binding.orderRefundBtn.setVisibility(View.VISIBLE);
         setContentView(binding.getRoot());
 
 
@@ -82,13 +85,19 @@ public class OrderDetailActivity extends AppCompatActivity {
         OrderDTO orderDTO = (OrderDTO) intent.getParcelableExtra("orderDTO");
         UserDTO buyerDTO = (UserDTO) intent.getParcelableExtra("buyerDTO");
         UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
-        DocumentReference sellerDocReference = orderDTO.getBuyer_ref(); //get buyer info
+        DocumentReference sellerDocReference = orderDTO.getSeller_ref(); //get buyer info
         DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());//get current user info
-        String id1 = sellerDocReference.getId();//get buyer id
-        String id2 = currentUserReference.getId(); //get current user id
-        if (id1.equals(id2)) { //if buyer = current user
-            binding.refundLayout.setVisibility(View.GONE); //button disappear
+        DocumentReference buyerDocReference = orderDTO.getBuyer_ref();
+        String seller_id = sellerDocReference.getId();//get buyer id
+        String current_user_id = currentUserReference.getId(); //get current user id
+        String buyer_id  = buyerDocReference.getId();
+        if (seller_id.equals(current_user_id)) { //if buyer = current user
+            binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
+        }else if(buyer_id.equals(current_user_id)){
+            binding.orderAgreeBtn.setVisibility(View.GONE);
+            binding.orderDisagreeBtn.setVisibility(View.GONE);
         }
+
 
 
         switch (orderDTO.getStatus()) {
@@ -175,6 +184,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding.orderDetailId.setText(orderDTO.getId());
         Button copy_btn = binding.orderDetailCopyOrderIdBtn;
         copy_btn.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void onClick(View v) {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);

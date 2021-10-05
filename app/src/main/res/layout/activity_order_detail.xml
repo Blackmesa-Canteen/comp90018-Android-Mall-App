@@ -309,35 +309,49 @@
         </LinearLayout>
     </LinearLayout>
 
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="7dp"
-        android:background="@color/item_click_bg_color" />
+        android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom">
+        <Button
+            android:id="@+id/order_agree_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="21dp"
+            android:background="@color/yellow_light"
+            android:text="Agree"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/refund_layout"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+        <Button
+            android:id="@+id/order_refund_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="138dp"
+            android:background="@color/yellow_light"
+            android:text="Refund"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/order_refund_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/yellow_light"
-                android:text="Refund"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/order_disagree_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="50dp"
+            android:background="@color/yellow_light"
+            android:text="Disagree"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
 </LinearLayout>
