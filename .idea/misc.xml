@@ -24,6 +24,8 @@
         <entry key="app/src/main/res/drawable/text_main_bottom_selector.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.2087717720456596" />
         <entry key="app/src/main/res/layout/activity_edit_password.xml" value="0.3347222222222222" />
+        <entry key="app/src/main/res/layout/activity_edit_product.xml" value="0.23425925925925925" />
+        <entry key="app/src/main/res/layout/activity_edit_published_product.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_edit_user_profile.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_favorite_product.xml" value="0.3351851851851852" />
         <entry key="app/src/main/res/layout/activity_followed.xml" value="0.3351851851851852" />
@@ -34,7 +36,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
         <entry key="app/src/main/res/layout/activity_ok.xml" value="0.2810185185185185" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.33013698630136984" />
-        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.2918136390060048" />
+        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_published.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.23657407407407408" />
