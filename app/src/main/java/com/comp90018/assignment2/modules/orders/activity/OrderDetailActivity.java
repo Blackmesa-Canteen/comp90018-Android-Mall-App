@@ -82,12 +82,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         OrderDTO orderDTO = (OrderDTO) intent.getParcelableExtra("orderDTO");
         UserDTO buyerDTO = (UserDTO) intent.getParcelableExtra("buyerDTO");
         UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
-        DocumentReference sellerDocReference = orderDTO.getBuyer_ref();
-        DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());
-        String id1 = sellerDocReference.getId();
-        String id2 = currentUserReference.getId();
-        if (id1.equals(id2)) {
-            binding.refundLayout.setVisibility(View.GONE);
+        DocumentReference sellerDocReference = orderDTO.getBuyer_ref(); //get buyer info
+        DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());//get current user info
+        String id1 = sellerDocReference.getId();//get buyer id
+        String id2 = currentUserReference.getId(); //get current user id
+        if (id1.equals(id2)) { //if buyer = current user
+            binding.refundLayout.setVisibility(View.GONE); //button disappear
         }
 
 
