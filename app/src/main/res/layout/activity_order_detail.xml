@@ -359,6 +359,7 @@
             android:layout_alignParentBottom="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/refund_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Please enter address to refund" />
