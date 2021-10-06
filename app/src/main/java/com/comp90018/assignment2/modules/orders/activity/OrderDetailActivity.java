@@ -71,14 +71,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         dialog = new PromptDialog(this);
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
-        binding.orderRefundBtn.setVisibility(View.GONE);
-        binding.orderRefundBtn.setVisibility(View.VISIBLE);
         setContentView(binding.getRoot());
 
 
 
-
-        // retrieve bundle data from intent li xiaotian
         Intent intent = getIntent();
         ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
         UserDTO sellerDTO = (UserDTO) intent.getParcelableExtra("sellerDTO");
@@ -93,11 +89,19 @@ public class OrderDetailActivity extends AppCompatActivity {
         String buyer_id  = buyerDocReference.getId();
         if (seller_id.equals(current_user_id)) { //if buyer = current user
             binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
+            binding.orderRefundAddr.setVisibility(View.GONE);
         }else if(buyer_id.equals(current_user_id)){
             binding.orderAgreeBtn.setVisibility(View.GONE);
             binding.orderDisagreeBtn.setVisibility(View.GONE);
         }
-
+/*
+        binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(binding.getRoot().getContext(), OrderDetailActivity.class);
+                startActivity(intent);
+            }
+        });*/
 
 
         switch (orderDTO.getStatus()) {

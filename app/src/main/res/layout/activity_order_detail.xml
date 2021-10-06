@@ -352,6 +352,18 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/order_refund_addr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Please enter address to refund" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </RelativeLayout>
 
 </LinearLayout>
