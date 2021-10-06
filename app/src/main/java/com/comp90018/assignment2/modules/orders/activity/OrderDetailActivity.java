@@ -51,6 +51,7 @@ import com.luck.picture.lib.tools.ToastUtils;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
+import cn.jpush.im.android.api.JMessageClient;
 import me.leefeng.promptlibrary.PromptDialog;
 
 public class OrderDetailActivity extends AppCompatActivity {
@@ -73,8 +74,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding = ActivityOrderDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
         Intent intent = getIntent();
         ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
         UserDTO sellerDTO = (UserDTO) intent.getParcelableExtra("sellerDTO");
@@ -94,14 +93,20 @@ public class OrderDetailActivity extends AppCompatActivity {
             binding.orderAgreeBtn.setVisibility(View.GONE);
             binding.orderDisagreeBtn.setVisibility(View.GONE);
         }
-/*
+
         binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(binding.getRoot().getContext(), OrderDetailActivity.class);
-                startActivity(intent);
+                if(orderDTO.getStatus()==Constants.WAITING_DELIVERY) {
+                    db.collection(ORDERS_COLLECTION)
+                            .document(orderDTO.getId())
+                            .update("status", Constants.ON_REFUND);
+                    Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "The item has already been shipped", Toast.LENGTH_SHORT).show();
+                }
             }
-        });*/
+        });
 
 
         switch (orderDTO.getStatus()) {

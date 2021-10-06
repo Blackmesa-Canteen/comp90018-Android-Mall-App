@@ -8,8 +8,6 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 import com.comp90018.assignment2.databinding.ActivityRefundBinding;
 
-
-
 public class RefundActivity extends AppCompatActivity {
     private static final String TAG = "Refund[dev]";
     private ActivityRefundBinding binding;
