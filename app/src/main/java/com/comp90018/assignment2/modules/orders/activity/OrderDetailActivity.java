@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.google.firebase.Timestamp;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
@@ -121,7 +122,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderRefundBtn);
                     Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
+                    Intent intent = new Intent(binding.getRoot().getContext(), UserPageActivity.class);
                     startActivity(intent);
                 }else if(orderDTO.getStatus()==Constants.SUCCESSFUL_NOT_COMMENT){
                     String address = binding.refundAddress.getText().toString();
@@ -138,7 +139,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                         buttonColor(binding.orderRefundBtn);
                         Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
                         finish();
-                        Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
+                        Intent intent = new Intent(binding.getRoot().getContext(), UserPageActivity.class);
                         startActivity(intent);
                     }
 
@@ -174,7 +175,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You agreed to refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    Intent intent = new Intent(binding.getRoot().getContext(), UserPageActivity.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
@@ -194,7 +195,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You disagreed to refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    Intent intent = new Intent(binding.getRoot().getContext(), UserPageActivity.class);
                     startActivity(intent);
                 }else if(orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING){
                     db.collection(ORDERS_COLLECTION)
@@ -205,7 +206,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You disagreed to refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    Intent intent = new Intent(binding.getRoot().getContext(), UserPageActivity.class);
                     startActivity(intent);
                 }
                 else{
