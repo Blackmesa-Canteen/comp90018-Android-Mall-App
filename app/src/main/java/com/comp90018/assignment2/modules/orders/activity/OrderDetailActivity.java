@@ -90,14 +90,17 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (seller_id.equals(current_user_id)) { //if buyer = current user
             binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
             binding.orderRefundAddr.setVisibility(View.GONE);
+            if(orderDTO.getStatus()==Constants.ON_REFUND){
+                Toast.makeText(binding.getRoot().getContext(), "The buyer wants to refund this item", Toast.LENGTH_SHORT).show();
+            }
         }else if(buyer_id.equals(current_user_id)){
             binding.orderAgreeBtn.setVisibility(View.GONE);
             binding.orderDisagreeBtn.setVisibility(View.GONE);
         }
 
+        // Refund - purchased
         if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY){
-            binding.orderRefundBtn.setBackgroundColor(Color.parseColor("#D3D3D3"));
-            binding.orderRefundBtn.setTextColor(Color.parseColor("#778899"));
+            buttonColor(binding.orderRefundBtn);
         }
         binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -106,12 +109,60 @@ public class OrderDetailActivity extends AppCompatActivity {
                     db.collection(ORDERS_COLLECTION)
                             .document(orderDTO.getId())
                             .update("status", Constants.ON_REFUND);
+                    orderDTO.setStatus(Constants.ON_REFUND);
+                    buttonColor(binding.orderRefundBtn);
                     Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The item has already been shipped", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        //
+        // Confirm refund - sold
+        if(orderDTO.getStatus()!=Constants.ON_REFUND){
+            buttonColor(binding.orderAgreeBtn);
+            buttonColor(binding.orderDisagreeBtn);
+        }
+        binding.orderAgreeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(orderDTO.getStatus()==Constants.ON_REFUND) {
+                    db.collection(ORDERS_COLLECTION)
+                            .document(orderDTO.getId())
+                            .update("status", Constants.REFUNDED);
+                    orderDTO.setStatus(Constants.REFUNDED);
+                    buttonColor(binding.orderAgreeBtn);
+                    buttonColor(binding.orderDisagreeBtn);
+                    Toast.makeText(binding.getRoot().getContext(), "You agreed to refund", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        binding.orderDisagreeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(orderDTO.getStatus()==Constants.ON_REFUND) {
+                    db.collection(ORDERS_COLLECTION)
+                            .document(orderDTO.getId())
+                            .update("status", Constants.WAITING_DELIVERY);
+                    orderDTO.setStatus(Constants.WAITING_DELIVERY);
+                    buttonColor(binding.orderAgreeBtn);
+                    buttonColor(binding.orderDisagreeBtn);
+                    Toast.makeText(binding.getRoot().getContext(), "You disagreed to refund", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(getIntent());
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
         switch (orderDTO.getStatus()) {
@@ -245,5 +296,10 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });*/
 
+    }
+
+    private void buttonColor(Button btn){
+        btn.setBackgroundColor(Color.parseColor("#D3D3D3"));
+        btn.setTextColor(Color.parseColor("#778899"));
     }
 }
