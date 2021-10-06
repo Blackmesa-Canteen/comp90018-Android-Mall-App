@@ -7,12 +7,15 @@
         <entry key="../../../../../.gradle/caches/transforms-2/files-2.1/828f0aa3c5e7093e43e7cf970e2bcf08/jetified-pictureselector-v2.7.3-rc08/res/drawable/picture_image_placeholder.xml" value="0.3111111111111111" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_order_detail.xml" value="0.33" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_product_detail.xml" value="0.3020833333333333" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_publish_product.xml" value="0.14665996986438976" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_published.xml" value="0.16394927536231885" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_purchased_pdt_list.xml" value="0.33" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_purchased_pdt_lst.xml" value="0.14665996986438976" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_refund.xml" value="0.33" />
-        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_sold_pdt_list.xml" value="0.1" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_sold_pdt_list.xml" value="0.25" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_sold_pdt_lst.xml" value="0.14665996986438976" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/fragment_me_layout.xml" value="0.14665996986438976" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/home_fragment.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/item_home.xml" value="0.5" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/item_list_view_messages.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/item_my_purchased_sold_pdt_lst.xml" value="0.33" />

@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.comp90018.assignment2.modules.orders.adapter.PurchasedAdapter;
 import com.google.firebase.Timestamp;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
@@ -65,6 +66,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     private OrderDTO currentOrderDTO;
     private Context context;
     private PromptDialog dialog;
+    private PurchasedAdapter purchasedAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +115,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     orderDTO.setStatus(Constants.ON_REFUND);
                     buttonColor(binding.orderRefundBtn);
                     Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
+
                     finish();
                     Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
                     startActivity(intent);
@@ -140,6 +144,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
                     startActivity(intent);
+
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
                 }
@@ -299,6 +304,12 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });*/
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        //Do what you want on the refresh procedure here
     }
 
     private void buttonColor(Button btn){

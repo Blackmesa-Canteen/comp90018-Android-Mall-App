@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
+
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -39,6 +42,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
+
 public class SoldActivity extends AppCompatActivity {
     private static final String TAG = "Sold[dev]";
     private ActivitySoldPdtListBinding list_binding;
@@ -50,15 +55,17 @@ public class SoldActivity extends AppCompatActivity {
     private List<OrderDTO> orderDTOList;
     private SoldAdapter adapter;
     private Button DetailButton;
-
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         list_binding = ActivitySoldPdtListBinding.inflate(getLayoutInflater());
         item_binding = ItemSoldPdtListBinding.inflate(getLayoutInflater());
 
         setContentView(list_binding.getRoot());
 
+        mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) list_binding.soldSwipe;
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -109,24 +116,31 @@ public class SoldActivity extends AppCompatActivity {
                 }
             });
         }
-        /*
-        item_binding.soldPdtDetailBtn.setOnClickListener(new View.OnClickListener() {
+        mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                //PopupMenu popup = new PopupMenu(SoldActivity.this, v);
+            public void onRefresh() {
+                // Do work to refresh the list here.
+                new RefreshTask().execute();
             }
-        });*/
+        });
     }
-/*
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.menu_sold_popup, popup.getMenu());
-        System.out.println("Clicked");
-        Toast.makeText(item_binding.getRoot().getContext(), "clicked", Toast.LENGTH_SHORT).show();
-        popup.show();
+    private class RefreshTask extends AsyncTask<Void, Void, String[]> {
+        @SuppressLint("MissingPermission")
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            finish();
+            //Intent intent = new Intent(getApplicationContext(), PurchasedActivity.class);
+            startActivity(getIntent());
+            return new String[0]; //can't convert the type to void, so have to return String[]
+        }
+        @Override
+        protected void onPostExecute(String[] result) {
+            // Call setRefreshing(false) when the list has been refreshed.
+            mWaveSwipeRefreshLayout.setRefreshing(false);
+            super.onPostExecute(result);
+        }
     }
-*/
+
     private void processData(List<OrderDTO> orderDTOList) {
         List<OrderDTO> publishedOrderDTOList = new ArrayList<>();
         for (OrderDTO orderDTO : orderDTOList) {

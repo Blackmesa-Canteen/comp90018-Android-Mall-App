@@ -6,25 +6,27 @@
     android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
+        android:id="@+id/me_frag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="121dp"
             android:background="#eee">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ci_user"
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
+                android:src="@drawable/default_avatar"
                 app:civ_border_color="@color/blue"
-                app:civ_border_width="1dp"
-                android:src="@drawable/default_avatar">
+                app:civ_border_width="1dp">
 
             </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -170,15 +172,14 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/sell"/>
+                    android:src="@drawable/sell" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:text="Published"
-                    />
+                    android:text="Published" />
             </LinearLayout>
 
             <LinearLayout
@@ -192,15 +193,14 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/money_fill"/>
+                    android:src="@drawable/money_fill" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:text="Sold"
-                    />
+                    android:text="Sold" />
             </LinearLayout>
 
             <LinearLayout
@@ -214,15 +214,14 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/order_red"/>
+                    android:src="@drawable/order_red" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:text="Purchased"
-                    />
+                    android:text="Purchased" />
             </LinearLayout>
         </LinearLayout>
 
@@ -260,48 +259,49 @@
 
             <TextView
                 android:id="@+id/tv_favorate"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:text="Favorate" />
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="Favorate"
+                android:textSize="18sp" />
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginLeft="45dp"
             android:background="#eee" />
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:padding="10dp">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:padding="10dp">-->
 
-<!--            <ImageView-->
+        <!--            <ImageView-->
 
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
+        <!--                android:layout_width="30dp"-->
+        <!--                android:layout_height="30dp"-->
 
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:src="@drawable/express" />-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                android:src="@drawable/express" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_address"-->
-<!--                android:layout_marginLeft="30dp"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:layout_width="250dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Delivery Address" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_address"-->
+        <!--                android:layout_marginLeft="30dp"-->
+        <!--                android:textSize="18sp"-->
+        <!--                android:gravity="center_vertical"-->
+        <!--                android:layout_width="250dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:text="Delivery Address" />-->
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginLeft="45dp"-->
-<!--            android:background="#eee" />-->
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginLeft="45dp"-->
+        <!--            android:background="#eee" />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -317,12 +317,12 @@
 
             <TextView
                 android:id="@+id/tv_payment"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:text="Payment Information" />
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="Payment Information"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -347,12 +347,12 @@
 
             <TextView
                 android:id="@+id/tv_update"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:text="Update Profile" />
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="Update Profile"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -369,35 +369,35 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
         </RelativeLayout>
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="50dp"-->
-<!--            android:padding="10dp">-->
+        <!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:padding="10dp">-->
 
-<!--            <ImageView-->
+        <!--            <ImageView-->
 
-<!--                android:layout_width="30dp"-->
-<!--                android:layout_height="30dp"-->
+        <!--                android:layout_width="30dp"-->
+        <!--                android:layout_height="30dp"-->
 
-<!--                android:layout_marginLeft="10dp"-->
-<!--                android:src="@drawable/service" />-->
+        <!--                android:layout_marginLeft="10dp"-->
+        <!--                android:src="@drawable/service" />-->
 
-<!--            <TextView-->
-<!--                android:id="@+id/tv_feedback"-->
-<!--                android:layout_marginLeft="30dp"-->
-<!--                android:textSize="18sp"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:layout_width="250dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Feedback" />-->
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_feedback"-->
+        <!--                android:layout_marginLeft="30dp"-->
+        <!--                android:textSize="18sp"-->
+        <!--                android:gravity="center_vertical"-->
+        <!--                android:layout_width="250dp"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:text="Feedback" />-->
 
-<!--        </LinearLayout>-->
+        <!--        </LinearLayout>-->
 
-<!--        <View-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="1dp"-->
-<!--            android:layout_marginLeft="45dp"-->
-<!--            android:background="#eee" />-->
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginLeft="45dp"-->
+        <!--            android:background="#eee" />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -413,12 +413,12 @@
 
             <TextView
                 android:id="@+id/tv_setting"
-                android:layout_marginLeft="30dp"
-                android:textSize="18sp"
-                android:gravity="center_vertical"
                 android:layout_width="250dp"
                 android:layout_height="match_parent"
-                android:text="Settings" />
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
+                android:text="Settings"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <View
@@ -426,6 +426,7 @@
             android:layout_height="1dp"
             android:layout_marginLeft="50dp"
             android:background="#eee" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -458,14 +459,14 @@
                 android:id="@+id/tv_logout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:text="Log out"
-                android:layout_gravity="center"
                 android:background="@color/red_dark"
-                android:textSize="18sp"
+                android:text="Log out"
+                android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textAlignment="center"/>
+                android:textSize="18sp" />
 
         </LinearLayout>
 
