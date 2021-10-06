@@ -113,7 +113,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderRefundBtn);
                     Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(getIntent());
+                    Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The item has already been shipped", Toast.LENGTH_SHORT).show();
                 }
@@ -137,7 +138,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You agreed to refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(getIntent());
+                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
                 }
@@ -156,7 +158,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You disagreed to refund", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(getIntent());
+                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    startActivity(intent);
                 }else{
                     Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
                 }
