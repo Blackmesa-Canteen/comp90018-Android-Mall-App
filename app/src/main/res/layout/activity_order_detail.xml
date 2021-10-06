@@ -62,7 +62,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
             android:paddingTop="15dp"
@@ -103,7 +103,7 @@
     <LinearLayout
         android:id="@+id/purchased_image_name_layout"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="101dp"
         android:layout_marginTop="10dp"
         android:paddingRight="20dp">
 
@@ -190,7 +190,7 @@
                 android:gravity="center_vertical"
                 android:text="Receiver:"
                 android:textColor="@color/colorBlack_Three"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -200,7 +200,7 @@
                 android:gravity="center_vertical"
                 android:text="receiver name"
                 android:textColor="@color/colorBlack_Three"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -216,7 +216,7 @@
                 android:gravity="center_vertical"
                 android:text="Email:"
                 android:textColor="@color/colorBlack_Three"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -227,7 +227,7 @@
                 android:gravity="center_vertical"
                 android:text="aa@qq.com"
                 android:textColor="@color/colorBlack_Three"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -346,7 +346,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="138dp"
+            android:layout_marginRight="5dp"
             android:background="@color/yellow_light"
             android:text="Refund"
             android:textAllCaps="false"
@@ -367,18 +367,11 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/order_refund_addr"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/refund_address"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/refund_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Please enter address to refund" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:hint="Please enter address to refund" />
 
     </RelativeLayout>
 

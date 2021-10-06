@@ -91,9 +91,10 @@ public class OrderDetailActivity extends AppCompatActivity {
         String seller_id = sellerDocReference.getId();//get buyer id
         String current_user_id = currentUserReference.getId(); //get current user id
         String buyer_id  = buyerDocReference.getId();
+
         if (seller_id.equals(current_user_id)) { //if buyer = current user
             binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
-            binding.orderRefundAddr.setVisibility(View.GONE);
+            binding.refundAddress.setVisibility(View.GONE);
             if(orderDTO.getStatus()==Constants.ON_REFUND || orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING){
                 Toast.makeText(binding.getRoot().getContext(), "The buyer wants to refund this item", Toast.LENGTH_SHORT).show();
             }
@@ -109,10 +110,13 @@ public class OrderDetailActivity extends AppCompatActivity {
         // Refund - purchased
         if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY && orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT ){
             buttonColor(binding.orderRefundBtn);
+            binding.refundAddress.setVisibility(View.GONE);
         }
+        /*
         if (orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT){
-            binding.orderRefundAddr.setVisibility(View.GONE);
+            binding.refundAddress.setVisibility(View.GONE);
         }
+        */
         binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
