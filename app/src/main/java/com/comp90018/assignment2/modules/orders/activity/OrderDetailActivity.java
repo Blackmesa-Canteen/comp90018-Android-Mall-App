@@ -13,6 +13,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,6 +95,10 @@ public class OrderDetailActivity extends AppCompatActivity {
             binding.orderDisagreeBtn.setVisibility(View.GONE);
         }
 
+        if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY){
+            binding.orderRefundBtn.setBackgroundColor(Color.parseColor("#D3D3D3"));
+            binding.orderRefundBtn.setTextColor(Color.parseColor("#778899"));
+        }
         binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
