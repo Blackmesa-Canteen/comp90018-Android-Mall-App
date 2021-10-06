@@ -195,7 +195,7 @@
 
             <TextView
                 android:id="@+id/order_detail_receiver_name"
-                android:layout_width="90dp"
+                android:layout_width="296dp"
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:text="receiver name"
@@ -221,7 +221,7 @@
 
             <TextView
                 android:id="@+id/order_detail_receiver_email"
-                android:layout_width="wrap_content"
+                android:layout_width="316dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
