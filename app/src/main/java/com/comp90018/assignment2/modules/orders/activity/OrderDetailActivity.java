@@ -7,6 +7,7 @@ import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.ClipData;
@@ -90,8 +91,12 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (seller_id.equals(current_user_id)) { //if buyer = current user
             binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
             binding.orderRefundAddr.setVisibility(View.GONE);
-            if(orderDTO.getStatus()==Constants.ON_REFUND){
+            if(orderDTO.getStatus()==Constants.ON_REFUND || orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING){
                 Toast.makeText(binding.getRoot().getContext(), "The buyer wants to refund this item", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                binding.orderAgreeBtn.setVisibility(View.GONE);
+                binding.orderDisagreeBtn.setVisibility(View.GONE);
             }
         }else if(buyer_id.equals(current_user_id)){
             binding.orderAgreeBtn.setVisibility(View.GONE);
@@ -99,8 +104,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
 
         // Refund - purchased
-        if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY){
+        if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY && orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT ){
             buttonColor(binding.orderRefundBtn);
+        }
+        if (orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT){
+            binding.orderRefundAddr.setVisibility(View.GONE);
         }
         binding.orderRefundBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -115,8 +123,32 @@ public class OrderDetailActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
                     startActivity(intent);
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "The item has already been shipped", Toast.LENGTH_SHORT).show();
+                }else if(orderDTO.getStatus()==Constants.SUCCESSFUL_NOT_COMMENT){
+                    String address = binding.refundAddress.getText().toString();
+                    String addressRegex = "^[a-zA-Z0-9 !?,.;@\"'()-]{0,40}$";
+                    // No password regex, because it is login
+                    if (!address.matches(addressRegex)) {
+                        new AlertDialog.Builder(OrderDetailActivity.this).setMessage("address should be letters, numbers, common symbols and space").setPositiveButton("ok", null).show();
+                        return;
+                    }else{
+                        db.collection(ORDERS_COLLECTION)
+                                .document(orderDTO.getId())
+                                .update("status", Constants.ON_REFUND_DELIVERING);
+                        orderDTO.setStatus(Constants.ON_REFUND_DELIVERING);
+                        buttonColor(binding.orderRefundBtn);
+                        Toast.makeText(binding.getRoot().getContext(), "We will notify your seller of the refund", Toast.LENGTH_SHORT).show();
+                        finish();
+                        Intent intent = new Intent(binding.getRoot().getContext(), PurchasedActivity.class);
+                        startActivity(intent);
+                    }
+
+                }else if((orderDTO.getStatus()==Constants.ON_REFUND) || (orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING)) {
+                    Toast.makeText(binding.getRoot().getContext(), "The item is refunding, please wait", Toast.LENGTH_SHORT).show();
+                }else if(orderDTO.getStatus()==Constants.REFUNDED){
+                    Toast.makeText(binding.getRoot().getContext(), "The item has been refunded", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(binding.getRoot().getContext(), "The item cannot refund now", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -129,11 +161,15 @@ public class OrderDetailActivity extends AppCompatActivity {
         binding.orderAgreeBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(orderDTO.getStatus()==Constants.ON_REFUND) {
+                if(orderDTO.getStatus()==Constants.ON_REFUND || orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING) {
                     db.collection(ORDERS_COLLECTION)
                             .document(orderDTO.getId())
                             .update("status", Constants.REFUNDED);
                     orderDTO.setStatus(Constants.REFUNDED);
+                    db.collection(PRODUCT_COLLECTION)
+                            .document(productDTO.getId())
+                            .update("status", Constants.PUBLISHED);
+                    productDTO.setStatus(Constants.PUBLISHED);
                     buttonColor(binding.orderAgreeBtn);
                     buttonColor(binding.orderDisagreeBtn);
                     Toast.makeText(binding.getRoot().getContext(), "You agreed to refund", Toast.LENGTH_SHORT).show();
@@ -160,7 +196,19 @@ public class OrderDetailActivity extends AppCompatActivity {
                     finish();
                     Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
                     startActivity(intent);
-                }else{
+                }else if(orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING){
+                    db.collection(ORDERS_COLLECTION)
+                            .document(orderDTO.getId())
+                            .update("status", Constants.SUCCESSFUL_NOT_COMMENT);
+                    orderDTO.setStatus(Constants.SUCCESSFUL_NOT_COMMENT);
+                    buttonColor(binding.orderAgreeBtn);
+                    buttonColor(binding.orderDisagreeBtn);
+                    Toast.makeText(binding.getRoot().getContext(), "You disagreed to refund", Toast.LENGTH_SHORT).show();
+                    finish();
+                    Intent intent = new Intent(binding.getRoot().getContext(), SoldActivity.class);
+                    startActivity(intent);
+                }
+                else{
                     Toast.makeText(binding.getRoot().getContext(), "The buyer did not request a refund", Toast.LENGTH_SHORT).show();
                 }
             }
