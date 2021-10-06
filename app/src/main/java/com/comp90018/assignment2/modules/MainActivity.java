@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.comp90018.assignment2.App;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.modules.categories.fragment.CategoriesFragment;
+import com.comp90018.assignment2.modules.publish.activity.PublishProductActivity;
 import com.comp90018.assignment2.modules.home.fragment.HomeFragment;
 import com.comp90018.assignment2.modules.messages.fragment.MessagesFragment;
 import com.comp90018.assignment2.modules.users.authentication.activity.LoginActivity;
@@ -173,10 +174,22 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.button_main_publish:
                         // publish button
+                        if(firebaseAuth.getCurrentUser() == null || JMessageClient.getMyInfo() == null) {
+                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
 
-                        /* TODO： start publish activity */
-                        Toast.makeText(MainActivity.this, "Start publish activity", Toast.LENGTH_SHORT).show();
-                        return;
+                            // prevent go into this fragment
+//                            checkedId = prevButtonId;
+                            binding.radioGroupMain.check(R.id.button_main_home);
+                            position = 0;
+                        } else {
+                            Toast.makeText(MainActivity.this, "Start publish activity", Toast.LENGTH_SHORT).show();
+                            Intent publishIntent = new Intent(MainActivity.this, PublishProductActivity.class);
+                            startActivity(publishIntent);
+                            binding.radioGroupMain.check(R.id.button_main_home);
+                            position = 0;
+                        }
+                        break;
                     default:
                         position = 0;
                         break;

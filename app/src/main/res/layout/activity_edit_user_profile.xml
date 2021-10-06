@@ -152,7 +152,6 @@
                             android:id="@+id/profile_female"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:checked="true"
                             android:text="Female"
                             android:textColor="#808080" />

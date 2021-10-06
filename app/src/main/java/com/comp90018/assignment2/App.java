@@ -26,7 +26,7 @@ public class App extends MultiDexApplication {
         mContext = this;
 
         // attach shared preference helper
-        sharedPreferencesHelper = new SharedPreferencesHelper(this);
+//        sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         /*
          * The SDK initializes and specifies whether message logging roaming is enabled.

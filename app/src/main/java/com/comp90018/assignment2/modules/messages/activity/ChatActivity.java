@@ -34,6 +34,7 @@ import com.comp90018.assignment2.modules.messages.adapter.RvChatAdapter;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
 import com.comp90018.assignment2.modules.messages.fragment.KeyboardMoreFragment;
 import com.comp90018.assignment2.modules.messages.view.RecordButtonTextView;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.DensityUtil;
 import com.comp90018.assignment2.utils.VoiceMessageUtil;
@@ -314,9 +315,9 @@ public class ChatActivity extends AppCompatActivity {
                 } else {
                     if (chatType == Constants.SINGLE_CHAT) {
                         if (targetUserDTO != null) {
-                            // TODO activity jumping
-//                        Intent goToUserPageActivity =
-                            Toast.makeText(ChatActivity.this, "jump to user:" + targetUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                            Intent goToUserPageIntent = new Intent(ChatActivity.this, UserPageActivity.class);
+                            goToUserPageIntent.putExtra("userDTO", targetUserDTO);
+                            startActivity(goToUserPageIntent);
                         }
                     }
                     // now there is only single chat type, no else.
@@ -486,9 +487,10 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent goToUserPageActivityIntent = new Intent();
-                // TODO: jump to user detail
                 if (targetUserDTO != null) {
-                    Toast.makeText(ChatActivity.this, "去用户首页:" + targetUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
+                    Intent goToUserPageIntent = new Intent(ChatActivity.this, UserPageActivity.class);
+                    goToUserPageIntent.putExtra("userDTO", targetUserDTO);
+                    startActivity(goToUserPageIntent);
                 }
             }
         });

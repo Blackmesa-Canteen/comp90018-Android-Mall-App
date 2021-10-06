@@ -32,7 +32,7 @@
             android:layout_marginBottom="10dp"
             android:text="Map"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:layout_weight="1"
             android:gravity="center"/>
 

@@ -27,7 +27,12 @@ import com.comp90018.assignment2.modules.orders.activity.PublishedActivity;
 import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
 import com.comp90018.assignment2.modules.orders.activity.SoldActivity;
 
+import com.comp90018.assignment2.modules.users.fans.activity.FollowedActivity;
+import com.comp90018.assignment2.modules.users.fans.activity.FollowingActivity;
+import com.comp90018.assignment2.modules.users.favorite.activity.FavoriteProductActivity;
 import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
+import com.comp90018.assignment2.utils.Constants;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -74,9 +79,14 @@ public class MeFragment extends BaseFragment {
     private TextView tv_nick_name;
     private TextView tv_loginID;
 
+    private TextView tv_followers;
+    private TextView tv_following;
+
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore db;
     private FirebaseStorage firebaseStorage;
+
+    private UserDTO currentUserDto;
 
 
     @Override
@@ -95,7 +105,7 @@ public class MeFragment extends BaseFragment {
         tv_sold = (LinearLayout) view.findViewById(R.id.tv_sold);
         tv_purchased = (LinearLayout) view.findViewById(R.id.tv_purchased);
         tv_favorate = (TextView) view.findViewById(R.id.tv_favorate);
-        tv_address = (TextView) view.findViewById(R.id.tv_address);
+//        tv_address = (TextView) view.findViewById(R.id.tv_address);
         tv_payment = (TextView) view.findViewById(R.id.tv_payment);
         tv_update = (TextView) view.findViewById(R.id.tv_update);
 //        tv_feedback = (TextView) view.findViewById(R.id.tv_feedback);
@@ -104,6 +114,8 @@ public class MeFragment extends BaseFragment {
         tv_logout = (Button) view.findViewById(R.id.tv_logout);
         tv_follower_number = (TextView) view.findViewById(R.id.tv_follower_number);
         tv_following_number = (TextView) view.findViewById(R.id.tv_following_number);
+        tv_followers = (TextView) view.findViewById(R.id.tv_followers);
+        tv_following = (TextView) view.findViewById(R.id.tv_following);
 
 
         tv_nick_name = (TextView) view.findViewById(R.id.tv_nick_name);
@@ -129,7 +141,7 @@ public class MeFragment extends BaseFragment {
         tv_update.setOnClickListener(onClick);
         tv_logout.setOnClickListener(onClick);
         tv_favorate.setOnClickListener(onClick);
-        tv_address.setOnClickListener(onClick);
+//        tv_address.setOnClickListener(onClick);
         tv_payment.setOnClickListener(onClick);
 //        tv_feedback.setOnClickListener(onClick);
         tv_setting.setOnClickListener(onClick);
@@ -170,13 +182,15 @@ public class MeFragment extends BaseFragment {
                 case R.id.ib_profile_arrow:  //点击profile或者箭头跳转用户个人信息
 
                 case R.id.tv_profile:
-                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
-
-                    break;
-
-//                    intent = new Intent(activityContext, profileActivity.class);
-//                    startActivity(intent);
+//                    Toast.makeText(activityContext, "用户个人信息", Toast.LENGTH_SHORT).show();
+//
 //                    break;
+                    if (currentUserDto != null) {
+                        Intent goToUserPage = new Intent(activityContext, UserPageActivity.class);
+                        goToUserPage.putExtra("userDTO", currentUserDto);
+                        startActivity(goToUserPage);
+                    }
+                    break;
                 case R.id.tv_published:
                     // go to published list
                     Intent goToPublishedIntent = new Intent(activityContext, PublishedActivity.class);
@@ -192,22 +206,26 @@ public class MeFragment extends BaseFragment {
                     break;
 //                点击publish，sold，purchased 分别跳转相应界面
                 case R.id.tv_favorate:
-                    Toast.makeText(activityContext, "收藏商品", Toast.LENGTH_SHORT).show();
+                    if (currentUserDto != null) {
+                        Intent goToFavoriteIntent = new Intent(activityContext, FavoriteProductActivity.class);
+                        goToFavoriteIntent.putExtra(Constants.DATA_A, currentUserDto);
+                        startActivity(goToFavoriteIntent);
+                    }
                     break;
-                case R.id.tv_address:
-                    Toast.makeText(activityContext, "送货地址", Toast.LENGTH_SHORT).show();
-                    break;
+//                case R.id.tv_address:
+//                    Toast.makeText(activityContext, "Delivery info", Toast.LENGTH_SHORT).show();
+//                    break;
                 case R.id.tv_payment:
-                    Toast.makeText(activityContext, "支付信息", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activityContext, "Billing Info", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.tv_setting:
-                    Toast.makeText(activityContext, "设置", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activityContext, "Settings", Toast.LENGTH_SHORT).show();
                     break;
 //                case R.id.tv_feedback:
 //                    Toast.makeText(activityContext, "反馈", Toast.LENGTH_SHORT).show();
 //                    break;
                 case R.id.tv_about:
-                    Toast.makeText(activityContext, "关于", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activityContext, "About", Toast.LENGTH_SHORT).show();
                     break;
 
                 case R.id.tv_update:
@@ -278,7 +296,7 @@ public class MeFragment extends BaseFragment {
      * @param documentSnapshot firebase query result
      */
     private void handleQueryResult(DocumentSnapshot documentSnapshot) {
-        UserDTO currentUserDto = documentSnapshot.toObject(UserDTO.class);
+        currentUserDto = documentSnapshot.toObject(UserDTO.class);
         String follower = String.valueOf(currentUserDto.getFollower_refs().size());
         String following = String.valueOf(currentUserDto.getFollowing_refs().size());
 
@@ -298,6 +316,36 @@ public class MeFragment extends BaseFragment {
         tv_nick_name.setText(currentUserDto.getNickname());
         tv_follower_number.setText(follower);
         tv_following_number.setText(following);
+
+        // go to follower/following activity
+        // go to following
+        View.OnClickListener goToFollowingEvent = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUserDto != null) {
+                    Intent goToFollowingIntent = new Intent(activityContext, FollowingActivity.class);
+                    goToFollowingIntent.putExtra(Constants.DATA_A, currentUserDto);
+                    startActivity(goToFollowingIntent);
+                }
+            }
+        };
+        // go to followed
+        View.OnClickListener goToFollowedEvent = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUserDto != null) {
+                    Intent goToFollowingIntent = new Intent(activityContext, FollowedActivity.class);
+                    goToFollowingIntent.putExtra(Constants.DATA_A, currentUserDto);
+                    startActivity(goToFollowingIntent);
+                }
+            }
+        };
+
+        tv_following.setOnClickListener(goToFollowingEvent);
+        tv_following_number.setOnClickListener(goToFollowingEvent);
+
+        tv_followers.setOnClickListener(goToFollowedEvent);
+        tv_follower_number.setOnClickListener(goToFollowedEvent);
     }
 
     @Override

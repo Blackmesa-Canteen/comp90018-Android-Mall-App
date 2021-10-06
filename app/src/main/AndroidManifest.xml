@@ -77,6 +77,13 @@
             android:name=".modules.users.me.activity.EditProfileActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
+            android:name=".modules.publish.activity.PublishProductActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
+            android:name=".modules.users.me.activity.UserPageActivity"
+            android:theme="@style/Theme.AppName.NoActionBar" />
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

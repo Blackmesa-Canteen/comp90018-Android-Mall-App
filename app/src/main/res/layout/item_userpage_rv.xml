@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:gravity="center">
+
+    <com.comp90018.assignment2.utils.view.OvalImageView
+        android:id="@+id/item_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_image"/>
+
+    <TextView
+        android:id="@+id/item_description"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:maxLines="2"
+        android:text="Loading, stand by..."/>
+
+    <LinearLayout
+        android:id="@+id/item_labels"
+        android:layout_width="150dp"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.donkingliang.labels.LabelsView
+            android:id="@+id/item_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:isIndicator="true"
+            app:labelBackground="@drawable/label_bg"
+            app:labelTextColor="@color/red"
+            app:labelTextPaddingBottom="2dp"
+            app:labelTextPaddingLeft="5dp"
+            app:labelTextPaddingRight="5dp"
+            app:labelTextPaddingTop="2dp"
+            app:labelTextSize="10dp"
+            app:lineMargin="3dp"
+            app:maxLines="1"
+            app:wordMargin="5dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_price_label"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:textColor="@color/red"
+            android:text="Loading..."
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/item_likes"
+            android:layout_width="50dp"
+            android:layout_height="20dp"
+            android:textSize="11sp"
+            android:text="loading..."
+            android:gravity="right" />
+    </LinearLayout>
+
+
+</LinearLayout>

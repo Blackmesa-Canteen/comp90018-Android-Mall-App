@@ -18,6 +18,7 @@ import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.product.adapter.ProductDetailAdapter;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -157,10 +158,11 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.pdtDetailBtnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        "Go Profile Page", Toast.LENGTH_SHORT);
-                toast.show();
+                if (userDTO != null) {
+                    Intent goToUserPageIntent = new Intent(ProductDetailActivity.this, UserPageActivity.class);
+                    goToUserPageIntent.putExtra("userDTO", userDTO);
+                    startActivity(goToUserPageIntent);
+                }
             }
         });
 
@@ -251,9 +253,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                         dialog.showInfo("This is your own product!");
                         return;
                     }
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Click Want this", Toast.LENGTH_SHORT);
-                    toast.show();
+
+                    // can't buy sold out item
+                    if (productDTO.getStatus() == Constants.PUBLISHED) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Click Want this", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        dialog.showWarn("This item is not on sale.");
+                    }
+
                 }
             }
         });
