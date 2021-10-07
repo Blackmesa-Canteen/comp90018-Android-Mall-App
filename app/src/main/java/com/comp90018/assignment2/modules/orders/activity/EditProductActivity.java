@@ -26,7 +26,12 @@ import com.comp90018.assignment2.databinding.ActivityEditProductBinding;
 import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
+import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.orders.adapter.ExistingPictureAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.CategoryArrayAdapter;
 import com.comp90018.assignment2.modules.orders.adapter.PictureCollectionAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.SubCategoryArrayAdapter;
+import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +50,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * EditProductActivity activity
@@ -69,7 +75,6 @@ public class EditProductActivity extends AppCompatActivity {
     private SubCategoryDTO selectedSubCategory;
     private FirebaseStorage firebaseStorage;
     private ArrayList<String> images = new ArrayList<>();
-    private PictureCollectionAdapter pictureCollectionAdapter;
     private List<LocalMedia> currentSelectLists;
 
     @SuppressLint("SetTextI18n")
@@ -87,7 +92,6 @@ public class EditProductActivity extends AppCompatActivity {
         binding.brand.setText(productDTO.getBrand());
         binding.description.setText(productDTO.getDescription());
         db = FirebaseFirestore.getInstance();
-
         pf_collection = view.findViewById(R.id.pf_collection);
         pf_add = view.findViewById(R.id.pf_add);
         pf_add.setOnClickListener(v -> PictureSelector.create(EditProductActivity.this)
@@ -99,16 +103,34 @@ public class EditProductActivity extends AppCompatActivity {
                 .selectionMode(PictureConfig.MULTIPLE)
                 .isPreviewImage(true)
                 .isCompress(true)
-                .withAspectRatio(1,1)
+                .withAspectRatio(1, 1)
                 .forResult(Constants.REQUEST_CODE_A));
 
-        // show process dialog
+        // show categories
         ProgressDialog progressDialog = new ProgressDialog(EditProductActivity.this);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait");
-
-        // show loading dialog
         progressDialog.show();
+        db.collection(Constants.CATEGORIES_COLLECTION)
+                .document(productDTO.getCategory_ref().getId())
+                .get().addOnCompleteListener(cate_task -> {
+            if (cate_task.isSuccessful()) {
+                selectedCategory = cate_task.getResult().toObject(CategoryDTO.class);
+            } else {
+                Log.d(TAG, "Error getting documents: ", cate_task.getException());
+            }
+        });
+
+        db.collection(Constants.SUB_CATEGORIES_COLLECTION)
+                .document(productDTO.getSub_category_ref().getId())
+                .get().addOnCompleteListener(subCate_task -> {
+            if (subCate_task.isSuccessful()) {
+                selectedSubCategory = subCate_task.getResult().toObject(SubCategoryDTO.class);
+            } else {
+                Log.d(TAG, "Error getting documents: ", subCate_task.getException());
+            }
+        });
+
         db.collection(Constants.CATEGORIES_COLLECTION).orderBy("name").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -132,57 +154,43 @@ public class EditProductActivity extends AppCompatActivity {
                         }
                     });
                     categoryBundles.put(category, subcategories);
+                    categorySpinner = findViewById(R.id.category);
+                    subcategorySpinner = findViewById(R.id.subcategory);
+                    categorySpinner.setAdapter(new CategoryArrayAdapter(this, android.R.layout.simple_spinner_item, categories, selectedCategory.getName()));
+                    //TODO: get selectedSubCategory data
+//                    subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this,
+//                            android.R.layout.simple_spinner_item,
+//                            categoryBundles.get(selectedCategory),
+//                            selectedSubCategory.getName()));
+//                    subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this, android.R.layout.simple_spinner_item, subCategoryDTOList, selectedSubCategory.getName()));
+//                    categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                        @Override
+//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                            selectedCategory = (CategoryDTO) parent.getSelectedItem();
+//                            List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
+//                            ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
+//                            subcategorySpinner.setAdapter(subCategoryAdapter);
+//                            subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                                @Override
+//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                                    selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
+//                                }
+//                                @Override
+//                                public void onNothingSelected(AdapterView<?> adapterView) {
+//                                }
+//                            });
+//                        }
+//                        @Override
+//                        public void onNothingSelected(AdapterView<?> adapterView) {
+//                        }
+//                    });
                 }
-                db.collection(Constants.PRODUCT_COLLECTION)
-                        .document(productDTO.getCategory_ref().getId())
-                        .get().addOnCompleteListener(cate_task -> {
-                    if (cate_task.isSuccessful()) {
-                        selectedCategory = cate_task.getResult().toObject(CategoryDTO.class);
-                        db.collection(Constants.PRODUCT_COLLECTION)
-                                .document(productDTO.getSub_category_ref().getId())
-                                .get().addOnCompleteListener(subCate_task -> {
-                            if (subCate_task.isSuccessful()) {
-                                selectedSubCategory = subCate_task.getResult().toObject(SubCategoryDTO.class);
-                                categorySpinner = (Spinner) findViewById(R.id.category);
-                                subcategorySpinner = (Spinner) findViewById(R.id.subcategory);
-                                ArrayAdapter<CategoryDTO> dataAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, categories);
-                                categorySpinner.setAdapter(dataAdapter);
-                                // TODO: set category history
-                                categorySpinner.setSelection(1);
-                                categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                                        selectedCategory = (CategoryDTO) parent.getSelectedItem();
-                                        List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
-                                        ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
-                                        subcategorySpinner.setAdapter(subCategoryAdapter);
-                                        subcategorySpinner.setSelection(1);
-                                        subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                            @Override
-                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-                                                selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
-                                            }
-                                            @Override
-                                            public void onNothingSelected(AdapterView<?> adapterView) {
-                                            }
-                                        });
-                                    }
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> adapterView) {
-                                    }
-                                });
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        });
-                        } else {
-                        Log.d(TAG, "Error getting documents: ", task.getException());
-                    }
-                });
             } else {
                 Log.d(TAG, "Error getting documents: ", task.getException());
             }
         });
+
+        // show status
         switch (productDTO.getStatus()) {
             case Constants.HEAVILY_USED:
                 binding.quality.setSelection(1);
@@ -205,14 +213,14 @@ public class EditProductActivity extends AppCompatActivity {
         }
 
         images = productDTO.getImage_address();
-        PictureCollectionAdapter pictureCollectionAdapter = new PictureCollectionAdapter(this, images);
+        ExistingPictureAdapter pictureCollectionAdapter = new ExistingPictureAdapter(this, images);
         binding.pfCollection.setAdapter(pictureCollectionAdapter);
         GridLayoutManager manager = new GridLayoutManager(this, 2);
         binding.pfCollection.setLayoutManager(manager);
 
         binding.upload.setOnClickListener(v1 -> {
             if (currentSelectLists == null || currentSelectLists.get(0) == null) {
-                new AlertDialog.Builder(EditProductActivity.this).setMessage("select at least one picture to upload").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Reselect pictures and upload").setPositiveButton("ok", null).show();
                 return;
             } else {
                 progressDialog.setTitle("Updating product pictures...");
@@ -244,7 +252,6 @@ public class EditProductActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: republish();
         binding.btnPublish.setOnClickListener(v2 -> {
             String price = binding.price.getText().toString();
             String brand = binding.brand.getText().toString();
@@ -296,19 +303,46 @@ public class EditProductActivity extends AppCompatActivity {
                 new AlertDialog.Builder(EditProductActivity.this).setMessage("One uploaded picture required").setPositiveButton("ok", null).show();
                 return;
             } else {
-                ProductDTO newProductDTO = ProductDTO.builder()
-                        .price(Double.parseDouble(price))
-                        .brand(brand)
-                        .quality(qualityCode)
-                        .description(description)
-                        .publish_time(Timestamp.now())
-                        .image_address(images)
-                        .category_ref(db.document("categories/" + selectedCategory.getCategory_id()))
-                        .sub_category_ref(db.document("sub_categories/" + selectedSubCategory.getSubcategory_id()))
-                        .build();
+                ProgressDialog publishProgressDialog = new ProgressDialog(EditProductActivity.this);
+                publishProgressDialog.setTitle("Publish...");
+                publishProgressDialog.setMessage("Please wait");
+                db.collection(Constants.PRODUCT_COLLECTION)
+                        .document(productDTO.getId())
+                        .update(
+                                "price", Double.parseDouble(price),
+                                "brand", brand,
+                                "quality", qualityCode,
+                                "description", description,
+                                "publish_time", Timestamp.now(),
+                                "image_address", images,
+                                "category_ref", db.document("categories/" + selectedCategory.getCategory_id()),
+                                "sub_category_ref", db.document("sub_categories/" + selectedSubCategory.getSubcategory_id())
+                        ).addOnSuccessListener(aVoid -> {
+                    publishProgressDialog.dismiss();
+                    productDTO.getOwner_ref().get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            UserDTO userDTO = task.getResult().toObject(UserDTO.class);
+                            finish();
+                            Intent publishProductIntent = new Intent(EditProductActivity.this, ProductDetailActivity.class);
+                            publishProductIntent.putExtra("productDTO", productDTO);
+                            publishProductIntent.putExtra("userDTO", userDTO);
+                            startActivity(publishProductIntent);
+                        } else {
+                            Log.w(TAG, "db connection failed");
+                        }
+                    });
+                }).addOnFailureListener(e -> {
+                    publishProgressDialog.dismiss();
+                    Log.w(TAG, "Create product:failed", e);
+                    new AlertDialog.Builder(EditProductActivity.this)
+                            .setTitle("Sorry")
+                            .setMessage("Database network issue, please try again later")
+                            .setPositiveButton("Ok", null).show();
+                });
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -316,11 +350,9 @@ public class EditProductActivity extends AppCompatActivity {
             return;
         }
         switch (requestCode) {
-            //TODO：display new selected - currentSelectLists - consider set new Adapter
             case Constants.REQUEST_CODE_A:
                 currentSelectLists = PictureSelector.obtainMultipleResult(data);
-                pictureCollectionAdapter = new PictureCollectionAdapter(this, images);
-                pf_collection.setAdapter(pictureCollectionAdapter);
+                binding.pfCollection.setAdapter(new PictureCollectionAdapter(this, currentSelectLists));
                 GridLayoutManager manager = new GridLayoutManager(this, 2);
                 pf_collection.setLayoutManager(manager);
                 break;

@@ -336,7 +336,7 @@ public class PublishProductActivity extends AppCompatActivity {
                                publishProductIntent.putExtra("userDTO", userDTO);
                                startActivity(publishProductIntent);
                            } else {
-                               Log.w(TAG, "user info db connection failed");
+                               Log.w(TAG, "db connection failed");
                            }
                        });
                }).addOnFailureListener(e -> {

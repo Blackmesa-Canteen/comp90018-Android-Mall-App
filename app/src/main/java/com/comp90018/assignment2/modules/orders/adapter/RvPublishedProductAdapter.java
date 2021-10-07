@@ -99,7 +99,6 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 showViewsForPublished(helper, buttonR, buttonL, buttonS);
 
                 // go to product edit page
-                // TODO go to product edit activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -172,7 +171,6 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 showViewsForPending(helper, buttonR, buttonL, buttonS);
 
                 // go to product edit page
-                // TODO go to product edit activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

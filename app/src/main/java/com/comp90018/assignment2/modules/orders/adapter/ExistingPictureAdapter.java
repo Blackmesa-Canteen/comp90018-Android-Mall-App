@@ -1,6 +1,5 @@
 package com.comp90018.assignment2.modules.orders.adapter;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,42 +11,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
-import com.luck.picture.lib.entity.LocalMedia;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Ziyuan Xu
  */
-public class PictureCollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ExistingPictureAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = "PictureCollectionAdapter";
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
-    private List<LocalMedia> collection;
+    private ArrayList<String> images;
+    private FirebaseStorage firebaseStorage;
 
-    public PictureCollectionAdapter(Context mContext, List<LocalMedia> collection) {
+    public ExistingPictureAdapter(Context mContext, ArrayList<String> images) {
         this.mContext = mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
-        if (collection.size() > 0) {
-            this.collection = collection;
+        if (images.size() > 0) {
+            this.images = images;
         }
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        firebaseStorage = FirebaseStorage.getInstance();
         return new PictureCollectionViewHolder(mLayoutInflater.inflate(R.layout.item_picture_gallery, null), mContext);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         PictureCollectionViewHolder pictureCollectionViewHolder = (PictureCollectionViewHolder) holder;
-        pictureCollectionViewHolder.setData(collection, position);
+        pictureCollectionViewHolder.setData(images, position);
     }
 
     @Override
     public int getItemCount() {
-        return collection.size();
+        return images.size();
     }
 
     class PictureCollectionViewHolder extends RecyclerView.ViewHolder {
@@ -60,9 +62,10 @@ public class PictureCollectionAdapter extends RecyclerView.Adapter<RecyclerView.
             pg_image = itemView.findViewById(R.id.pg_image);
         }
 
-        public void setData(List<LocalMedia> collection, final int position) {
-            Glide.with(mContext).load(collection.get(position).getPath())
-                    .override(80, 80).centerCrop().into(pg_image);
+        public void setData(ArrayList<String> images, final int position) {
+            StorageReference imgReference = firebaseStorage.getReferenceFromUrl(images.get(position));
+            Glide.with(mContext).load(imgReference).override(80, 80)
+                    .centerCrop().into(pg_image);
         }
     }
 }
