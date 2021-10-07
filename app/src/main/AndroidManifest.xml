@@ -85,8 +85,7 @@
             android:exported="true" />
         <activity android:name=".modules.search.activity.SearchProductActivity" />
         <activity
-            android:name=".modules.search.activity.SearchResultActivity"
-            android:launchMode="singleInstance" />
+            android:name=".modules.search.activity.SearchResultActivity" />
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
             android:launchMode="singleInstance"
