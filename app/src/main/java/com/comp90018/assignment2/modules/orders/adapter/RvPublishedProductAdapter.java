@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.orders.activity.EditProductActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
@@ -98,12 +99,13 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 showViewsForPublished(helper, buttonR, buttonL, buttonS);
 
                 // go to product edit page
-                // TODO go to product edit activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Go to product edit", Toast.LENGTH_SHORT).show();
-
+                        Intent editProductIntent = new Intent(context, EditProductActivity.class);
+                        editProductIntent.putExtra("productDTO", productDTO);
+                        context.startActivity(editProductIntent);
                         // do not need to refresh, because
                         // it goes to another activity, so onResume will be called
                     }
@@ -169,12 +171,13 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 showViewsForPending(helper, buttonR, buttonL, buttonS);
 
                 // go to product edit page
-                // TODO go to product edit activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context, "Go to product edit", Toast.LENGTH_SHORT).show();
-
+                        Intent editProductIntent = new Intent(context, EditProductActivity.class);
+                        editProductIntent.putExtra("productDTO", productDTO);
+                        context.startActivity(editProductIntent);
                         // do not need to refresh, because
                         // it goes to another activity, so onResume will be called
                     }

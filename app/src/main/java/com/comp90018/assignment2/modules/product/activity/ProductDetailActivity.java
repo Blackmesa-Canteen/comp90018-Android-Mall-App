@@ -118,7 +118,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.tvPdtDetailPrice.setText("$" + productDTO.getPrice().toString());
         binding.tvPdtDetailDescription.setText(productDTO.getDescription());
         binding.tvPdtDetailBrand.setText("Brand: " + productDTO.getBrand());
-        switch (productDTO.getStatus()) {
+        switch (productDTO.getQuality()) {
             case Constants.HEAVILY_USED:
                 binding.tvPdtDetailStatus.setText("Status: Heavily used");
                 break;
