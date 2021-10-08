@@ -1,13 +1,9 @@
-package com.comp90018.assignment2.modules.publish.activity;
+package com.comp90018.assignment2.modules.orders.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,24 +22,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.config.GlideEngine;
-import com.comp90018.assignment2.databinding.ActivityPublishProductBinding;
+import com.comp90018.assignment2.databinding.ActivityEditProductBinding;
 import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
-
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.location.utils.LocationHelper;
+import com.comp90018.assignment2.modules.orders.adapter.CategoryArrayAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.ExistingPictureAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.PictureCollectionAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.SubCategoryArrayAdapter;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
-import com.comp90018.assignment2.modules.publish.adapter.PictureCollectionAdapter;
 import com.comp90018.assignment2.utils.Constants;
-import com.firebase.geofire.GeoFireUtils;
-import com.firebase.geofire.GeoLocation;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -59,49 +52,47 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * EditProductActivity activity
+ *
+ * Need input a productDTO
+ *
  * @author Ziyuan Xu
  */
-public class PublishProductActivity extends AppCompatActivity {
-    private final static String TAG = "PublishProductActivity";
-    private ActivityPublishProductBinding binding;
-    private FirebaseStorage firebaseStorage;
-    private FirebaseAuth firebaseAuth;
-    FirebaseFirestore db;
-    private Spinner categorySpinner;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    private Spinner subcategorySpinner;
+
+public class EditProductActivity extends AppCompatActivity {
+    private static final String TAG = "EditProductActivity";
+    private FirebaseFirestore db;
+    private ActivityEditProductBinding binding;
     private List<CategoryDTO> categories = new ArrayList<>();
     private Map<CategoryDTO, List<SubCategoryDTO>> categoryBundles = new HashMap<>();
-    private CategoryDTO selectedCategory;
-    private SubCategoryDTO selectedSubCategory;
-    private List<LocalMedia> currentSelectLists;
+    private Spinner subcategorySpinner;
+    private Spinner categorySpinner;
     private ImageView pf_add;
     private RecyclerView pf_collection;
+    private CategoryDTO selectedCategory;
+    private SubCategoryDTO selectedSubCategory;
+    private FirebaseStorage firebaseStorage;
     private ArrayList<String> images = new ArrayList<>();
-    private UserDTO userDTO = null;
-    private double lat = -37.840935;
-    private double lng = 144.946457;
-    private String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
-    private String location_text = "Melbourne";
+    private List<LocalMedia> currentSelectLists;
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("SetTextI18n")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_publish_product);
-
-        // init view binding
-        binding = ActivityPublishProductBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_edit_product);
+        binding = ActivityEditProductBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-        // attach to layout file
         setContentView(view);
+        Intent intent = getIntent();
+        ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
+        firebaseStorage = FirebaseStorage.getInstance();
+        binding.price.setText(productDTO.getPrice().toString());
+        binding.brand.setText(productDTO.getBrand());
+        binding.description.setText(productDTO.getDescription());
+        db = FirebaseFirestore.getInstance();
         pf_collection = view.findViewById(R.id.pf_collection);
         pf_add = view.findViewById(R.id.pf_add);
-        pf_add.setOnClickListener(v -> PictureSelector.create(PublishProductActivity.this)
+        pf_add.setOnClickListener(v -> PictureSelector.create(EditProductActivity.this)
                 .openGallery(PictureMimeType.ofImage())
                 .imageEngine(GlideEngine.createGlideEngine())
                 .maxSelectNum(4)
@@ -110,20 +101,35 @@ public class PublishProductActivity extends AppCompatActivity {
                 .selectionMode(PictureConfig.MULTIPLE)
                 .isPreviewImage(true)
                 .isCompress(true)
-                .withAspectRatio(1,1)
+                .withAspectRatio(1, 1)
                 .forResult(Constants.REQUEST_CODE_A));
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-        db = FirebaseFirestore.getInstance();
-
-        // show process dialog
-        ProgressDialog progressDialog = new ProgressDialog(PublishProductActivity.this);
+        // show categories
+        ProgressDialog progressDialog = new ProgressDialog(EditProductActivity.this);
         progressDialog.setTitle("Loading");
         progressDialog.setMessage("Please wait");
-
-        // show loading dialog
         progressDialog.show();
+        db.collection(Constants.CATEGORIES_COLLECTION)
+                .document(productDTO.getCategory_ref().getId())
+                .get().addOnCompleteListener(cate_task -> {
+            if (cate_task.isSuccessful()) {
+                selectedCategory = cate_task.getResult().toObject(CategoryDTO.class);
+                selectedCategory.setCategory_id(productDTO.getCategory_ref().getId());
+            } else {
+                Log.d(TAG, "Error getting documents: ", cate_task.getException());
+            }
+        });
+
+        db.collection(Constants.SUB_CATEGORIES_COLLECTION)
+                .document(productDTO.getSub_category_ref().getId())
+                .get().addOnCompleteListener(subCate_task -> {
+            if (subCate_task.isSuccessful()) {
+                selectedSubCategory = subCate_task.getResult().toObject(SubCategoryDTO.class);
+            } else {
+                Log.d(TAG, "Error getting documents: ", subCate_task.getException());
+            }
+        });
+
         db.collection(Constants.CATEGORIES_COLLECTION).orderBy("name").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -141,6 +147,13 @@ public class PublishProductActivity extends AppCompatActivity {
                                 subcategory.setSubcategory_id(sub_document.getId());
                                 subcategories.add(subcategory);
                             }
+                            if (category.getName().equals(selectedCategory.getName())) {
+                                subcategorySpinner = findViewById(R.id.subcategory);
+                                subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this,
+                                        android.R.layout.simple_spinner_item,
+                                        subcategories,
+                                        selectedSubCategory.getName()));
+                            }
                             progressDialog.dismiss();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -148,28 +161,28 @@ public class PublishProductActivity extends AppCompatActivity {
                     });
                     categoryBundles.put(category, subcategories);
                 }
-                categorySpinner = (Spinner) findViewById(R.id.category);
-                subcategorySpinner = (Spinner) findViewById(R.id.subcategory);
-                ArrayAdapter<CategoryDTO> dataAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, categories);
-                categorySpinner.setAdapter(dataAdapter);
+                categorySpinner = findViewById(R.id.category);
+                categorySpinner.setAdapter(new CategoryArrayAdapter(this, android.R.layout.simple_spinner_item, categories, selectedCategory.getName()));
                 categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                         selectedCategory = (CategoryDTO) parent.getSelectedItem();
                         List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
-                        ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(PublishProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
+                        subcategorySpinner = findViewById(R.id.subcategory);
+                        ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
                         subcategorySpinner.setAdapter(subCategoryAdapter);
                         subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
                                 selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
                             }
+
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
                             }
                         });
                     }
+
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
                     }
@@ -179,9 +192,36 @@ public class PublishProductActivity extends AppCompatActivity {
             }
         });
 
+        // show status
+        switch (productDTO.getQuality()) {
+            case Constants.HEAVILY_USED:
+                binding.quality.setSelection(0);
+                break;
+            case Constants.WELL_USED:
+                binding.quality.setSelection(1);
+                break;
+            case Constants.AVERAGE_CONDITION:
+                binding.quality.setSelection(2);
+                break;
+            case Constants.SLIGHTLY_USED:
+                binding.quality.setSelection(3);
+                break;
+            case Constants.EXCELLENT:
+                binding.quality.setSelection(4);
+                break;
+            default:
+                binding.quality.setSelection(2);
+                break;
+        }
+        images = productDTO.getImage_address();
+        ExistingPictureAdapter pictureCollectionAdapter = new ExistingPictureAdapter(this, images);
+        binding.pfCollection.setAdapter(pictureCollectionAdapter);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        binding.pfCollection.setLayoutManager(manager);
+
         binding.upload.setOnClickListener(v1 -> {
             if (currentSelectLists == null || currentSelectLists.get(0) == null) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("select at least one picture to upload").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Reselect pictures and upload").setPositiveButton("ok", null).show();
                 return;
             } else {
                 progressDialog.setTitle("Updating product pictures...");
@@ -203,9 +243,9 @@ public class PublishProductActivity extends AppCompatActivity {
                         // update image
                         images.add(imageUrl);
                         progressDialog.dismiss();
-                        Toast.makeText(PublishProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProductActivity.this, "Image updated Successfully", Toast.LENGTH_SHORT).show();
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(PublishProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProductActivity.this, "Image Uploaded failed.", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                         return;
                     });
@@ -220,23 +260,23 @@ public class PublishProductActivity extends AppCompatActivity {
             String quality = binding.quality.getSelectedItem().toString();
 
             if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0 || selectedCategory == null || selectedSubCategory == null) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("Please enter all information.").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Please enter all information.").setPositiveButton("ok", null).show();
                 return;
             }
 
             String priceRegex = "(-?\\d+\\.?\\d{0,2})";
             if (!price.matches(priceRegex)) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("Please input correct price.").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Please input correct price.").setPositiveButton("ok", null).show();
                 return;
             }
 
             if (brand.length() >= 20) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("Brand: At most 20 characters").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Brand: At most 20 characters").setPositiveButton("ok", null).show();
                 return;
             }
 
             if (description.length() >= 80) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("Description: At most 80 characters").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("Description: At most 80 characters").setPositiveButton("ok", null).show();
                 return;
             }
 
@@ -263,34 +303,53 @@ public class PublishProductActivity extends AppCompatActivity {
 
             // update images
             if (images == null || images.size() == 0) {
-                new AlertDialog.Builder(PublishProductActivity.this).setMessage("One uploaded picture required").setPositiveButton("ok", null).show();
+                new AlertDialog.Builder(EditProductActivity.this).setMessage("One uploaded picture required").setPositiveButton("ok", null).show();
                 return;
             } else {
-                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                DocumentReference userReference = db.collection(Constants.USERS_COLLECTION).document(currentUser.getUid());
-                ProductDTO newProductDTO = ProductDTO.builder()
-                        .owner_ref(userReference)
-                        .price(Double.parseDouble(price))
-                        .brand(brand)
-                        .quality(qualityCode)
-                        .description(description)
-                        .publish_time(Timestamp.now())
-                        .image_address(images)
-                        .category_ref(db.document("categories/" + selectedCategory.getCategory_id()))
-                        .sub_category_ref(db.document("sub_categories/" + selectedSubCategory.getSubcategory_id()))
-                        .view_number(0)
-                        .status(0)
-                        .favorite_number(0)
-                        .currency(0)
-                        .status(0)
-                        .geo_hash(hash)
-                        .lat(lat)
-                        .lng(lng)
-                        .star_number(0.0)
-                        .location_coordinate(new GeoPoint(lat, lng))
-                        .location_text(location_text)
-                        .build();
-                publish(newProductDTO);
+                ProgressDialog publishProgressDialog = new ProgressDialog(EditProductActivity.this);
+                publishProgressDialog.setTitle("Publish...");
+                publishProgressDialog.setMessage("Please wait");
+                db.collection(Constants.PRODUCT_COLLECTION)
+                        .document(productDTO.getId())
+                        .update(
+                                "price", Double.parseDouble(price),
+                                "brand", brand,
+                                "quality", qualityCode,
+                                "description", description,
+                                "publish_time", Timestamp.now(),
+                                "image_address", images,
+                                "category_ref", db.document("categories/" + selectedCategory.getCategory_id()),
+                                "sub_category_ref", db.document("sub_categories/" + selectedSubCategory.getSubcategory_id())
+                        ).addOnSuccessListener(aVoid -> {
+                    productDTO.getOwner_ref().get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            UserDTO userDTO = task.getResult().toObject(UserDTO.class);
+                            db.collection(Constants.PRODUCT_COLLECTION)
+                                    .document(productDTO.getId()).get().addOnCompleteListener(product_task -> {
+                                if (product_task.isSuccessful()) {
+                                    ProductDTO newProductDTO = product_task.getResult().toObject(ProductDTO.class);
+                                    publishProgressDialog.dismiss();
+                                    finish();
+                                    Intent publishProductIntent = new Intent(EditProductActivity.this, ProductDetailActivity.class);
+                                    publishProductIntent.putExtra("productDTO", newProductDTO);
+                                    publishProductIntent.putExtra("userDTO", userDTO);
+                                    startActivity(publishProductIntent);
+                                } else {
+                                    Log.w(TAG, "db connection failed");
+                                }
+                            });
+                        } else {
+                            Log.w(TAG, "db connection failed");
+                        }
+                    });
+                }).addOnFailureListener(e -> {
+                    publishProgressDialog.dismiss();
+                    Log.w(TAG, "Create product:failed", e);
+                    new AlertDialog.Builder(EditProductActivity.this)
+                            .setTitle("Sorry")
+                            .setMessage("Database network issue, please try again later")
+                            .setPositiveButton("Ok", null).show();
+                });
             }
         });
     }
@@ -304,9 +363,7 @@ public class PublishProductActivity extends AppCompatActivity {
         switch (requestCode) {
             case Constants.REQUEST_CODE_A:
                 currentSelectLists = PictureSelector.obtainMultipleResult(data);
-                PictureCollectionAdapter pictureCollectionAdapter = new PictureCollectionAdapter(this,
-                        currentSelectLists);
-                pf_collection.setAdapter(pictureCollectionAdapter);
+                binding.pfCollection.setAdapter(new PictureCollectionAdapter(this, currentSelectLists));
                 GridLayoutManager manager = new GridLayoutManager(this, 2);
                 pf_collection.setLayoutManager(manager);
                 break;
@@ -314,48 +371,4 @@ public class PublishProductActivity extends AppCompatActivity {
                 break;
         }
     }
-    private void publish(ProductDTO productDTO){
-        ProgressDialog publishProgressDialog = new ProgressDialog(PublishProductActivity.this);
-        publishProgressDialog.setTitle("Publish...");
-        publishProgressDialog.setMessage("Please wait");
-        db.collection(Constants.PRODUCT_COLLECTION)
-               .add(productDTO)
-               .addOnSuccessListener(documentReference -> {
-                   Log.d(TAG, "Product created with ID: "+ documentReference.getId());
-                       db.collection(Constants.PRODUCT_COLLECTION)
-                               .document(documentReference.getId())
-                               .update("id", documentReference.getId());
-                      // finish the activity
-                       publishProgressDialog.dismiss();
-                       productDTO.getOwner_ref().get().addOnCompleteListener(task -> {
-                           if (task.isSuccessful()) {
-                               userDTO = task.getResult().toObject(UserDTO.class);
-                               finish();
-                               Intent publishProductIntent = new Intent(PublishProductActivity.this, ProductDetailActivity.class);
-                               publishProductIntent.putExtra("productDTO", productDTO);
-                               publishProductIntent.putExtra("userDTO", userDTO);
-                               startActivity(publishProductIntent);
-                           } else {
-                               Log.w(TAG, "db connection failed");
-                           }
-                       });
-               }).addOnFailureListener(e -> {
-                      publishProgressDialog.dismiss();
-                      Log.w(TAG, "Create product:failed", e);
-                      new AlertDialog.Builder(PublishProductActivity.this)
-                              .setTitle("Sorry")
-                              .setMessage("Database network issue, please try again later")
-                              .setPositiveButton("Ok", null).show();
-               });
-    }
-    public class MyLocationListener implements LocationListener {
-        @Override
-        public void onLocationChanged(Location loc) {
-            lng =  loc.getLongitude();
-            lat = loc.getLatitude();
-            hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lng));
-            LocationHelper.getTextAddressWithCoordinate(
-                    lat, lng, locationBean -> location_text = locationBean.getTextAddress()
-            );
-        }}
 }

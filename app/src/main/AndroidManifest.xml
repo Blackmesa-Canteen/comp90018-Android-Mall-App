@@ -101,6 +101,10 @@
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
+            android:name=".modules.orders.activity.EditProductActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
             android:name=".modules.publish.activity.PublishProductActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
