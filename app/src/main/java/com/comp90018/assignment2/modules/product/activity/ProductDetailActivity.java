@@ -17,6 +17,8 @@ import com.comp90018.assignment2.databinding.ActivityProductDetailBinding;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
+import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
+import com.comp90018.assignment2.modules.orders.activity.PlaceOrderActivity;
 import com.comp90018.assignment2.modules.product.adapter.ProductDetailAdapter;
 import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
@@ -264,6 +266,12 @@ public class ProductDetailActivity extends AppCompatActivity {
                     }
 
                 }
+                Intent goToPlaceOrderIntent = new Intent(ProductDetailActivity.this, PlaceOrderActivity.class);
+                goToPlaceOrderIntent.putExtra("userDTO", userDTO);
+                goToPlaceOrderIntent.putExtra("productDTO", productDTO);
+                goToPlaceOrderIntent.putExtra("currentUserDTO", currentUserDTO);
+                startActivity(goToPlaceOrderIntent);
+
             }
         });
 
