@@ -34,15 +34,17 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * get List of productDTO from bundle and show results
+ *
  * @author xiaotian
  */
 public class SearchResultActivity extends AppCompatActivity {
 
     private ActivitySearchResultBinding binding;
 
-    /** This list will be given by bundle extra from the other activity */
+    /**
+     * This list will be given by bundle extra from the other activity
+     */
     List<ProductDTO> productDTOList;
 
     private RecyclerView recyclerView;
@@ -104,10 +106,27 @@ public class SearchResultActivity extends AppCompatActivity {
         productDTOList = intent.getParcelableArrayListExtra("productDTOList");
 
         if (productDTOList != null && productDTOList.size() > 0) {
-            textNoResult.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
+            // purify productDTOs: only shows published one
+            List<ProductDTO> publishedProductDTOList = new ArrayList<>();
 
-            processData(productDTOList);
+            // only store published products
+            for (ProductDTO productDTO : productDTOList) {
+                if (productDTO.getStatus() == Constants.PUBLISHED) {
+                    publishedProductDTOList.add(productDTO);
+                }
+            }
+
+            if (publishedProductDTOList.size() > 0) {
+                // only show published product result
+                textNoResult.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+
+                processData(publishedProductDTOList);
+            } else {
+                // show empty result alert
+                recyclerView.setVisibility(View.GONE);
+                textNoResult.setVisibility(View.VISIBLE);
+            }
 
             // dismiss loding dialog
             progressDialog.dismiss();
@@ -130,7 +149,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         List<ProductDTO> productDTOList = new ArrayList<>();
-                        for (QueryDocumentSnapshot document: task.getResult()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             productDTOList.add(document.toObject(ProductDTO.class));
                         }
 
@@ -151,19 +170,9 @@ public class SearchResultActivity extends AppCompatActivity {
     /**
      * setup adapter, attach data to view.
      *
-     * @param productDTOList
+     * @param publishedProductDTOList PUBLISHED product dtos
      */
-    private void processData(List<ProductDTO> productDTOList) {
-
-        // product status filter
-        List<ProductDTO> publishedProductDTOList = new ArrayList<>();
-
-        // only store published products
-        for (ProductDTO productDTO : productDTOList) {
-            if (productDTO.getStatus() == Constants.PUBLISHED) {
-                publishedProductDTOList.add(productDTO);
-            }
-        }
+    private void processData(List<ProductDTO> publishedProductDTOList) {
 
         adapter = new SearchResultRvAdapter(this, publishedProductDTOList);
         recyclerView.setAdapter(adapter);
@@ -176,7 +185,7 @@ public class SearchResultActivity extends AppCompatActivity {
         // every time finished query, refresh adapter
         for (int index = 0; index < publishedProductDTOList.size(); index++) {
 
-            ProductDTO productDTO =  publishedProductDTOList.get(index);
+            ProductDTO productDTO = publishedProductDTOList.get(index);
             int finalIndex = index;
             productDTO.getOwner_ref().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override

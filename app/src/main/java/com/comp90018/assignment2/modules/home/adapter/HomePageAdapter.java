@@ -6,22 +6,29 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.donkingliang.labels.LabelsView;
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -134,6 +141,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             // set product img
             // if default img
             if (productDTO.getImage_address() == null
+                    || productDTO.getImage_address().size() == 0
                     || productDTO.getImage_address().get(0) == null
                     || productDTO.getImage_address().get(0).equals("")
                     || productDTO.getImage_address().get(0).equals("default")
@@ -270,10 +278,10 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             }
 
             // This field is used to get geohash of products
+
             /*
-            location_coordinate = productDTO.getLocation_coordinate();
-            lat = location_coordinate.getLatitude();
-            lon = location_coordinate.getLongitude();
+            lat = productDTO.getLat();
+            lon = productDTO.getLng();
             //System.out.println("location_coordinate: "+location_coordinate+" # "+lat+ " # " +lon);
             String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(lat, lon));
             // Add the hash and the lat/lng to the document. We will use the hash
@@ -316,10 +324,14 @@ public class HomePageAdapter extends RecyclerView.Adapter {
             View.OnClickListener goToUserPageActivityListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "clicked user:" + finalUserDTO.getEmail(), Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Clicked u:" + finalUserDTO.getEmail());
+                    Intent goToUserPage = new Intent(context, UserPageActivity.class);
+                    goToUserPage.putExtra("userDTO", finalUserDTO);
+                    context.startActivity(goToUserPage);
+
                 }
             };
+
+
 
             // wait for userDTO loaded, then attach listener
             if (finalUserDTO != null) {

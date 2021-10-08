@@ -12,9 +12,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -28,6 +30,7 @@ import lombok.ToString;
  *
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -38,7 +41,7 @@ public class ProductDTO implements Parcelable {
     private Integer currency;
     private String description;
     private Integer favorite_number;
-    private List<String> image_address;
+    private ArrayList<String> image_address;
     @Deprecated
     private GeoPoint location_coordinate;
     private String location_text;
@@ -55,7 +58,6 @@ public class ProductDTO implements Parcelable {
 
     private Double lat;
     private Double lng;
-    FirebaseFirestore db;
 
     protected ProductDTO(Parcel in) {
         id = in.readString();
@@ -218,6 +220,5 @@ public class ProductDTO implements Parcelable {
         }
 
         dest.writeString(geo_hash);
-        System.out.println("location_coordinate:" +location_coordinate);
     }
 }

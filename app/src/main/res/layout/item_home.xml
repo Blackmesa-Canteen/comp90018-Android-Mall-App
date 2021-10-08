@@ -13,7 +13,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:scaleType="fitXY"
-        android:src="@drawable/default_image"/>
+        android:src="@drawable/default_image" />
 
     <TextView
         android:id="@+id/item_description"
@@ -61,13 +61,13 @@
             android:layout_height="30dp"
             android:textColor="@color/red"
             android:text="Loading..."
-            android:textSize="22dp"/>
+            android:textSize="22sp"/>
 
         <TextView
             android:id="@+id/item_likes"
             android:layout_width="50dp"
             android:layout_height="20dp"
-            android:textSize="10dp"
+            android:textSize="11sp"
             android:text="loading..."
             android:gravity="right" />
     </LinearLayout>
@@ -90,7 +90,7 @@
             android:layout_marginLeft="3dp"
             android:layout_width="65dp"
             android:layout_height="wrap_content"
-            android:textSize="10dp"
+            android:textSize="11sp"
             android:text="loading..."
             android:gravity="left"
             android:layout_gravity="center"/>

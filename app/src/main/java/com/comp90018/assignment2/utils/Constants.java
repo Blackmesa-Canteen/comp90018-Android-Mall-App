@@ -25,7 +25,7 @@ public class Constants {
     public static final int UNDERCARRIAGE = 2;
     public static final int REMOVED = 3;
 
-    /** product 品相 */
+    /** product quality */
     public static final int HEAVILY_USED = 0;
     public static final int WELL_USED = 1;
     public static final int AVERAGE_CONDITION = 2;
@@ -76,4 +76,14 @@ public class Constants {
     public final static String IMG_TYPE = "IMG";
     public final static String VIDEO_TYPE = "VIDEO";
 
+    /**
+     * Coordinate type
+     */
+    public final static int GCJ02 = 0;
+    public final static int BD09LL = 1;
+    public final static int WGS84 = 2;
+
+    // nominatim map API
+    public final static String OPEN_STREET_MAP_APT_ROOT = "https://nominatim.openstreetmap.org";
+    public final static String REVERSE_PARSE_PATH = "/reverse?format=geojson";
 }

@@ -33,7 +33,7 @@
             android:paddingRight="18dp"
             android:paddingBottom="12dp"
             android:textColor="@color/black"
-            android:textSize="13dp" />
+            android:textSize="13sp" />
 
 
         <ProgressBar

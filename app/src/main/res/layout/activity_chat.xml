@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nickname"
                 android:textColor="@color/black"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold"
 
                 android:gravity="center"/>
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text="ID:example@example.org"
                 android:textColor="@color/grey1"
-                android:textSize="11dp"
+                android:textSize="11sp"
 
                 android:gravity="center"/>
         </LinearLayout>
@@ -87,7 +87,7 @@
 <!--            android:maxLines="1"-->
 <!--            android:text="$233.3"-->
 <!--            android:textColor="@color/red"-->
-<!--            android:textSize="20dp" />-->
+<!--            android:textSize="20sp" />-->
 
 <!--        <info.hoang8f.widget.FButton-->
 <!--            android:id="@+id/btn_product_info_behavior"-->
@@ -99,7 +99,7 @@
 <!--            android:maxLines="1"-->
 <!--            android:text="Want this"-->
 <!--            android:textColor="@color/white"-->
-<!--            android:textSize="9dp"-->
+<!--            android:textSize="9sp"-->
 <!--            app:buttonColor="@color/green_light" />-->
 
 
@@ -180,7 +180,7 @@
             android:layout_toRightOf="@id/iv_more"
             android:background="@drawable/et_bg"
             android:gravity="center"
-            android:text="Press to speak"
+            android:text="Hold to speak"
             android:textColor="@color/blue_dark"
             android:visibility="invisible" />
 

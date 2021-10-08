@@ -5,35 +5,60 @@
       <map>
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.3871794871794872" />
         <entry key="../../../../../.gradle/caches/transforms-2/files-2.1/828f0aa3c5e7093e43e7cf970e2bcf08/jetified-pictureselector-v2.7.3-rc08/res/drawable/picture_image_placeholder.xml" value="0.3111111111111111" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_order_detail.xml" value="0.5" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/home_fragment.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/home_fragment.xml" value="0.5" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_home.xml" value="0.33" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_recycler_view_search.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/drawable-mdpi/chat_bubble_outline_24dp.xml" value="0.325" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3490740740740741" />
+        <entry key="app/src/main/res/drawable/btn_danger_selector.xml" value="0.22037037037037038" />
+        <entry key="app/src/main/res/drawable/btn_primary_selector.xml" value="0.34429223744292237" />
+        <entry key="app/src/main/res/drawable/btn_secondary_shape.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/btn_secondary_shape_green.xml" value="0.2953703703703704" />
+        <entry key="app/src/main/res/drawable/button_home_selector.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/drawable/button_messages_has_new_selector.xml" value="0.345662100456621" />
         <entry key="app/src/main/res/drawable/button_messages_selector.xml" value="0.34429223744292237" />
         <entry key="app/src/main/res/drawable/et_bg.xml" value="0.34953703703703703" />
         <entry key="app/src/main/res/drawable/et_cursor.xml" value="0.33835616438356164" />
+        <entry key="app/src/main/res/drawable/label_bg.xml" value="0.325" />
         <entry key="app/src/main/res/drawable/mail_outline_24dp.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/drawable/notice_spot.xml" value="0.33835616438356164" />
         <entry key="app/src/main/res/drawable/round_background.xml" value="0.34953703703703703" />
+        <entry key="app/src/main/res/drawable/text_main_bottom_selector.xml" value="0.2953703703703704" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.2087717720456596" />
         <entry key="app/src/main/res/layout/activity_edit_password.xml" value="0.3347222222222222" />
+        <entry key="app/src/main/res/layout/activity_edit_product.xml" value="0.23425925925925925" />
+        <entry key="app/src/main/res/layout/activity_edit_published_product.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_edit_user_profile.xml" value="0.3101851851851852" />
+        <entry key="app/src/main/res/layout/activity_favorite_product.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/activity_followed.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/activity_following.xml" value="0.3351851851851852" />
         <entry key="app/src/main/res/layout/activity_image_preview.xml" value="0.23657407407407408" />
+        <entry key="app/src/main/res/layout/activity_location_map.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33611111111111114" />
+        <entry key="app/src/main/res/layout/activity_ok.xml" value="0.2810185185185185" />
         <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.33013698630136984" />
+        <entry key="app/src/main/res/layout/activity_publish_product.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_published.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/activity_search_product.xml" value="0.3101851851851852" />
         <entry key="app/src/main/res/layout/activity_search_result.xml" value="0.23657407407407408" />
+        <entry key="app/src/main/res/layout/activity_user_list.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/activity_user_page.xml" value="0.3351851851851852" />
         <entry key="app/src/main/res/layout/activity_video_player.xml" value="0.23657407407407408" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.26766304347826086" />
         <entry key="app/src/main/res/layout/fragment_categories.xml" value="0.360054347826087" />
         <entry key="app/src/main/res/layout/fragment_chat_keyboard_more.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/fragment_me_layout.xml" value="0.3242009132420091" />
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.33611111111111114" />
+        <entry key="app/src/main/res/layout/fragment_picture_gallery.xml" value="0.1" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.3581089147551664" />
         <entry key="app/src/main/res/layout/item_categories_item.xml" value="0.35280797101449274" />
         <entry key="app/src/main/res/layout/item_chat_address_receive.xml" value="0.3315068493150685" />
+        <entry key="app/src/main/res/layout/item_chat_address_send.xml" value="0.33013698630136984" />
         <entry key="app/src/main/res/layout/item_chat_img_receive.xml" value="0.3226851851851852" />
+        <entry key="app/src/main/res/layout/item_chat_img_send.xml" value="0.10462962962962963" />
         <entry key="app/src/main/res/layout/item_chat_keyboard_more_rv.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_chat_retract.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_chat_text_receive.xml" value="0.3315068493150685" />
@@ -41,17 +66,27 @@
         <entry key="app/src/main/res/layout/item_chat_voice_receive.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_chat_voice_send.xml" value="0.3226851851851852" />
         <entry key="app/src/main/res/layout/item_emoticon.xml" value="0.33611111111111114" />
+        <entry key="app/src/main/res/layout/item_emoticonpage.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_home.xml" value="0.360054347826087" />
+        <entry key="app/src/main/res/layout/item_images.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_list_view_messages.xml" value="0.33611111111111114" />
+        <entry key="app/src/main/res/layout/item_picture_gallery.xml" value="0.19072164948453607" />
+        <entry key="app/src/main/res/layout/item_published_rv_item.xml" value="0.3347222222222222" />
         <entry key="app/src/main/res/layout/item_recycler_view_search.xml" value="0.3315068493150685" />
+        <entry key="app/src/main/res/layout/item_rv_favorite_product.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/item_rv_followed.xml" value="0.32094246091936" />
+        <entry key="app/src/main/res/layout/item_rv_following.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/item_rv_img_favorite_product.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/item_rv_userlist.xml" value="0.3351851851851852" />
         <entry key="app/src/main/res/layout/item_subcategories_item.xml" value="0.360054347826087" />
         <entry key="app/src/main/res/layout/jmui_dialog_record_voice.xml" value="0.3351851851851852" />
+        <entry key="app/src/main/res/layout/layout_search.xml" value="0.33013698630136984" />
         <entry key="supernova-emoji-library/src/main/res/layout/emojicon_item.xml" value="0.33059360730593607" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_14_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

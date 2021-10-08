@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/rl_root">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/default_avatar" />
+
+    <TextView
+        android:id="@+id/text_nickname"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="NickName"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text_user_desc"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_nickname"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="My name is van, I am an artist" />
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_user_page"-->
+<!--        android:layout_width="20dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginLeft="22dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_toRightOf="@id/text_nickname"-->
+<!--        android:background="@drawable/btn_primary_selector"-->
+<!--        android:text="Details"-->
+<!--        android:textAllCaps="false"-->
+<!--        android:textColor="@color/white" />-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey3"
+        android:layout_below="@id/iv_avatar"
+        android:layout_margin="8dp"/>
+
+</RelativeLayout>

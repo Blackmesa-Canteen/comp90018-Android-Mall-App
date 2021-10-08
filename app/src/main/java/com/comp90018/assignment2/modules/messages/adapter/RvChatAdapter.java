@@ -10,6 +10,15 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
+import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -17,6 +26,8 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.location.bean.LocationBean;
+import com.comp90018.assignment2.modules.location.utils.LocationBeanConverter;
 import com.comp90018.assignment2.modules.messages.bean.ChatMessageBean;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.TimeFormater;
@@ -237,13 +248,41 @@ public class RvChatAdapter extends BaseMultiItemQuickAdapter<ChatMessageBean, Ba
             case ChatMessageBean.ADDRESS_SEND:
             case ChatMessageBean.ADDRESS_RECEIVE:
                 LocationContent addressContent = (LocationContent) item.getMessage().getContent();
-                String detail = addressContent.getAddress();
-                String address = addressContent.getStringExtra("path");
-                if(!TextUtils.isEmpty(address))
-                    helper.setText(R.id.tv, address);
-                if(!TextUtils.isEmpty(detail))
-                    helper.setText(R.id.tv_detail,detail);
+                String textAddress = addressContent.getAddress();
+                double latitude = addressContent.getLatitude().doubleValue();
+                double longitude = addressContent.getLongitude().doubleValue();
 
+                helper.setText(R.id.tv_detail, textAddress);
+
+                LocationBean locationBean = LocationBean.builder()
+                        .latitude(latitude)
+                        .longitude(longitude)
+                        .textAddress(textAddress)
+                        .build();
+
+                // decrypt coordinate if in China
+                LocationBeanConverter.convertLocationToBdMapLocation(locationBean);
+                LatLng center = new LatLng(locationBean.getLatitude(), locationBean.getLongitude());
+
+                // handle map display
+                MapView mapView = (MapView) helper.getView(R.id.map_view);
+                mapView.showZoomControls(false);
+                mapView.showScaleControl(false);
+                BaiduMap baiduMap = mapView.getMap();
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(center)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_blue));
+
+                Overlay marker = baiduMap.addOverlay(markerOptions);
+
+                // zoom the map
+                MapStatus mapStatus = new MapStatus.Builder()
+                        .target(center)
+                        .zoom(18)
+                        .build();
+
+                MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mapStatus);
+                baiduMap.setMapStatus(mapStatusUpdate);
                 break;
 
             default:

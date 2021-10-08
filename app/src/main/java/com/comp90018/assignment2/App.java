@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.multidex.MultiDexApplication;
 
+import com.baidu.mapapi.CoordType;
+import com.baidu.mapapi.SDKInitializer;
 import com.comp90018.assignment2.utils.SharedPreferencesHelper;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -24,7 +26,7 @@ public class App extends MultiDexApplication {
         mContext = this;
 
         // attach shared preference helper
-        sharedPreferencesHelper = new SharedPreferencesHelper(this);
+//        sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         /*
          * The SDK initializes and specifies whether message logging roaming is enabled.
@@ -46,6 +48,13 @@ public class App extends MultiDexApplication {
          * not in components like Activity, fragmemt, or Service.
          */
 //        JMessageClient.registerEventReceiver(this);
+
+        /*
+         * init Baidu Map service
+         */
+        SDKInitializer.initialize(getApplicationContext());
+        // Use BD09LL coordinate as baidu map coordinate system
+        SDKInitializer.setCoordType(CoordType.BD09LL);
     }
 
 

@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="version">v1.1.2.211008_alpha</string>
+
     <string name="app_name">Good OG</string>
     <string name="title_activity_login">LoginActivity</string>
     <!-- Strings used for fragments for navigation -->
