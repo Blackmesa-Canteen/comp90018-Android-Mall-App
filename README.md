@@ -1,5 +1,5 @@
 # comp90018-assignment2 Good OG
-[license](https://img.shields.io/badge/license-MIT-blue.svg)]()
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)]()
 [![platform](https://img.shields.io/badge/platform-Android-yellow.svg)](https://www.android.com)
 
 *This is an assignment for subject Comp90018 in the University of Melbourne.*
