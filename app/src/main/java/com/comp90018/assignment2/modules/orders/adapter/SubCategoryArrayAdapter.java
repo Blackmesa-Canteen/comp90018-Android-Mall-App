@@ -13,6 +13,10 @@ import com.comp90018.assignment2.dto.SubCategoryDTO;
 
 import java.util.List;
 
+/**
+ * @author Ziyuan Xu
+ */
+
 public class SubCategoryArrayAdapter extends ArrayAdapter<SubCategoryDTO> {
     Context context;
     private List<SubCategoryDTO> subcategories;

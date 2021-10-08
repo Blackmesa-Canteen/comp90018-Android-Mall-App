@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * @author Ziyuan Xu
  */
+
 public class PictureCollectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = "PictureCollectionAdapter";
     private final LayoutInflater mLayoutInflater;

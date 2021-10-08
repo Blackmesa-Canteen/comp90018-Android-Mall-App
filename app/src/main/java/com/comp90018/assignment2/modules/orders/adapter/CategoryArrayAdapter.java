@@ -14,6 +14,10 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Ziyuan Xu
+ */
+
 public class CategoryArrayAdapter extends ArrayAdapter<CategoryDTO> {
     Context context;
     private List<CategoryDTO> categories = new ArrayList<>();
