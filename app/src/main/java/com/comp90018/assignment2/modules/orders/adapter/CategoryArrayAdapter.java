@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.CategoryDTO;
 
 import java.util.ArrayList;
@@ -69,6 +68,11 @@ public class CategoryArrayAdapter extends ArrayAdapter<CategoryDTO> {
     @Override
     public int getCount() {
         return objects.length;
+    }
+
+    @Override
+    public CategoryDTO getItem(int i) {
+        return categories.get(i);
     }
 
 }

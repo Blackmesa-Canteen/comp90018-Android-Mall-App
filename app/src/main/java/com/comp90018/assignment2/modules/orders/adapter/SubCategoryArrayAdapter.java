@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 
 import java.util.List;
@@ -68,4 +69,8 @@ public class SubCategoryArrayAdapter extends ArrayAdapter<SubCategoryDTO> {
         return objects.length;
     }
 
+    @Override
+    public SubCategoryDTO getItem(int i) {
+        return subcategories.get(i);
+    }
 }

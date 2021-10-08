@@ -27,8 +27,8 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.dto.UserDTO;
-import com.comp90018.assignment2.modules.orders.adapter.ExistingPictureAdapter;
 import com.comp90018.assignment2.modules.orders.adapter.CategoryArrayAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.ExistingPictureAdapter;
 import com.comp90018.assignment2.modules.orders.adapter.PictureCollectionAdapter;
 import com.comp90018.assignment2.modules.orders.adapter.SubCategoryArrayAdapter;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * EditProductActivity activity
@@ -116,6 +115,7 @@ public class EditProductActivity extends AppCompatActivity {
                 .get().addOnCompleteListener(cate_task -> {
             if (cate_task.isSuccessful()) {
                 selectedCategory = cate_task.getResult().toObject(CategoryDTO.class);
+                selectedCategory.setCategory_id(productDTO.getCategory_ref().getId());
             } else {
                 Log.d(TAG, "Error getting documents: ", cate_task.getException());
             }
@@ -147,44 +147,47 @@ public class EditProductActivity extends AppCompatActivity {
                                 SubCategoryDTO subcategory = sub_document.toObject(SubCategoryDTO.class);
                                 subcategory.setSubcategory_id(sub_document.getId());
                                 subcategories.add(subcategory);
-                                progressDialog.dismiss();
                             }
+                            if (category.getName().equals(selectedCategory.getName())) {
+                                subcategorySpinner = findViewById(R.id.subcategory);
+                                subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this,
+                                        android.R.layout.simple_spinner_item,
+                                        subcategories,
+                                        selectedSubCategory.getName()));
+                            }
+                            progressDialog.dismiss();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     });
                     categoryBundles.put(category, subcategories);
-                    categorySpinner = findViewById(R.id.category);
-                    subcategorySpinner = findViewById(R.id.subcategory);
-                    categorySpinner.setAdapter(new CategoryArrayAdapter(this, android.R.layout.simple_spinner_item, categories, selectedCategory.getName()));
-                    //TODO: get selectedSubCategory data
-//                    subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this,
-//                            android.R.layout.simple_spinner_item,
-//                            categoryBundles.get(selectedCategory),
-//                            selectedSubCategory.getName()));
-//                    subcategorySpinner.setAdapter(new SubCategoryArrayAdapter(this, android.R.layout.simple_spinner_item, subCategoryDTOList, selectedSubCategory.getName()));
-//                    categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                        @Override
-//                        public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-//                            selectedCategory = (CategoryDTO) parent.getSelectedItem();
-//                            List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
-//                            ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
-//                            subcategorySpinner.setAdapter(subCategoryAdapter);
-//                            subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-//                                    selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
-//                                }
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> adapterView) {
-//                                }
-//                            });
-//                        }
-//                        @Override
-//                        public void onNothingSelected(AdapterView<?> adapterView) {
-//                        }
-//                    });
                 }
+                categorySpinner = findViewById(R.id.category);
+                categorySpinner.setAdapter(new CategoryArrayAdapter(this, android.R.layout.simple_spinner_item, categories, selectedCategory.getName()));
+                categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                        selectedCategory = (CategoryDTO) parent.getSelectedItem();
+                        List<SubCategoryDTO> subCategoryDTOList = categoryBundles.get(selectedCategory);
+                        subcategorySpinner = findViewById(R.id.subcategory);
+                        ArrayAdapter<SubCategoryDTO> subCategoryAdapter = new ArrayAdapter<>(EditProductActivity.this, android.R.layout.simple_spinner_item, subCategoryDTOList);
+                        subcategorySpinner.setAdapter(subCategoryAdapter);
+                        subcategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                                selectedSubCategory = (SubCategoryDTO) parent.getSelectedItem();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    }
+                });
             } else {
                 Log.d(TAG, "Error getting documents: ", task.getException());
             }
@@ -256,7 +259,9 @@ public class EditProductActivity extends AppCompatActivity {
             String price = binding.price.getText().toString();
             String brand = binding.brand.getText().toString();
             String description = binding.description.getText().toString();
-            String quality = binding.quality.getSelectedItem().toString();if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0 || selectedCategory == null || selectedSubCategory == null) {
+            String quality = binding.quality.getSelectedItem().toString();
+
+            if (price.length() == 0 || brand.length() == 0 || description.length() == 0 || quality.length() == 0 || selectedCategory == null || selectedSubCategory == null) {
                 new AlertDialog.Builder(EditProductActivity.this).setMessage("Please enter all information.").setPositiveButton("ok", null).show();
                 return;
             }
