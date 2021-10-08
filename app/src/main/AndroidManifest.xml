@@ -60,6 +60,15 @@
             android:exported="true"
             android:launchMode="singleInstance" />
         <activity
+            android:name=".modules.orders.activity.OrderDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.orders.activity.SoldActivity"
+            android:exported="true" />
+        <activity
+            android:name=".modules.orders.activity.PurchasedActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.users.authentication.activity.EditPasswordActivity"
             android:exported="true" />
         <activity
@@ -76,8 +85,7 @@
             android:exported="true" />
         <activity android:name=".modules.search.activity.SearchProductActivity" />
         <activity
-            android:name=".modules.search.activity.SearchResultActivity"
-            android:launchMode="singleInstance" />
+            android:name=".modules.search.activity.SearchResultActivity" />
         <activity
             android:name=".modules.users.authentication.activity.LoginActivity"
             android:launchMode="singleInstance"

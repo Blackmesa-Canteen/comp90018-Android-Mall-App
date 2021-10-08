@@ -6,14 +6,18 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.comp90018.assignment2.modules.MainActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
@@ -326,6 +330,8 @@ public class HomePageAdapter extends RecyclerView.Adapter {
 
                 }
             };
+
+
 
             // wait for userDTO loaded, then attach listener
             if (finalUserDTO != null) {

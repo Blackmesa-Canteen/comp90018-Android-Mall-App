@@ -53,10 +53,10 @@ public class MyLocationListener implements LocationListener {
     public void onLocationChanged(Location loc) {
         double locLatitude = loc.getLatitude();
         double locLongitude = loc.getLongitude();
-        Toast.makeText(
-                context,
-                "Location changed: Lat: " + locLatitude + " Lng: "
-                        + locLongitude, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(
+//                context,
+//                "Location changed: Lat: " + locLatitude + " Lng: "
+//                        + locLongitude, Toast.LENGTH_SHORT).show();
         String longitude = "Longitude: " + locLongitude;
         Log.d(TAG, longitude);
         String latitude = "Latitude: " + locLatitude;
