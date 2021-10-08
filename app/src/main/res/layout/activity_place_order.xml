@@ -135,29 +135,56 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/place_order_receiver_name"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Receiver name读"
-                        android:textColor="@color/black"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="Receiver:"
+                        android:textColor="@color/colorBlack_Three"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/place_order_receiver_name"
+                        android:layout_width="296dp"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="receiver name"
+                        android:textColor="@color/colorBlack_Three"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:text="Email:"
+                        android:textColor="@color/colorBlack_Three"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/place_order_receiver_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="right"
-                        android:text="aaa123456@qq.comd读"
-                        android:textColor="@color/black"
-                        android:textSize="18sp" />
+                        android:layout_width="316dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:text="aa@qq.com"
+                        android:textColor="@color/colorBlack_Three"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <EditText
                     android:id="@+id/place_order_receiver_addr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="asdfafsfasdfReceiverReceiverReceiverReceiverReceiverReceiverReceiverReceiver address读Receiver address读Receiver address读Receiver address读Receiver address读"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
