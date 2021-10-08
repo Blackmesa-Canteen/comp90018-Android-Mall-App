@@ -25,7 +25,7 @@ public class Constants {
     public static final int UNDERCARRIAGE = 2;
     public static final int REMOVED = 3;
 
-    /** product 品相 */
+    /** product quality */
     public static final int HEAVILY_USED = 0;
     public static final int WELL_USED = 1;
     public static final int AVERAGE_CONDITION = 2;

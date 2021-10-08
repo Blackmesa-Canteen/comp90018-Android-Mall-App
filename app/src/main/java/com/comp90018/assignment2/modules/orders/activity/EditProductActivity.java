@@ -73,7 +73,8 @@ public class EditProductActivity extends AppCompatActivity {
     private CategoryDTO selectedCategory;
     private SubCategoryDTO selectedSubCategory;
     private FirebaseStorage firebaseStorage;
-    private ArrayList<String> images = new ArrayList<>();
+//    private Integer qualityCode;
+private ArrayList<String> images = new ArrayList<>();
     private List<LocalMedia> currentSelectLists;
 
     @SuppressLint("SetTextI18n")
@@ -194,27 +195,27 @@ public class EditProductActivity extends AppCompatActivity {
         });
 
         // show status
-        switch (productDTO.getStatus()) {
+//        qualityCode = productDTO.getQuality();
+        switch (productDTO.getQuality()) {
             case Constants.HEAVILY_USED:
-                binding.quality.setSelection(1);
+                binding.quality.setSelection(0);
                 break;
             case Constants.WELL_USED:
-                binding.quality.setSelection(2);
+                binding.quality.setSelection(1);
                 break;
             case Constants.AVERAGE_CONDITION:
-                binding.quality.setSelection(3);
+                binding.quality.setSelection(2);
                 break;
             case Constants.SLIGHTLY_USED:
-                binding.quality.setSelection(4);
-                break;
-            case Constants.EXCELLENT:
-                binding.quality.setSelection(5);
-                break;
-            default:
                 binding.quality.setSelection(3);
                 break;
+            case Constants.EXCELLENT:
+                binding.quality.setSelection(4);
+                break;
+            default:
+                binding.quality.setSelection(2);
+                break;
         }
-
         images = productDTO.getImage_address();
         ExistingPictureAdapter pictureCollectionAdapter = new ExistingPictureAdapter(this, images);
         binding.pfCollection.setAdapter(pictureCollectionAdapter);
@@ -323,15 +324,23 @@ public class EditProductActivity extends AppCompatActivity {
                                 "category_ref", db.document("categories/" + selectedCategory.getCategory_id()),
                                 "sub_category_ref", db.document("sub_categories/" + selectedSubCategory.getSubcategory_id())
                         ).addOnSuccessListener(aVoid -> {
-                    publishProgressDialog.dismiss();
                     productDTO.getOwner_ref().get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             UserDTO userDTO = task.getResult().toObject(UserDTO.class);
-                            finish();
-                            Intent publishProductIntent = new Intent(EditProductActivity.this, ProductDetailActivity.class);
-                            publishProductIntent.putExtra("productDTO", productDTO);
-                            publishProductIntent.putExtra("userDTO", userDTO);
-                            startActivity(publishProductIntent);
+                            db.collection(Constants.PRODUCT_COLLECTION)
+                                    .document(productDTO.getId()).get().addOnCompleteListener(product_task -> {
+                                if (product_task.isSuccessful()) {
+                                    ProductDTO newProductDTO = product_task.getResult().toObject(ProductDTO.class);
+                                    publishProgressDialog.dismiss();
+                                    finish();
+                                    Intent publishProductIntent = new Intent(EditProductActivity.this, ProductDetailActivity.class);
+                                    publishProductIntent.putExtra("productDTO", newProductDTO);
+                                    publishProductIntent.putExtra("userDTO", userDTO);
+                                    startActivity(publishProductIntent);
+                                } else {
+                                    Log.w(TAG, "db connection failed");
+                                }
+                            });
                         } else {
                             Log.w(TAG, "db connection failed");
                         }
