@@ -61,7 +61,6 @@ import java.util.Map;
 
 public class EditProductActivity extends AppCompatActivity {
     private static final String TAG = "EditProductActivity";
-    private FirebaseAuth auth;
     private FirebaseFirestore db;
     private ActivityEditProductBinding binding;
     private List<CategoryDTO> categories = new ArrayList<>();
@@ -73,8 +72,7 @@ public class EditProductActivity extends AppCompatActivity {
     private CategoryDTO selectedCategory;
     private SubCategoryDTO selectedSubCategory;
     private FirebaseStorage firebaseStorage;
-//    private Integer qualityCode;
-private ArrayList<String> images = new ArrayList<>();
+    private ArrayList<String> images = new ArrayList<>();
     private List<LocalMedia> currentSelectLists;
 
     @SuppressLint("SetTextI18n")
@@ -195,7 +193,6 @@ private ArrayList<String> images = new ArrayList<>();
         });
 
         // show status
-//        qualityCode = productDTO.getQuality();
         switch (productDTO.getQuality()) {
             case Constants.HEAVILY_USED:
                 binding.quality.setSelection(0);
