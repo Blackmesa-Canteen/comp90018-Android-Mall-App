@@ -41,6 +41,9 @@
 <!--            android:name=".modules.orders.activity.RatingActivity"-->
 <!--            android:exported="true" />-->
         <activity
+            android:name=".modules.orders.activity.PlaceOrderActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.users.fans.activity.UserListActivity"
             android:exported="true" />
         <activity
@@ -98,6 +101,10 @@
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity
             android:name=".modules.users.me.activity.EditProfileActivity"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppName.NoActionBar" />
+        <activity
+            android:name=".modules.orders.activity.EditProductActivity"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppName.NoActionBar" />
         <activity

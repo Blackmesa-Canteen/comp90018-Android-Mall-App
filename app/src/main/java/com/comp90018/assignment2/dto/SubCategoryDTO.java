@@ -23,7 +23,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class SubCategoryDTO implements Parcelable {
     private DocumentReference category_ref;
     private String image_address;

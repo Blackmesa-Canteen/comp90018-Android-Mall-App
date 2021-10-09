@@ -7,6 +7,10 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import lombok.Builder;
+
+
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -27,6 +31,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class OrderDTO implements Parcelable {
 
     private String id;
