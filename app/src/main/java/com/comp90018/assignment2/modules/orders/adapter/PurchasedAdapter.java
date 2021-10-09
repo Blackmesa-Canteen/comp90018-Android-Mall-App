@@ -25,6 +25,7 @@ import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.modules.messages.activity.ChatActivity;
 import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
+import com.comp90018.assignment2.modules.orders.activity.RatingActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
@@ -269,14 +270,25 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             DetailButton.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, OrderDetailActivity.class);
-                    intent.putExtra("productDTO", finalProductDTO);
-                    intent.putExtra("buyerDTO", finalBuyerDTO);
-                    intent.putExtra("sellerDTO", finalSellerDTO);
-                    intent.putExtra("orderDTO", orderDTO);
-                    intent.putExtra("userDTO", finalUserDTO);
-                    context.startActivity(intent);
-                    //Log.d(TAG, "to detail activity: "+ descriptionCut);
+                    if (orderDTO.getStatus()==Constants.SUCCESSFUL_NOT_COMMENT){
+                        Intent intent = new Intent(context, RatingActivity.class);
+                        intent.putExtra("productDTO", finalProductDTO);
+                        intent.putExtra("buyerDTO", finalBuyerDTO);
+                        intent.putExtra("sellerDTO", finalSellerDTO);
+                        intent.putExtra("orderDTO", orderDTO);
+                        intent.putExtra("userDTO", finalUserDTO);
+                        context.startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra("productDTO", finalProductDTO);
+                        intent.putExtra("buyerDTO", finalBuyerDTO);
+                        intent.putExtra("sellerDTO", finalSellerDTO);
+                        intent.putExtra("orderDTO", orderDTO);
+                        intent.putExtra("userDTO", finalUserDTO);
+                        context.startActivity(intent);
+                        //Log.d(TAG, "to detail activity: "+ descriptionCut);
+                    }
                 }
             });
 

@@ -38,6 +38,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppName">
         <activity
+            android:name=".modules.orders.activity.RatingActivity"
+            android:exported="true" />
+        <activity
             android:name=".modules.orders.activity.PlaceOrderActivity"
             android:exported="true" />
         <activity
