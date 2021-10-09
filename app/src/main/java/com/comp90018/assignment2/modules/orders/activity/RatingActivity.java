@@ -1,15 +1,20 @@
 package com.comp90018.assignment2.modules.orders.activity;
 
+import static android.content.ContentValues.TAG;
 import static com.comp90018.assignment2.utils.Constants.ORDERS_COLLECTION;
+import static com.comp90018.assignment2.utils.Constants.PRODUCT_COLLECTION;
+import static com.comp90018.assignment2.utils.Constants.SUCCESSFUL_COMMENT;
 import static com.comp90018.assignment2.utils.Constants.USERS_COLLECTION;
 import java.math.*;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -19,14 +24,22 @@ import com.comp90018.assignment2.databinding.ActivityRatingBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
+import com.comp90018.assignment2.modules.users.me.activity.EditProfileActivity;
 import com.comp90018.assignment2.utils.Constants;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.Inflater;
 
 
@@ -42,6 +55,7 @@ public class RatingActivity extends AppCompatActivity {
     private double current_rating;
     private double star_number;
     private int number_of_comment_order;
+    List<OrderDTO> orderDTOList;
 
     private ActivityRatingBinding binding;
     @Override
@@ -63,10 +77,10 @@ public class RatingActivity extends AppCompatActivity {
         OrderDTO orderDTO = (OrderDTO) intent.getParcelableExtra("orderDTO");
         UserDTO buyerDTO = (UserDTO) intent.getParcelableExtra("buyerDTO");
         UserDTO userDTO = (UserDTO) intent.getParcelableExtra("userDTO");
-        DocumentReference sellerDocReference = orderDTO.getSeller_ref(); //get buyer info
+        DocumentReference sellerDocReference = orderDTO.getSeller_ref();
         DocumentReference currentUserReference = db.collection(USERS_COLLECTION).document(firebaseAuth.getCurrentUser().getUid());//get current user info
         DocumentReference buyerDocReference = orderDTO.getBuyer_ref();
-        String seller_id = sellerDocReference.getId();//get buyer id
+        String seller_id = sellerDocReference.getId();
         String current_user_id = currentUserReference.getId(); //get current user id
         String buyer_id  = buyerDocReference.getId();
         ProductDTO finalProductDTO = productDTO;
@@ -105,20 +119,66 @@ public class RatingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 float rating=ratingBar.getRating();//get current star rating
+
+
+
+
+
                 orderDTO.setStatus(3);  //set the status successfully comment
-                number_of_comment_order=sellerDTO.getSold_number();
-                current_rating= userDTO.getStar_number();
 
-                //calculate the average rating
-                star_number=((rating+4.0)/2);
+                current_rating= sellerDTO.getStar_number();
 
-                //update status and star number
+                orderDTOList = new ArrayList<>();
+
                 db.collection(ORDERS_COLLECTION)
                         .document(orderDTO.getId())
                         .update("status", Constants.SUCCESSFUL_COMMENT);
+
+//                db.collection(ORDERS_COLLECTION)
+//                        .document(orderDTO.getId())
+//                        .set(orderDTO)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                if (task.isSuccessful()) {
+//                                    orderDTO.setStatus(3);
+//                                } else {
+//                                    Log.e(TAG, "update failed");
+//                                }
+//                            }
+//                        });
+
+
+
+                //get the total number of order that with rating to calculate the average rating
+                db.collection(Constants.ORDERS_COLLECTION)
+                        .whereEqualTo("status", SUCCESSFUL_COMMENT)
+                        .whereEqualTo("seller_ref", sellerDocReference)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    orderDTOList = new ArrayList<>();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        OrderDTO orderDTO = document.toObject(OrderDTO.class);
+                                        orderDTOList.add(orderDTO);
+                                    }
+                                }
+                            }
+                        });
+
+                number_of_comment_order=orderDTOList.size();
+                Log.d("RatingActivity", "onClick: "+number_of_comment_order);
+
+                //calculate the average rating
+                star_number=((rating+current_rating)/((number_of_comment_order+2)));
                 db.collection(USERS_COLLECTION)
-                        .document(userDTO.getId())
+                        .document(sellerDTO.getId())
                         .update("star_number",star_number );
+
+                //update status and star number
+
 
                 //after submitting, jump to detail page
                 Intent intent = new Intent(RatingActivity.this, OrderDetailActivity.class);
