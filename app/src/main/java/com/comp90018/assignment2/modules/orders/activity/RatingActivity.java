@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.comp90018.assignment2.R;
-import com.comp90018.assignment2.databinding.ActivityOrderDetailBinding;
+
 import com.comp90018.assignment2.databinding.ActivityRatingBinding;
 import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
@@ -28,6 +28,11 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Arrays;
 import java.util.zip.Inflater;
+
+
+/**
+ * @author Zhonghui Jiang
+ */
 
 public class RatingActivity extends AppCompatActivity {
     private RatingBar ratingBar;
@@ -52,21 +57,6 @@ public class RatingActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-        binding.ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-
-
-            @Override
-
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-
-                Toast.makeText(RatingActivity.this, "rate" + rating , Toast.LENGTH_SHORT).show();
-
-            }
-
-        });
-
-
-
         Intent intent = getIntent();
         ProductDTO productDTO = (ProductDTO) intent.getParcelableExtra("productDTO");
         UserDTO sellerDTO = (UserDTO) intent.getParcelableExtra("sellerDTO");
@@ -84,6 +74,23 @@ public class RatingActivity extends AppCompatActivity {
         UserDTO finalBuyerDTO = buyerDTO;
         UserDTO finalSellerDTO = sellerDTO;
 
+
+
+        //click ratingbar
+        binding.ratingbar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+
+            @Override
+
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                Toast.makeText(RatingActivity.this, "Rate" + rating , Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
+
         binding.orderDetailBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,20 +101,18 @@ public class RatingActivity extends AppCompatActivity {
 
 
 
-
-
         binding.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float rating=ratingBar.getRating();//获取当前的星数
-                orderDTO.setStatus(3);
-
+                float rating=ratingBar.getRating();//get current star rating
+                orderDTO.setStatus(3);  //set the status successfully comment
                 number_of_comment_order=sellerDTO.getSold_number();
-
-
-
                 current_rating= userDTO.getStar_number();
+
+                //calculate the average rating
                 star_number=((rating+4.0)/2);
+
+                //update status and star number
                 db.collection(ORDERS_COLLECTION)
                         .document(orderDTO.getId())
                         .update("status", Constants.SUCCESSFUL_COMMENT);
@@ -115,6 +120,7 @@ public class RatingActivity extends AppCompatActivity {
                         .document(userDTO.getId())
                         .update("star_number",star_number );
 
+                //after submitting, jump to detail page
                 Intent intent = new Intent(RatingActivity.this, OrderDetailActivity.class);
                 intent.putExtra("productDTO", finalProductDTO);
                 intent.putExtra("buyerDTO", finalBuyerDTO);
@@ -155,7 +161,6 @@ public class RatingActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        //When BACK BUTTON is pressed, the activity on the stack is restarted
-        //Do what you want on the refresh procedure here
+
     }
 }
