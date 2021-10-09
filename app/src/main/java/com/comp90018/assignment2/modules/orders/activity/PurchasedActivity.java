@@ -223,7 +223,7 @@ public class PurchasedActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         ProductDTO productDTO = document.toObject(ProductDTO.class);
                         DocumentReference reference = document.getReference();
-                        Log.d(TAG, "get user info: " + productDTO.getId());
+                        Log.d(TAG, "get product info: " + productDTO.getId());
                         // add to adapter and refresh it
                         adapter.addNewProductDtoInMap(reference, productDTO);
                         adapter.notifyItemChanged(finalIndex);
