@@ -119,7 +119,6 @@ public class PlaceOrderActivity extends AppCompatActivity {
                 DocumentReference sellertRef = db.collection(Constants.USERS_COLLECTION).document(userDTO.getId());
                 String seller_address = userDTO.getLocation_text().toString();
                 Integer star_number = productDTO.getStar_number().intValue();
-                String track_id = getTrackId();
                 OrderDTO newOrderDTO = OrderDTO.builder()
                         .address(address)
                         .buyer_ref(buyerRef)
@@ -129,8 +128,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
                         .seller_ref(sellertRef)
                         .star_number(star_number)
                         .status(0)
-                        .tracking_id(track_id)
-                        .tracking_info("sent")
+                        .tracking_id("")
+                        .tracking_info("wait to sent")
                         .build();
                 db.collection(PRODUCT_COLLECTION)
                         .document(productDTO.getId())
