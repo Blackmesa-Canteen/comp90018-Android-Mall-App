@@ -255,30 +255,30 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     OrderDTO orderDTO = document.toObject(OrderDTO.class);
                                     db.document(orderDTO.getBuyer_ref().getPath())
-                                            .get().addOnCompleteListener(buyer_task -> {
-                                                if (buyer_task.isSuccessful()) {
-                                                    UserDTO buyerDTO = buyer_task.getResult().toObject(UserDTO.class);
-                                                    db.document(orderDTO.getSeller_ref().getPath())
-                                                            .get().addOnCompleteListener(seller_task -> {
-                                                        if (seller_task.isSuccessful()) {
-                                                            UserDTO sellerDTO = seller_task.getResult().toObject(UserDTO.class);
-                                                            progressDialog.dismiss();
-                                                            Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
-                                                            Intent intent = new Intent(context, OrderDetailActivity.class);
-                                                            intent.putExtra("productDTO", productDTO);
-                                                            intent.putExtra("orderDTO", orderDTO);
-                                                            intent.putExtra("buyerDTO", buyerDTO);
-                                                            intent.putExtra("sellerDTO", sellerDTO);
-                                                            intent.putExtra("userDTO", sellerDTO);
-                                                            context.startActivity(intent);
-                                                        } else {
-                                                            Log.d(TAG, "Error getting documents: ", seller_task.getException());
-                                                        }
-                                                    });
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", buyer_task.getException());
-                                                }
-                                            });
+                                        .get().addOnCompleteListener(buyer_task -> {
+                                            if (buyer_task.isSuccessful()) {
+                                                UserDTO buyerDTO = buyer_task.getResult().toObject(UserDTO.class);
+                                                db.document(orderDTO.getSeller_ref().getPath())
+                                                        .get().addOnCompleteListener(seller_task -> {
+                                                    if (seller_task.isSuccessful()) {
+                                                        UserDTO sellerDTO = seller_task.getResult().toObject(UserDTO.class);
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                                                        intent.putExtra("productDTO", productDTO);
+                                                        intent.putExtra("orderDTO", orderDTO);
+                                                        intent.putExtra("buyerDTO", buyerDTO);
+                                                        intent.putExtra("sellerDTO", sellerDTO);
+                                                        intent.putExtra("userDTO", sellerDTO);
+                                                        context.startActivity(intent);
+                                                    } else {
+                                                        Log.d(TAG, "Error getting documents: ", seller_task.getException());
+                                                    }
+                                                });
+                                            } else {
+                                                Log.d(TAG, "Error getting documents: ", buyer_task.getException());
+                                            }
+                                        });
                                 }
                                 progressDialog.dismiss();
                             } else {
