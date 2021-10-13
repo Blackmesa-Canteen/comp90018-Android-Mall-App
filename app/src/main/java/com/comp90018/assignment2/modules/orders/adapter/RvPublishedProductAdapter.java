@@ -18,15 +18,18 @@ import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.comp90018.assignment2.R;
+import com.comp90018.assignment2.dto.OrderDTO;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.orders.activity.EditProductActivity;
+import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -241,12 +244,47 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 // handle different views in different status
                 showViewsForSoldOut(helper, buttonR, buttonL, buttonS);
 
-                // go to product edit page
-                // TODO go to order details activity
+                // go to order details activity
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
+                        db.collection(Constants.ORDERS_COLLECTION)
+                                .whereEqualTo("product_ref", db.document("products/" + productDTO.getId()))
+                                .get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    OrderDTO orderDTO = document.toObject(OrderDTO.class);
+                                    db.document(orderDTO.getBuyer_ref().getPath())
+                                            .get().addOnCompleteListener(buyer_task -> {
+                                                if (buyer_task.isSuccessful()) {
+                                                    UserDTO buyerDTO = buyer_task.getResult().toObject(UserDTO.class);
+                                                    db.document(orderDTO.getSeller_ref().getPath())
+                                                            .get().addOnCompleteListener(seller_task -> {
+                                                        if (seller_task.isSuccessful()) {
+                                                            UserDTO sellerDTO = seller_task.getResult().toObject(UserDTO.class);
+                                                            progressDialog.dismiss();
+                                                            Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(context, OrderDetailActivity.class);
+                                                            intent.putExtra("productDTO", productDTO);
+                                                            intent.putExtra("orderDTO", orderDTO);
+                                                            intent.putExtra("buyerDTO", buyerDTO);
+                                                            intent.putExtra("sellerDTO", sellerDTO);
+                                                            intent.putExtra("userDTO", sellerDTO);
+                                                            context.startActivity(intent);
+                                                        } else {
+                                                            Log.d(TAG, "Error getting documents: ", seller_task.getException());
+                                                        }
+                                                    });
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", buyer_task.getException());
+                                                }
+                                            });
+                                }
+                                progressDialog.dismiss();
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        });
                     }
                 });
 
