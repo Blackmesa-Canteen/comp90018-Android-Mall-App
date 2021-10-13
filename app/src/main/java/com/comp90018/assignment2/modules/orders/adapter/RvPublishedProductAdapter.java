@@ -240,9 +240,6 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 });
                 break;
 
-
-
-
             case Constants.SOLD_OUT:
                 // handle static resource logic
                 attachStaticDataToViews(helper, productDTO);
