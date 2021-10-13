@@ -129,7 +129,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
                         .star_number(star_number)
                         .status(0)
                         .tracking_id("")
-                        .tracking_info("wait to sent")
+                        .tracking_info("pending")
                         .build();
                 db.collection(PRODUCT_COLLECTION)
                         .document(productDTO.getId())
