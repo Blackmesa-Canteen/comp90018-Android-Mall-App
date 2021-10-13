@@ -5,7 +5,10 @@
       <map>
         <entry key="../../../../../../../layout/custom_preview.xml" value="0.3871794871794872" />
         <entry key="../../../../../.gradle/caches/transforms-2/files-2.1/828f0aa3c5e7093e43e7cf970e2bcf08/jetified-pictureselector-v2.7.3-rc08/res/drawable/picture_image_placeholder.xml" value="0.3111111111111111" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_edit_user_profile.xml" value="0.14665996986438976" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_order_detail.xml" value="0.5" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_publish_product.xml" value="0.14665996986438976" />
+        <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/activity_purchased_pdt_list.xml" value="0.14665996986438976" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2/app/src/main/res/layout/home_fragment.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/home_fragment.xml" value="0.5" />
         <entry key="..\:/Users/Eric Hong/AndroidStudioProjects/comp90018-assignment2_dev/app/src/main/res/layout/item_home.xml" value="0.33" />
