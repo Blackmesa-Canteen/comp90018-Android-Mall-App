@@ -95,6 +95,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         if (seller_id.equals(current_user_id)) { //if buyer = current user
             binding.orderRefundBtn.setVisibility(View.GONE); //button disappear
             binding.refundAddress.setVisibility(View.GONE);
+            binding.receivingConfirmationBtn.setVisibility(View.GONE);
             if(orderDTO.getStatus()==Constants.ON_REFUND || orderDTO.getStatus()==Constants.ON_REFUND_DELIVERING){
                 Toast.makeText(binding.getRoot().getContext(), "The buyer wants to refund this item", Toast.LENGTH_SHORT).show();
             }
@@ -102,15 +103,24 @@ public class OrderDetailActivity extends AppCompatActivity {
                 binding.orderAgreeBtn.setVisibility(View.GONE);
                 binding.orderDisagreeBtn.setVisibility(View.GONE);
             }
+            if(orderDTO.getStatus()!= Constants.WAITING_DELIVERY){
+                binding.trackingIdBtn.setVisibility(View.GONE);
+                binding.inputTrackingId.setVisibility(View.GONE);
+            }
         }else if(buyer_id.equals(current_user_id)){
             binding.orderAgreeBtn.setVisibility(View.GONE);
             binding.orderDisagreeBtn.setVisibility(View.GONE);
+            binding.trackingIdBtn.setVisibility(View.GONE);
+            binding.inputTrackingId.setVisibility(View.GONE);
         }
 
         // Refund - purchased
         if (orderDTO.getStatus()!=Constants.WAITING_DELIVERY && orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT ){
             buttonColor(binding.orderRefundBtn);
             binding.refundAddress.setVisibility(View.GONE);
+        }
+        if(orderDTO.getStatus()!= Constants.DELIVERING){
+            binding.receivingConfirmationBtn.setVisibility(View.GONE);
         }
         /*
         if (orderDTO.getStatus()!=Constants.SUCCESSFUL_NOT_COMMENT){
@@ -222,6 +232,49 @@ public class OrderDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.trackingIdBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                binding.inputTrackingId.setHint("input tracking id");
+                String trackingid = binding.inputTrackingId.getText().toString();
+                String trackingidbox = "^[a-zA-Z0-9]{8,20}$";
+                if (!trackingid.matches(trackingidbox)) {
+                    new AlertDialog.Builder(OrderDetailActivity.this).setMessage("address should be letters, numbers").setPositiveButton("ok", null).show();
+                    return;
+                }
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("status", Constants.DELIVERING);
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("tracking_info", "delivering");
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("tracking_id",trackingid);
+                Toast.makeText(binding.getRoot().getContext(), "Loading", Toast.LENGTH_SHORT).show();
+                finish();
+                Intent intent = new Intent(OrderDetailActivity.this,SoldActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.receivingConfirmationBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("status", Constants.SUCCESSFUL_NOT_COMMENT);
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("tracking_info", "sent");
+                Toast.makeText(binding.getRoot().getContext(), "Loading", Toast.LENGTH_SHORT).show();
+                finish();
+                Intent intent = new Intent(OrderDetailActivity.this,PurchasedActivity.class);
+                startActivity(intent);
+            }
+        }
+        );
 
 
 
