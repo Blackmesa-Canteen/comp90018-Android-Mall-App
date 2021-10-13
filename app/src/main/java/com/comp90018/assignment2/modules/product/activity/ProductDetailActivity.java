@@ -258,19 +258,16 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     // can't buy sold out item
                     if (productDTO.getStatus() == Constants.PUBLISHED) {
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Click Want this", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Intent goToPlaceOrderIntent = new Intent(ProductDetailActivity.this, PlaceOrderActivity.class);
+                        goToPlaceOrderIntent.putExtra("userDTO", userDTO);
+                        goToPlaceOrderIntent.putExtra("productDTO", productDTO);
+                        goToPlaceOrderIntent.putExtra("currentUserDTO", currentUserDTO);
+                        startActivity(goToPlaceOrderIntent);
                     } else {
                         dialog.showWarn("This item is not on sale.");
                     }
 
                 }
-                Intent goToPlaceOrderIntent = new Intent(ProductDetailActivity.this, PlaceOrderActivity.class);
-                goToPlaceOrderIntent.putExtra("userDTO", userDTO);
-                goToPlaceOrderIntent.putExtra("productDTO", productDTO);
-                goToPlaceOrderIntent.putExtra("currentUserDTO", currentUserDTO);
-                startActivity(goToPlaceOrderIntent);
 
             }
         });
