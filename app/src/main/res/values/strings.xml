@@ -41,6 +41,8 @@
     <string name="jmui_month">month</string>
     <string name="jmui_day">day</string>
     <string name="second">sec</string>
+    <string name="confirm_upload">Confirm upload</string>
+    <string name="publish">Publish</string>
 
     <!-- im -->
 </resources>
