@@ -260,7 +260,7 @@
                 android:layout_height="75dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="28dp"
-                android:src="@drawable/add_product"/>
+                android:src="@drawable/reselect"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pf_collection"
                 android:textSize="18sp"
