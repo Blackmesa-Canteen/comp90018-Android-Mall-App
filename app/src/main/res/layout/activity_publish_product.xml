@@ -256,8 +256,9 @@
                 android:columnCount="2">
                 <ImageView
                     android:id="@+id/pf_add"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginStart="28dp"
                     android:src="@drawable/add_product"/>
                 <androidx.recyclerview.widget.RecyclerView
@@ -266,24 +267,30 @@
                     android:layout_gravity="center"
                     android:layout_width="240dp"
                     android:layout_height="match_parent"/>
-                <ImageView
+                <Button
                     android:id="@+id/upload"
                     android:layout_marginStart="28dp"
-                    android:layout_marginTop="-80dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/upload"/>
+                    android:layout_marginTop="-85dp"
+                    android:layout_width="75dp"
+                    android:layout_height="70dp"
+                    android:background="@drawable/btn_upload_images"
+                    android:text="@string/confirm_upload"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"/>
             </GridLayout>
             <Button
                 android:id="@+id/btn_publish"
                 android:layout_width="match_parent"
+                android:layout_marginTop="2dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="30dip"
                 android:layout_marginRight="30dip"
                 android:background="@drawable/btn_primary_selector"
-                android:text="Publish"
+                android:text="@string/publish"
                 android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:textAllCaps="false"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
