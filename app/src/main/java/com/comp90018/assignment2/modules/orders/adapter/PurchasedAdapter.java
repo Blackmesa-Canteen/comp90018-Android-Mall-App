@@ -27,6 +27,7 @@ import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
 import com.comp90018.assignment2.modules.orders.activity.RatingActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.firebase.firestore.DocumentReference;
@@ -267,6 +268,16 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 }
             };
 
+            imgAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UserPageActivity.class);
+                    intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("buyerDTO", finalBuyerDTO);
+                    intent.putExtra("sellerDTO", finalSellerDTO);
+                    context.startActivity(intent);
+                }
+            });
 
             DetailButton.setOnClickListener( new View.OnClickListener() {
                 @Override
