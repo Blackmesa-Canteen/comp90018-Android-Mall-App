@@ -131,15 +131,6 @@
                         android:layout_height="24dp"
                         android:src="@drawable/gender_grey" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="10dp"
-                        android:text="Gender"
-                        android:textColor="#808080"
-                        android:textSize="16sp" />
-
                     <RadioGroup
                         android:id="@+id/gender_radio_group"
                         android:layout_width="wrap_content"
