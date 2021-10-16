@@ -115,7 +115,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
 
         private CardView DetailCardView; //cv_pdt_detail_btn_profile;
         private Button DetailButton; //purchased_pdt_detail_btn;
-
+        private LinearLayout ContactLayout;
 
 
         public ItemProductInfoViewHolder(Context context, View inflate) {
@@ -136,6 +136,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             // contact and detail
             ContactImage = (ImageView) inflate.findViewById(R.id.purchased_contact_image);
             DetailButton = (Button) inflate.findViewById(R.id.purchased_pdt_detail_btn);
+            ContactLayout = (LinearLayout) inflate.findViewById(R.id.purchased_contact_layout);
         }
 
 
@@ -292,7 +293,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 }
             });
 
-            ContactImage.setOnClickListener(new View.OnClickListener() {
+            ContactLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent goToChatActivityIntent = new Intent(context, ChatActivity.class);

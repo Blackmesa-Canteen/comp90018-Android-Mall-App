@@ -111,7 +111,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
 
         /// contact and detail
         private ImageView ContactImage; //purchased_contact_image;
-
+        private ConstraintLayout ContactLayout;
         private CardView DetailCardView; //cv_pdt_detail_btn_profile;
         private Button DetailButton; //purchased_pdt_detail_btn;
 
@@ -134,6 +134,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
             // contact and detail
             ContactImage = (ImageView) inflate.findViewById(R.id.sold_contact_image);
             DetailButton = (Button) inflate.findViewById(R.id.sold_pdt_detail_btn);
+            ContactLayout = (ConstraintLayout) inflate.findViewById(R.id.sold_contact_detail_layout);
         }
 
         /**
@@ -276,7 +277,7 @@ public class SoldAdapter extends RecyclerView.Adapter{
                 }
             });
 
-            ContactImage.setOnClickListener(new View.OnClickListener() {
+            ContactLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent goToChatActivityIntent = new Intent(context, ChatActivity.class);
