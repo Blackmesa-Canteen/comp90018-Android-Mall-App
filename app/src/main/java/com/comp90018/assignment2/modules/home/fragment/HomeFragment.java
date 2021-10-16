@@ -116,7 +116,7 @@ public class HomeFragment extends BaseFragment{
 
         /* https://github.com/Devlight/NavigationTabStrip */
         // setup label view
-        viewLabel.setTitles("Recommends", "Intra-city");
+        viewLabel.setTitles("Recommends", "NearBy");
         viewLabel.setTabIndex(0, true);
 
         viewLabel.setOnTabStripSelectedIndexListener(new NavigationTabStrip.OnTabStripSelectedIndexListener() {

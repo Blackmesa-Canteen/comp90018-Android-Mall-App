@@ -21,6 +21,7 @@ import com.comp90018.assignment2.R;
 import com.comp90018.assignment2.dto.ProductDTO;
 import com.comp90018.assignment2.dto.UserDTO;
 import com.comp90018.assignment2.modules.orders.activity.EditProductActivity;
+import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
@@ -89,6 +90,9 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
             }
         });
 
+
+
+
         // handle different product
         switch (productDTO.getStatus()) {
             case Constants.PUBLISHED:
@@ -106,6 +110,7 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                         Intent editProductIntent = new Intent(context, EditProductActivity.class);
                         editProductIntent.putExtra("productDTO", productDTO);
                         context.startActivity(editProductIntent);
+
                         // do not need to refresh, because
                         // it goes to another activity, so onResume will be called
                     }
@@ -246,7 +251,11 @@ public class RvPublishedProductAdapter extends BaseQuickAdapter<ProductDTO, Base
                 buttonR.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
+                        Intent goToPdtDetailsIntent = new Intent(context, ProductDetailActivity.class);
+                        goToPdtDetailsIntent.putExtra("productDTO", productDTO);
+                        goToPdtDetailsIntent.putExtra("userDTO", currentUserDTO);
+                        context.startActivity(goToPdtDetailsIntent);
+                        //Toast.makeText(context, "Go to order details", Toast.LENGTH_SHORT).show();
                     }
                 });
 

@@ -32,15 +32,6 @@ gif/screenshot
 
 
 ## Credits
-### Authors
-
-- [996worker](https://www.996workers.icu): *B.E. mechatronic engineering; Master candidate of Software Engineering.*
-- 2
-- 3
-- 4
-- 5
-- 6
-
 ### Thrid party dependencies
 1. [Android-PromptDialog](https://github.com/limxing/Android-PromptDialog): For more convient dialog displaying.
 2. [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper): Simplify coding RecyclerView's adapters.
