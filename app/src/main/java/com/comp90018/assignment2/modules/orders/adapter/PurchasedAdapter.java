@@ -27,6 +27,7 @@ import com.comp90018.assignment2.modules.orders.activity.OrderDetailActivity;
 import com.comp90018.assignment2.modules.orders.activity.PurchasedActivity;
 import com.comp90018.assignment2.modules.orders.activity.RatingActivity;
 import com.comp90018.assignment2.modules.product.activity.ProductDetailActivity;
+import com.comp90018.assignment2.modules.users.me.activity.UserPageActivity;
 import com.comp90018.assignment2.utils.Constants;
 import com.comp90018.assignment2.utils.view.OvalImageView;
 import com.google.firebase.firestore.DocumentReference;
@@ -115,7 +116,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
 
         private CardView DetailCardView; //cv_pdt_detail_btn_profile;
         private Button DetailButton; //purchased_pdt_detail_btn;
-
+        private LinearLayout ContactLayout;
 
 
         public ItemProductInfoViewHolder(Context context, View inflate) {
@@ -136,6 +137,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
             // contact and detail
             ContactImage = (ImageView) inflate.findViewById(R.id.purchased_contact_image);
             DetailButton = (Button) inflate.findViewById(R.id.purchased_pdt_detail_btn);
+            ContactLayout = (LinearLayout) inflate.findViewById(R.id.purchased_contact_layout);
         }
 
 
@@ -266,6 +268,16 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 }
             };
 
+            imgAvatar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, UserPageActivity.class);
+                    intent.putExtra("userDTO", finalUserDTO);
+                    intent.putExtra("buyerDTO", finalBuyerDTO);
+                    intent.putExtra("sellerDTO", finalSellerDTO);
+                    context.startActivity(intent);
+                }
+            });
 
             DetailButton.setOnClickListener( new View.OnClickListener() {
                 @Override
@@ -292,7 +304,7 @@ public class PurchasedAdapter extends RecyclerView.Adapter{
                 }
             });
 
-            ContactImage.setOnClickListener(new View.OnClickListener() {
+            ContactLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent goToChatActivityIntent = new Intent(context, ChatActivity.class);

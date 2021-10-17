@@ -55,6 +55,7 @@ public class RatingActivity extends AppCompatActivity {
     private double current_rating;
     private double star_number;
     private int number_of_comment_order;
+
     List<OrderDTO> orderDTOList;
 
     private ActivityRatingBinding binding;
@@ -99,6 +100,13 @@ public class RatingActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
 
                 Toast.makeText(RatingActivity.this, "Rate" + rating , Toast.LENGTH_SHORT).show();
+//                update order star number
+                orderDTO.setStar_number((int) rating);
+                db.collection(ORDERS_COLLECTION)
+                        .document(orderDTO.getId())
+                        .update("star_number",rating);
+
+
 
             }
 
@@ -118,66 +126,51 @@ public class RatingActivity extends AppCompatActivity {
         binding.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float rating=ratingBar.getRating();//get current star rating
-
-
-
-
-
+                number_of_comment_order+=1;
                 orderDTO.setStatus(3);  //set the status successfully comment
-
+                float rating=orderDTO.getStar_number();
                 current_rating= sellerDTO.getStar_number();
-
                 orderDTOList = new ArrayList<>();
-
+                //update order status
                 db.collection(ORDERS_COLLECTION)
                         .document(orderDTO.getId())
                         .update("status", Constants.SUCCESSFUL_COMMENT);
+                Log.d("RatingActivity", "onClick: "+number_of_comment_order);
+                Log.d("RatingActivity", "onClick: "+rating);
+                Log.d("RatingActivity", "onClick: "+current_rating);
 
-//                db.collection(ORDERS_COLLECTION)
-//                        .document(orderDTO.getId())
-//                        .set(orderDTO)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+//                db.collection(Constants.ORDERS_COLLECTION)
+//                        .whereEqualTo("status", SUCCESSFUL_COMMENT)
+//                        .whereEqualTo("seller_ref", sellerDocReference)
+//                        .get()
+//                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
+//                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 //                                if (task.isSuccessful()) {
-//                                    orderDTO.setStatus(3);
-//                                } else {
-//                                    Log.e(TAG, "update failed");
+//                                    orderDTOList = new ArrayList<>();
+//                                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                                        OrderDTO orderDTO = document.toObject(OrderDTO.class);
+//                                        orderDTOList.add(orderDTO);
+//                                    }
 //                                }
 //                            }
 //                        });
+//
+//                number_of_comment_order=orderDTOList.size();
 
 
-
-                //get the total number of order that with rating to calculate the average rating
-                db.collection(Constants.ORDERS_COLLECTION)
-                        .whereEqualTo("status", SUCCESSFUL_COMMENT)
-                        .whereEqualTo("seller_ref", sellerDocReference)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    orderDTOList = new ArrayList<>();
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        OrderDTO orderDTO = document.toObject(OrderDTO.class);
-                                        orderDTOList.add(orderDTO);
-                                    }
-                                }
-                            }
-                        });
-
-                number_of_comment_order=orderDTOList.size();
-                Log.d("RatingActivity", "onClick: "+number_of_comment_order);
 
                 //calculate the average rating
-                star_number=((rating+current_rating)/((number_of_comment_order+2)));
+                star_number=((rating+current_rating)/((number_of_comment_order+1)));
+                //update star number
                 db.collection(USERS_COLLECTION)
                         .document(sellerDTO.getId())
                         .update("star_number",star_number );
 
-                //update status and star number
+
+
+
 
 
                 //after submitting, jump to detail page
