@@ -15,7 +15,6 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryLeftAdapter;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter;
-import com.comp90018.assignment2.modules.orders.adapter.SubCategoryArrayAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
