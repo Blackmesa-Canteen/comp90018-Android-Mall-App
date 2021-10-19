@@ -15,6 +15,7 @@ import com.comp90018.assignment2.dto.CategoryDTO;
 import com.comp90018.assignment2.dto.SubCategoryDTO;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryLeftAdapter;
 import com.comp90018.assignment2.modules.categories.adapter.CategoryRightAdapter;
+import com.comp90018.assignment2.modules.orders.adapter.SubCategoryArrayAdapter;
 import com.comp90018.assignment2.utils.Constants;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -79,6 +80,13 @@ public class CategoriesFragment extends BaseFragment {
                                 subcategory.setSubcategory_id(sub_document.getId());
                                 subcategories.add(subcategory);
                             }
+                            if (category.getName().equals("commodity")) {
+                                CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
+                                ct_right.setAdapter(rightAdapter);
+                                GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+                                ct_right.setLayoutManager(manager);
+                                leftAdapter.notifyDataSetChanged();
+                            }
                             progressDialog.dismiss();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -105,7 +113,6 @@ public class CategoriesFragment extends BaseFragment {
             }
             CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext,
                     Objects.requireNonNull(categoryBundles.get(adapter.getItem(position))));
-
             ct_right.setAdapter(rightAdapter);
             GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
             ct_right.setLayoutManager(manager);
