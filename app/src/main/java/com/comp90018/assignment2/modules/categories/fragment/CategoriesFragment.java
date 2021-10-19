@@ -79,6 +79,12 @@ public class CategoriesFragment extends BaseFragment {
                                 subcategory.setSubcategory_id(sub_document.getId());
                                 subcategories.add(subcategory);
                             }
+                            if (category.getName().equals("commodity")) {
+                                CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext, subcategories);
+                                ct_right.setAdapter(rightAdapter);
+                                GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
+                                ct_right.setLayoutManager(manager);
+                            }
                             progressDialog.dismiss();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -105,7 +111,6 @@ public class CategoriesFragment extends BaseFragment {
             }
             CategoryRightAdapter rightAdapter = new CategoryRightAdapter(activityContext,
                     Objects.requireNonNull(categoryBundles.get(adapter.getItem(position))));
-
             ct_right.setAdapter(rightAdapter);
             GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
             ct_right.setLayoutManager(manager);
