@@ -84,7 +84,6 @@ public class CategoriesFragment extends BaseFragment {
                                 ct_right.setAdapter(rightAdapter);
                                 GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
                                 ct_right.setLayoutManager(manager);
-                                leftAdapter.notifyDataSetChanged();
                             }
                             progressDialog.dismiss();
                         } else {
