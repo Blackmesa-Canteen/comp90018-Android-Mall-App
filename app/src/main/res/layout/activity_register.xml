@@ -22,8 +22,7 @@
                 android:id="@+id/back_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/left_gray"
-                />
+                android:src="@drawable/left_gray" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -40,7 +39,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="52.67dp"
+                android:layout_marginBottom="40dp"
                 android:src="@drawable/dollar" />
 
             <View
@@ -118,10 +117,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#808080"
-                        android:text="Gender"
                         android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="Gender"
+                        android:textColor="#808080"
                         android:textSize="16sp" />
 
                     <RadioGroup
@@ -138,25 +137,26 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:checked="true"
-                            android:textColor="#808080"
-                            android:text="Female" />
+                            android:text="Female"
+                            android:textColor="#808080" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_male"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#808080"
-                            android:text="Male" />
+                            android:text="Male"
+                            android:textColor="#808080" />
 
                         <RadioButton
                             android:id="@+id/radio_gender_other"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="#808080"
-                            android:text="Other" />
+                            android:text="Other"
+                            android:textColor="#808080" />
 
                     </RadioGroup>
                 </LinearLayout>
+
                 <View
                     android:id="@+id/user_gender_line"
                     android:layout_width="match_parent"
@@ -191,8 +191,8 @@
                     android:background="@null"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:maxLength="20"
                     android:hint="Nickname"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="#2C2C2C"
@@ -277,8 +277,8 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:hint="Repeat Password"
-                    android:maxLength="80"
                     android:inputType="textPassword"
+                    android:maxLength="80"
                     android:maxLines="1"
                     android:textColor="#2C2C2C"
                     android:textColorHint="#808080"
@@ -316,7 +316,7 @@
 
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp">
+        android:layout_marginBottom="30dp">
 
         <TextView
             android:id="@+id/register_desc"
