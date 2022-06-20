@@ -20,7 +20,21 @@ A user can publish second-hand products for others to buy, while he can also buy
 - Backend: Google Firebase, JMessage IM server, BaiduMap API, openStreetMap API.
 
 ## DEMO
-gif/screenshot
+### Video Link
+[Demo Video](https://youtu.be/ysZQlIYm_cs)
+
+### Images
+![image](https://user-images.githubusercontent.com/69796042/174585588-3913dec8-d962-412a-aed1-ec1d04d18a29.jpeg)
+![image](https://user-images.githubusercontent.com/69796042/174585977-6f657f05-dd5e-4a17-8100-67cd9fa2614b.jpeg)
+![image](https://user-images.githubusercontent.com/69796042/174586058-e89b6ba7-e6a1-4e4f-baba-6bb223d9a9f8.jpeg)
+![image](https://user-images.githubusercontent.com/69796042/174586153-7a253773-84dc-4d4e-90f5-a55f342f847c.jpeg)
+![image](https://user-images.githubusercontent.com/69796042/174586537-3a44f698-5c33-4147-86e7-9adb542ed686.jpeg)
+![image](https://user-images.githubusercontent.com/69796042/174586483-a9806011-75fa-4390-9954-4167e8da87b5.jpeg)
+
+### Partial UX Logic
+![image](https://user-images.githubusercontent.com/69796042/174586389-ac5ea6e2-d6bd-4bf9-9f38-84a65a60ac37.jpeg)
+
+
 
 ## Features
 - Product info viewing/product detials displaying;
