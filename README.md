@@ -4,11 +4,11 @@
 
 *This is an assignment for subject Comp90018 in the University of Melbourne.*
 
-## Warning
+## Notice
 
 All Back-End Service, API key and Token are disabled/deprecated. 
 
-所有后端服务, API key以及访问令牌均已停止/弃用. 代码仅供参考, 特此声明.
+所有后端服务, API key以及访问令牌均已停止/弃用. 代码仅供参考.
 
 ## Introduction
 Good OG is a second-hand mall APP for android. It supports product browsing, searching, publishing, instant messaging, voice messaging, positioning.
